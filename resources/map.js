@@ -1,23 +1,28 @@
-let map = [
+let map1 = [
     'W W W W W W W W W W W W W W W W W W W W',
     'W       W                             W',
-    'W   E   W           E           E     W',
-    'W   E   W                             W',
-    'W       W           E     W W W W W W W',
+    'W       W           1                 W',
+    'W       W                             W',
+    'W       W                 W W W W W W W',
     'W     W W                             W',
-    'W                   E                 W',
-    'W         E E                   E     W',
+    'W                   2                 W',
+    'W                                     W',
     'W                                     W',
     'W W W W W W W W W W W W W W           W',
     'W                         W           W',
-    'W     E     E             W     E     W',
-    'W                   E     W           W',
+    'W     P                   W           W',
+    'W                         W           W',
     'W W W W W W W             W           W',
-    'W                         W     E     W',
+    'W                         W           W',
     'W               W W W W W W           W',
-    'W   P                     W           W',
-    'W                   E                 W',
-    'W         W W W                   E   W',
-    'W           W       E                 W',
+    'W                         W           W',
+    'W                                     W',
+    'W         W W W                       W',
+    'W           W                         W',
     'W W W W W W W W W W W W W W W W W W W W'
-  ];
+];
+
+var pokelist = new Map();
+
+pokelist.set("1", { name: "Taubsi", text: "Hallo..." });
+pokelist.set("2", { name: "Pikachu", text: "Hey!" });
