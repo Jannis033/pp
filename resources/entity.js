@@ -1,3 +1,83 @@
+var EntityHelper = {
+    beginRotationOffset: function(x, y, angle) {
+        context.translate(-(-x + context.canvas.width / 2), -(-y + context.canvas.height / 2));
+        context.translate(context.canvas.width / 2, context.canvas.height / 2);
+
+        context.rotate(angle);
+    },
+
+    endRotationOffset: function(x, y, angle) {
+        context.rotate(-angle);
+
+        context.translate(-context.canvas.width / 2, -context.canvas.height / 2);
+        context.translate(+(-x + context.canvas.width / 2), +(-y + context.canvas.height / 2));
+    }
+};
+
+var EntityDrawer = {
+    player: function(footPosition) {
+        // head
+        context.beginPath();
+        context.arc(0, 0, 40, 0, 2 * Math.PI);
+        context.fillStyle = '#F1D4AF';
+        context.fill();
+    },
+    entity: function(footPosition) {
+        // head
+        context.beginPath();
+        context.arc(0, 0, 40, 0, 2 * Math.PI);
+        context.fillStyle = '#F1D4AF';
+        context.fill();
+    }
+};
+
+EntityCollision = {};
+
+EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSize) {
+    var distX = Math.abs(arcX - wallX - wallSize / 2);
+    var distY = Math.abs(arcY - wallY - wallSize / 2);
+
+    if (distX > (wallSize / 2 + arcRadius)) { return false; }
+    if (distY > (wallSize / 2 + arcRadius)) { return false; }
+
+    if (distX <= (wallSize / 2)) { return true; }
+    if (distY <= (wallSize / 2)) { return true; }
+
+    var dx = distX - wallSize / 2;
+    var dy = distY - wallSize / 2;
+
+    return (dx * dx + dy * dy <= (arcRadius * arcRadius));
+};
+
+EntityCollision.arcToWalls = function(arcX, arcY) {
+    var resultVector = { x: 0, y: 0 };
+
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+
+        if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize)) {
+
+            var wallCenterX = wall.x + blockSize / 2;
+            var wallCenterY = wall.y + blockSize / 2;
+
+            var vectorX = arcX - wallCenterX;
+            var vectorY = arcY - wallCenterY;
+
+            var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+
+            if (length > 0) {
+                vectorX /= length;
+                vectorY /= length;
+
+                resultVector.x += vectorX;
+                resultVector.y += vectorY;
+            }
+        }
+    }
+
+    return resultVector;
+};
+
 var Player = function(x, y) {
     this.boundingType = 'arc';
     this.x = x * blockSize;
@@ -7,41 +87,10 @@ var Player = function(x, y) {
     this.footIncrementer = 0;
     this.speed = 5;
     this.sleep = true;
-    this.canTakeDamage = true;
-    this.damageVelocity = { x: 0, y: 0 };
-    this.health = 100;
-    this.dead = false;
-
-    this.takeDamage = function(enemy) {
-        if (this.canTakeDamage) {
-            var vectorX = this.x - enemy.x;
-            var vectorY = this.y - enemy.y;
-
-            var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
-
-            if (length > 0) {
-                this.damageVelocity.x = vectorX / length * 20;
-                this.damageVelocity.y = vectorY / length * 20;
-                this.canTakeDamage = false;
-
-                this.health -= 25;
-                this.health = this.health < 0 ? 0 : this.health;
-
-                if (this.health == 0) {
-                    this.dead = true;
-
-                    setTimeout(function() {
-                        gameover.style.display = 'block';
-                    }, 1000);
-                }
-            }
-
-        }
-    };
 
     this.update = function() {
 
-        if (this.sleep || this.dead) return;
+        if (this.sleep) return;
 
         var keysCount = 0;
         keysCount += keyboard.up ? 1 : 0;
@@ -57,25 +106,10 @@ var Player = function(x, y) {
 
         // keyboard
 
-        if (Math.abs(this.damageVelocity.x) != 0 < Math.abs(this.damageVelocity.y) != 0) {
-
-            this.damageVelocity.x *= 0.9;
-            this.damageVelocity.y *= 0.9;
-
-            this.x += this.damageVelocity.x;
-            this.y += this.damageVelocity.y;
-
-            if (Math.abs(this.damageVelocity.x) < 0.5 && Math.abs(this.damageVelocity.y) < 0.5) {
-                this.damageVelocity = { x: 0, y: 0 };
-                this.canTakeDamage = true;
-            }
-
-        } else {
-            if (keyboard.up) this.y -= currentSpeed;
-            if (keyboard.down) this.y += currentSpeed;
-            if (keyboard.left) this.x -= currentSpeed;
-            if (keyboard.right) this.x += currentSpeed;
-        }
+        if (keyboard.up) this.y -= currentSpeed;
+        if (keyboard.down) this.y += currentSpeed;
+        if (keyboard.left) this.x -= currentSpeed;
+        if (keyboard.right) this.x += currentSpeed;
 
         // collision
         var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
@@ -110,18 +144,108 @@ var Player = function(x, y) {
 
         EntityHelper.beginRotationOffset(this.x, this.y, this.angle);
 
-        if (!this.dead) {
-            EntityDrawer.human(this.footPosition);
-        } else {
-            EntityDrawer.deadHuman();
-        }
+        EntityDrawer.player(this.footPosition);
 
         EntityHelper.endRotationOffset(this.x, this.y, this.angle);
-
-        EntityDrawer.healthBar(this.health, this.x, this.y);
     };
 };
 
+var Entity = function(x, y) {
+    this.boundingType = 'arc';
+    this.x = x * blockSize;
+    this.y = y * blockSize;
+    this.angle = 0;
+    this.footPosition = 0;
+    this.footIncrementer = 0;
+    this.speed = 3;
+    this.sleep = true;
+    this.pushAlongVelocity = { x: 0, y: 0 };
+
+    this.pushAlong = function(vectorX, vectorY) {
+        this.pushAlongVelocity.x = vectorX * 10;
+        this.pushAlongVelocity.y = vectorY * 10;
+    };
+
+    this.rectangleIntersection = function(r1, r2) {
+        return !(r1.x + r1.width < r2.x || r1.y + r1.height < r2.y || r1.x > r2.x + r2.width || r1.y > r2.y + r2.height);
+    };
+
+    this.lastVectorX = 0;
+    this.lastVectorY = 0;
+
+    this.update = function() {
+
+        if (this.sleep) return;
+
+        var vectorX = player.x - this.x;
+        var vectorY = player.y - this.y;
+
+        this.lastVectorX = vectorX;
+        this.lastVectorY = vectorY;
+
+        var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+
+        if (length > 0) {
+            vectorX /= length;
+            vectorY /= length;
+
+            if (length < 800) {
+                this.angle = Math.atan2(vectorY, vectorX) - 90 * Math.PI / 180;
+                this.x += vectorX * this.speed;
+                this.y += vectorY * this.speed;
+
+                // collision
+                var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
+                this.x += collisionVector.x * this.speed;
+                this.y += collisionVector.y * this.speed;
+
+                this.footIncrementer += this.speed;
+                this.footPosition = Math.sin(this.footIncrementer * Math.PI / 180);
+            }
+        }
+
+        // entity collision
+        if (Math.random() <= 0.1) {
+            for (var i = 0; i < entities.length; i++) {
+                var entity = entities[i];
+
+                if (entity != this) {
+                    var vectorX = entities.x - this.x;
+                    var vectorY = entities.y - this.y;
+
+                    var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+
+                    if (length != 0 && length < 100) {
+
+                        vectorX /= length;
+                        vectorY /= length;
+
+                        entity.pushAlong(vectorX, vectorY);
+                    }
+
+                }
+            }
+        }
+
+        // push along velocity
+        this.pushAlongVelocity.x *= 0.9;
+        this.pushAlongVelocity.y *= 0.9;
+
+        this.x += this.pushAlongVelocity.x;
+        this.y += this.pushAlongVelocity.y;
+    };
+
+    this.render = function() {
+
+        if (this.sleep) return;
+
+        EntityHelper.beginRotationOffset(this.x, this.y, this.angle);
+
+        EntityDrawer.entity(this.footPosition);
+
+        EntityHelper.endRotationOffset(this.x, this.y, this.angle);
+    };
+};
 
 var Wall = function(x, y) {
     this.boundingType = 'box';
@@ -164,8 +288,8 @@ var Camera = function() {
 
             var screen = { x: player.x - this.offsetX - context.canvas.width / 2 - blockSize, y: player.y - this.offsetY - context.canvas.height / 2 - blockSize, width: context.canvas.width + blockSize * 2, height: context.canvas.height + blockSize * 2 };
 
-            for (var i = 0; i < entities.length; i++) {
-                var entity = entities[i];
+            for (var i = 0; i < allentities.length; i++) {
+                var entity = allentities[i];
                 var bounds = {};
 
                 if (entity.boundingType === 'arc') {
@@ -215,13 +339,21 @@ var Camera = function() {
 
 };
 
-let map = map1;
-
 var MapProcessor = function() {
+    var map = null;
+
     this.playerPosition = { x: 0, y: 0 };
+    this.entityPositions = [];
     this.wallPositions = [];
 
+    this.selectMap = function(m) {
+        map = m;
+    }
+
     this.generate = function() {
+        if (map == null) {
+            return;
+        }
         for (var y = 0; y < map.length; y++) {
             var row = map[y];
 
@@ -234,7 +366,7 @@ var MapProcessor = function() {
                         this.wallPositions.push({ x: realX, y: y });
                         break;
                     case 'E':
-                        this.enemyPositions.push({ x: realX, y: y });
+                        this.entityPositions.push({ x: realX, y: y });
                         break;
                     case 'P':
                         this.playerPosition = { x: realX, y: y };
@@ -248,10 +380,16 @@ var MapProcessor = function() {
         return this.playerPosition;
     };
 
+    this.getEntityPositions = function() {
+        return this.entityPositions;
+    };
+
     this.getWallPositions = function() {
         return this.wallPositions;
     };
+
 };
+
 
 // SETUP
 
@@ -260,32 +398,35 @@ var context = canvas.getContext('2d');
 var keyboard = { up: false, down: false, left: false, right: false };
 var mouse = { x: 0, y: 0, pressed: false };
 
-var entities = [];
+var gameover = document.querySelector('div.gameover');
+
+var allentities = [];
 var walls = [];
-//var enemies = [];
+var entities = [];
 
 var blockSize = 150;
-var arcSizeRadius = 60;
+var arcSizeRadius = 50;
 
 var mapProcessor = new MapProcessor();
+mapProcessor.selectMap(map1);
 mapProcessor.generate();
 
 var playerPosition = mapProcessor.getPlayerPosition();
 var player = new Player(playerPosition.x, playerPosition.y);
 
-/*for (var i = 0; i < mapProcessor.getEnemyPositions().length; i++) {
-    var enemyPosition = mapProcessor.getEnemyPositions()[i];
-    var enemy = new Enemy(enemyPosition.x, enemyPosition.y);
-    entities.push(enemy);
-    enemies.push(enemy);
-}*/
+for (var i = 0; i < mapProcessor.getEntityPositions().length; i++) {
+    var entityPosition = mapProcessor.getEntityPositions()[i];
+    var entity = new Entity(entityPosition.x, entityPosition.y);
+    allentities.push(entity);
+    entities.push(entity);
+}
 
-entities.push(player);
+allentities.push(player);
 
 for (var i = 0; i < mapProcessor.getWallPositions().length; i++) {
     var wallPosition = mapProcessor.getWallPositions()[i];
     var wall = new Wall(wallPosition.x, wallPosition.y);
-    entities.push(wall);
+    allentities.push(wall);
     walls.push(wall);
 }
 
@@ -297,13 +438,10 @@ var onResize = function(width, height) {
     camera.resize();
 };
 
-var bulletManager = new BulletManager();
-
 var onUpdate = function() {
     camera.update();
-    bulletManager.update();
-    for (var i = 0; i < entities.length; i++) {
-        entities[i].update();
+    for (var i = 0; i < allentities.length; i++) {
+        allentities[i].update();
     }
 };
 
@@ -312,10 +450,8 @@ var onRender = function() {
 
     camera.preRender();
 
-    bulletManager.render();
-
-    for (var i = 0; i < entities.length; i++) {
-        entities[i].render();
+    for (var i = 0; i < allentities.length; i++) {
+        allentities[i].render();
     }
 
     camera.postRender();

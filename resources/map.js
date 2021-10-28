@@ -1,11 +1,11 @@
 let map1 = [
     'W W W W W W W W W W W W W W W W W W W W',
     'W       W                             W',
-    'W       W           1                 W',
+    'W       W           E                 W',
     'W       W                             W',
     'W       W                 W W W W W W W',
     'W     W W                             W',
-    'W                   2                 W',
+    'W                   E                 W',
     'W                                     W',
     'W                                     W',
     'W W W W W W W W W W W W W W           W',
