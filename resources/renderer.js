@@ -49,13 +49,13 @@ var Camera = function () {
     }
 }
 
-
+var map = map1;
 var MapProcessor = function () {
     this.playerPosition = { x: 0, y: 0 };
     this.wallPositions = [];
   
     this.generate = function () {
-      for (var y = 0; y < TextMap.length; y++) {
+      for (var y = 0; y < map.length; y++) {
         var row = map[y];
   
         for (var x = 0; x < row.length; x += 2) {
