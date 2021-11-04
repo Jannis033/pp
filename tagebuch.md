@@ -8,3 +8,4 @@ Wir wissen aber immer noch nicht, was wir programmieren wollen.
 ### 28.10.2021 17.03 uhr 
 
 Haben uns nach längeren hin und her auf ein an Pokémon angelehntes Spiel mit 2D Grafik geeinigt.
+

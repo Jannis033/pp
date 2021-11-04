@@ -115,3 +115,32 @@ var mouse = { x: 0, y: 0, pressed: false };
 var blockSize = 150;
 
 
+var onTick = function () {
+  if (keyboard.up) {
+    console.log("up");
+  }
+}
+
+var tick = setInterval(function() {
+  onTick();
+}, 500);
+
+window.addEventListener("keydown", function(event) {
+  keyboard.up = (event.keycode == 87);
+  keyboard.down = (event.keycode == 83);
+  keyboard.left = (event.keycode == 65);
+  keyboard.right = (event.keycode == 68);
+});
+
+window.addEventListener("keyup", function(event) {
+  switch(event.keycode) {
+    case 87: keyboard.up = false;
+    case 83: keyboard.down = false;
+    case 65: keyboard.left = false;
+    case 68: keyboard.right = false;
+  }
+  keyboard.up != (event.keycode == 87);
+  keyboard.down != (event.keycode == 83);
+  keyboard.left != (event.keycode == 65);
+  keyboard.right != (event.keycode == 68);
+});
