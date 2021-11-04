@@ -123,9 +123,10 @@ var onTick = function () {
 
 var tick = setInterval(function() {
   onTick();
-}, 500);
+}, 5);
 
 window.addEventListener("keydown", function(event) {
+  console.log(1);
   keyboard.up = (event.keycode == 87);
   keyboard.down = (event.keycode == 83);
   keyboard.left = (event.keycode == 65);
