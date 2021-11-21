@@ -105,8 +105,10 @@ var Player = function(x, y) {
         if (keyboard.down) this.y += currentSpeed;
         if (keyboard.left) this.x -= currentSpeed;
         if (keyboard.right) this.x += currentSpeed;
-        if (keyboard.touchx) this.x += currentSpeed * keyboard.touchx;
-        if (keyboard.touchy) this.y += currentSpeed * keyboard.touchy;
+        if (!keyboard.up && !keyboard.down && !keyboard.left && !keyboard.right) {
+            if (keyboard.touchx) this.x += currentSpeed * keyboard.touchx;
+            if (keyboard.touchy) this.y += currentSpeed * keyboard.touchy;
+        }
 
         // collision
         var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
@@ -313,6 +315,7 @@ var onUpdate = function() {
     for (var i = 0; i < entities.length; i++) {
         entities[i].update();
     }
+    if (keyboard.touch) keyboard.touch = false;
 };
 
 var onRender = function() {
@@ -327,7 +330,7 @@ var onRender = function() {
     camera.postRender();
 };
 
-var keyboard = { up: false, down: false, left: false, right: false, space: false };
+var keyboard = { up: false, down: false, left: false, right: false, space: false, touchx: 0, touchy: 0, touch: false };
 var mouse = { x: 0, y: 0, pressed: false };
 
 
@@ -403,6 +406,7 @@ document.addEventListener('touchend', handleTouchEnd, false);
 
 var xDown = null;
 var yDown = null;
+var down = false;
 
 function limitNumberWithinRange(num, min, max) {
     const MIN = min || 1;
@@ -420,6 +424,7 @@ function handleTouchStart(evt) {
     const firstTouch = getTouches(evt)[0];
     xDown = firstTouch.clientX;
     yDown = firstTouch.clientY;
+    down = true;
 };
 
 function handleTouchMove(evt) {
@@ -433,8 +438,9 @@ function handleTouchMove(evt) {
     var xDiff = xDown - xUp;
     var yDiff = yDown - yUp;
 
-    keyboard.touchx = limitNumberWithinRange(-xDiff / 200, -1, 1);
-    keyboard.touchy = limitNumberWithinRange(-yDiff / 200, -1, 1);
+    keyboard.touchx = limitNumberWithinRange(-xDiff / 50, -1, 1);
+    keyboard.touchy = limitNumberWithinRange(-yDiff / 50, -1, 1);
+    down = Math.abs(xDiff) < 10 && Math.abs(yDiff) < 10;
 
     // if (Math.abs(xDiff) > Math.abs(yDiff)) { /*most significant*/
     //     if (xDiff > 0) {
@@ -461,4 +467,6 @@ function handleTouchEnd(evt) {
     yDown = null;
     keyboard.touchx = 0;
     keyboard.touchy = 0;
+    keyboard.touch = down;
+    down = false;
 }
