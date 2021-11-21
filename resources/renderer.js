@@ -433,8 +433,8 @@ function handleTouchMove(evt) {
     var xDiff = xDown - xUp;
     var yDiff = yDown - yUp;
 
-    keyboard.touchx = limitNumberWithinRange(xDiff / 200, -1, 1);
-    keyboard.touchy = limitNumberWithinRange(yDiff / 200, -1, 1);
+    keyboard.touchx = limitNumberWithinRange(-xDiff / 200, -1, 1);
+    keyboard.touchy = limitNumberWithinRange(-yDiff / 200, -1, 1);
 
     // if (Math.abs(xDiff) > Math.abs(yDiff)) { /*most significant*/
     //     if (xDiff > 0) {
