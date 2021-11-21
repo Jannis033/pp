@@ -19,7 +19,7 @@ var TextMap = [
     'W                   E                 W',
     'W         W W W                   E   W',
     'W           W       E                 W',
-    'W W W W W W W W W W W W W W W W W W W W'
+    'W W W W W W W W W W W W W W W W W W W W W'
 ];
 
 var EntityHelper = {
