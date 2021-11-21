@@ -17,7 +17,7 @@ var EntityHelper = {
 var EntityDrawer = {
     player: function() {
         context.beginPath();
-        context.arc(0, 0, 40, 0, 2 * Math.PI);
+        context.arc(0, 0, 30, 0, 2 * Math.PI);
         context.fillStyle = colors.player;
         context.fill();
     },
@@ -266,9 +266,9 @@ var canvas = document.querySelector('canvas#main');
 var context = canvas.getContext('2d');
 
 var blockSize = 80;
-var arcSizeRadius = 38;
+var arcSizeRadius = 28;
 
-var colors = { wall: '#333333', player: '#111111' };
+var colors = { wall: '#555', player: '#111' };
 
 var entities = [];
 var walls = [];
@@ -337,6 +337,10 @@ var tick = setInterval(function() {
 }, 30);
 
 window.addEventListener("keydown", function(event) {
+    if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+        return;
+    }
     switch (event.keyCode) {
         case 87:
             keyboard.up = true;
