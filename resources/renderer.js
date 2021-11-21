@@ -90,6 +90,8 @@ var Player = function(x, y) {
         keysCount += keyboard.down ? 1 : 0;
         keysCount += keyboard.left ? 1 : 0;
         keysCount += keyboard.right ? 1 : 0;
+        keysCount += keyboard.touchx > 0 ? 1 : 0;
+        keysCount += keyboard.touchy > 0 ? 1 : 0;
 
         var currentSpeed = this.speed;
 
@@ -103,6 +105,8 @@ var Player = function(x, y) {
         if (keyboard.down) this.y += currentSpeed;
         if (keyboard.left) this.x -= currentSpeed;
         if (keyboard.right) this.x += currentSpeed;
+        if (keyboard.touchx) this.x += currentSpeed * keyboard.touchx;
+        if (keyboard.touchy) this.y += currentSpeed * keyboard.touchy;
 
         // collision
         var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
@@ -124,7 +128,7 @@ var Player = function(x, y) {
 
         // foot
 
-        if (keyboard.up || keyboard.down || keyboard.left || keyboard.right) {
+        if (keyboard.up || keyboard.down || keyboard.left || keyboard.right || keyboard.touchx > 0 || keyboard.touchy > 0) {
             this.footIncrementer += this.speed;
         }
 
@@ -392,3 +396,69 @@ window.addEventListener("mousemove", function(event) {
     mouse.x = event.x;
     mouse.y = event.y;
 });
+
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+document.addEventListener('touchend', handleTouchEnd, false);
+
+var xDown = null;
+var yDown = null;
+
+function limitNumberWithinRange(num, min, max) {
+    const MIN = min || 1;
+    const MAX = max || 20;
+    const parsed = parseInt(num)
+    return Math.min(Math.max(parsed, MIN), MAX)
+}
+
+function getTouches(evt) {
+    return evt.touches || // browser API
+        evt.originalEvent.touches; // jQuery
+}
+
+function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];
+    xDown = firstTouch.clientX;
+    yDown = firstTouch.clientY;
+};
+
+function handleTouchMove(evt) {
+    if (!xDown || !yDown) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    keyboard.touchx = limitNumberWithinRange(xDiff / 200, -1, 1);
+    keyboard.touchy = limitNumberWithinRange(yDiff / 200, -1, 1);
+
+    // if (Math.abs(xDiff) > Math.abs(yDiff)) { /*most significant*/
+    //     if (xDiff > 0) {
+    //         /* right swipe */
+    //         keyboard.left = true;
+    //     } else {
+    //         /* left swipe */
+    //         keyboard.right = true;
+    //     }
+    // } else {
+    //     if (yDiff > 0) {
+    //         /* down swipe */
+    //         keyboard.up = true;
+    //     } else {
+    //         /* up swipe */
+    //         keyboard.down = true;
+    //     }
+    // }
+};
+
+function handleTouchEnd(evt) {
+    /* reset values */
+    xDown = null;
+    yDown = null;
+    keyboard.touchx = 0;
+    keyboard.touchy = 0;
+}
