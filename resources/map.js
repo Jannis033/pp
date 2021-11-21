@@ -19,7 +19,7 @@ let map1 = [
     'W                                     W',
     'W         W W W                       W',
     'W           W                         W',
-    'W W W W W W W W W W W W W W W W W W W W W'
+    'W W W W W W W W W W W W W W W W W W W W'
 ];
 
 var pokefunctions = function() {
