@@ -21,7 +21,7 @@ var EntityDrawer = {
         context.fillStyle = colors.player;
         context.fill();
     },
-    wall: function(x, y) {
+    wall: function(x, y, type) {
         context.beginPath();
         context.rect(x, y, blockSize, blockSize);
         context.fillStyle = colors.wall;
@@ -147,8 +147,9 @@ var Player = function(x, y) {
     };
 }
 
-var Wall = function(x, y) {
+var Wall = function(x, y, walltype) {
     this.type = 'box';
+    this.walltype = walltype;
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.sleep = true;
@@ -162,7 +163,7 @@ var Wall = function(x, y) {
     this.render = function() {
         if (this.sleep) return;
 
-        EntityDrawer.wall(this.x, this.y);
+        EntityDrawer.wall(this.x, this.y, this.walltype);
     };
 };
 
@@ -234,14 +235,26 @@ var Camera = function() {
 
 };
 
-var map = map1;
 var MapProcessor = function() {
+    this.map = null;
+
     this.playerPosition = { x: 0, y: 0 };
+    this.entityPositions = [];
     this.wallPositions = [];
 
+    this.selectMap = function(m) {
+        this.map = m.split(/\r?\n/);
+    }
+
     this.generate = function() {
-        for (var y = 0; y < map.length; y++) {
-            var row = map[y];
+        this.wallPositions = [];
+        this.playerPosition = { x: 0, y: 0 };
+
+        if (this.map == null) {
+            return;
+        }
+        for (var y = 0; y < this.map.length; y++) {
+            var row = this.map[y];
 
             for (var x = 0; x < row.length; x += 2) {
                 var char = row[x];
@@ -249,7 +262,9 @@ var MapProcessor = function() {
 
                 switch (char) {
                     case 'W':
-                        this.wallPositions.push({ x: realX, y: y });
+                    case 'w':
+                    case 'S':
+                        this.wallPositions.push({ x: realX, y: y, type: char });
                         break;
                     case 'P':
                         this.playerPosition = { x: realX, y: y };
@@ -272,7 +287,7 @@ var canvas = document.querySelector('canvas#main');
 var context = canvas.getContext('2d');
 
 var blockSize = 80;
-var arcSizeRadius = 28;
+var arcSizeRadius = 32;
 
 var colors = { wall: '#555', player: '#111' };
 
@@ -280,35 +295,31 @@ var entities = [];
 var walls = [];
 
 var mapProcessor = new MapProcessor();
-mapProcessor.generate();
+var loaded = false;
 
-var playerPosition = mapProcessor.getPlayerPosition();
-var player = new Player(playerPosition.x, playerPosition.y);
+var playerPosition;
+var player;
 
-entities.push(player);
+var loadMap = function(map) {
+    mapProcessor.selectMap(map);
+    mapProcessor.generate();
 
-for (var i = 0; i < mapProcessor.getWallPositions().length; i++) {
-    var wallPosition = mapProcessor.getWallPositions()[i];
-    var wall = new Wall(wallPosition.x, wallPosition.y);
-    entities.push(wall);
-    walls.push(wall);
+    playerPosition = mapProcessor.getPlayerPosition();
+    player = new Player(playerPosition.x, playerPosition.y);
+
+    entities.push(player);
+
+    for (var i = 0; i < mapProcessor.getWallPositions().length; i++) {
+        var wallPosition = mapProcessor.getWallPositions()[i];
+        var wall = new Wall(wallPosition.x, wallPosition.y, wallPosition.type);
+        entities.push(wall);
+        walls.push(wall);
+    }
+
+    loaded = true;
 }
 
-var camera = new Camera();
-
-var onResize = function(width, height) {
-    context.canvas.width = width;
-    context.canvas.height = height;
-    camera.resize();
-};
-
-var resizeCallback = function() {
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    onResize(width, height);
-};
-window.addEventListener('resize', resizeCallback);
-resizeCallback();
+loadMap(map1);
 
 var onUpdate = function() {
     camera.update();
@@ -335,13 +346,31 @@ var mouse = { x: 0, y: 0, pressed: false };
 
 
 var onTick = function() {
-    onUpdate();
-    onRender();
+    if (loaded) {
+        onUpdate();
+        onRender();
+    }
 }
+
+var camera = new Camera();
+
+var onResize = function(width, height) {
+    context.canvas.width = width;
+    context.canvas.height = height;
+    camera.resize();
+};
+
+var resizeCallback = function() {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    onResize(width, height);
+};
+window.addEventListener('resize', resizeCallback);
+resizeCallback();
 
 var tick = setInterval(function() {
     onTick();
-}, 30);
+}, 35);
 
 window.addEventListener("keydown", function(event) {
     if (event.ctrlKey || event.metaKey) {
@@ -461,7 +490,7 @@ function handleTouchMove(evt) {
     // }
 };
 
-function handleTouchEnd(evt) {
+function handleTouchEnd() {
     /* reset values */
     xDown = null;
     yDown = null;

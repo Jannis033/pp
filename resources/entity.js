@@ -351,6 +351,10 @@ var MapProcessor = function() {
     }
 
     this.generate = function() {
+        this.wallPositions = [];
+        this.entityPositions = [];
+        this.playerPosition = { x: 0, y: 0 };
+
         if (map == null) {
             return;
         }
