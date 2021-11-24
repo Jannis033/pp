@@ -14,6 +14,45 @@ var EntityHelper = {
     }
 };
 
+var patterns = {};
+
+var PatternHelper = {
+    createAll: function() {
+        patterns.stairsX = this.stairsX();
+        patterns.stairsY = this.stairsY();
+    },
+    stairsX: function() {
+        const patternCanvas = document.createElement('canvas');
+        const patternContext = patternCanvas.getContext('2d');
+
+        patternCanvas.width = blockSize;
+        patternCanvas.height = blockSize;
+
+        patternContext.fillStyle = '#333';
+        patternContext.fillRect(0, 0, patternCanvas.width, patternCanvas.height);
+        patternContext.fillStyle = '#444';
+        patternContext.fillRect(0, 0, patternCanvas.width, patternCanvas.height / 4);
+        patternContext.fillRect(0, 2 * patternCanvas.height / 4, patternCanvas.width, patternCanvas.height / 4);
+
+        return context.createPattern(patternCanvas, 'repeat');
+    },
+    stairsY: function() {
+        const patternCanvas = document.createElement('canvas');
+        const patternContext = patternCanvas.getContext('2d');
+
+        patternCanvas.width = blockSize;
+        patternCanvas.height = blockSize;
+
+        patternContext.fillStyle = '#333';
+        patternContext.fillRect(0, 0, patternCanvas.width, patternCanvas.height);
+        patternContext.fillStyle = '#444';
+        patternContext.fillRect(0, 0, patternCanvas.width / 4, patternCanvas.height);
+        patternContext.fillRect(2 * patternCanvas.width / 4, 0, patternCanvas.width / 4, patternCanvas.height);
+
+        return context.createPattern(patternCanvas, 'repeat');
+    }
+}
+
 var EntityDrawer = {
     player: function() {
         context.beginPath();
@@ -25,6 +64,19 @@ var EntityDrawer = {
         context.beginPath();
         context.rect(x, y, blockSize, blockSize);
         context.fillStyle = colors.wall;
+        context.fill();
+    },
+    carpet: function(x, y, type) {
+        context.beginPath();
+        context.rect(x, y, blockSize, blockSize);
+        switch (type) {
+            case 't':
+                context.fillStyle = patterns.stairsX;
+                break;
+            case 'T':
+                context.fillStyle = patterns.stairsY;
+                break;
+        }
         context.fill();
     }
 };
@@ -77,7 +129,7 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
 };
 
 var Player = function(x, y) {
-    this.type = 'entity';
+    this.render = 'entity';
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.angle = 0;
@@ -147,9 +199,9 @@ var Player = function(x, y) {
     };
 }
 
-var Wall = function(x, y, walltype) {
-    this.type = 'box';
-    this.walltype = walltype;
+var Wall = function(x, y, type) {
+    this.render = 'box';
+    this.type = type;
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.sleep = true;
@@ -163,7 +215,27 @@ var Wall = function(x, y, walltype) {
     this.render = function() {
         if (this.sleep) return;
 
-        EntityDrawer.wall(this.x, this.y, this.walltype);
+        EntityDrawer.wall(this.x, this.y, this.type);
+    };
+};
+
+var Carpet = function(x, y, type) {
+    this.render = 'box';
+    this.type = type;
+    this.x = x * blockSize;
+    this.y = y * blockSize;
+    this.sleep = true;
+
+    this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
+
+    this.update = function() {
+
+    };
+
+    this.render = function() {
+        if (this.sleep) return;
+
+        EntityDrawer.carpet(this.x, this.y, this.type);
     };
 };
 
@@ -189,13 +261,13 @@ var Camera = function() {
                 var entity = entities[i];
                 var bounds = {};
 
-                if (entity.type === 'entity') {
+                if (entity.render === 'entity') {
                     bounds.x = entity.x - arcSizeRadius;
                     bounds.y = entity.y - arcSizeRadius;
                     bounds.width = arcSizeRadius * 2;
                     bounds.height = arcSizeRadius * 2;
 
-                } else if (entity.type === 'box') {
+                } else if (entity.render === 'box') {
                     bounds.x = entity.x;
                     bounds.y = entity.y;
                     bounds.width = blockSize;
@@ -238,9 +310,10 @@ var Camera = function() {
 var MapProcessor = function() {
     this.map = null;
 
-    this.playerPosition = { x: 0, y: 0 };
-    this.entityPositions = [];
     this.wallPositions = [];
+    this.carpetPositions = [];
+    this.portalPositions = [];
+    this.playerPosition = { x: 0, y: 0 };
 
     this.selectMap = function(m) {
         this.map = m.split(/\r?\n/);
@@ -248,6 +321,8 @@ var MapProcessor = function() {
 
     this.generate = function() {
         this.wallPositions = [];
+        this.carpetPositions = [];
+        this.portalPositions = [];
         this.playerPosition = { x: 0, y: 0 };
 
         if (this.map == null) {
@@ -269,19 +344,33 @@ var MapProcessor = function() {
                     case 'P':
                         this.playerPosition = { x: realX, y: y };
                         break;
+                    case 't':
+                    case 'T':
+                        this.carpetPositions.push({ x: realX, y: y, type: char });
+                        break;
+                    case 'o':
+                    case 'O':
+                        this.portalPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
+                        break;
                 }
             }
-        }
-    };
+        };
 
-    this.getPlayerPosition = function() {
-        return this.playerPosition;
-    };
+        this.getPlayerPosition = function() {
+            return this.playerPosition;
+        };
 
-    this.getWallPositions = function() {
-        return this.wallPositions;
+        this.getWallPositions = function() {
+            return this.wallPositions;
+        };
+        this.getCarpetPositions = function() {
+            return this.carpetPositions;
+        };
+        this.getPortalPositions = function() {
+            return this.portalPositions;
+        };
     };
-};
+}
 
 var canvas = document.querySelector('canvas#main');
 var context = canvas.getContext('2d');
@@ -300,9 +389,17 @@ var loaded = false;
 var playerPosition;
 var player;
 
+PatternHelper.createAll();
+
 var loadMap = function(map) {
     mapProcessor.selectMap(map);
     mapProcessor.generate();
+
+    for (var i = 0; i < mapProcessor.getCarpetPositions().length; i++) {
+        var carpetPosition = mapProcessor.getCarpetPositions()[i];
+        var carpet = new Carpet(carpetPosition.x, carpetPosition.y, carpetPosition.type);
+        entities.push(carpet);
+    }
 
     playerPosition = mapProcessor.getPlayerPosition();
     player = new Player(playerPosition.x, playerPosition.y);

@@ -22,8 +22,8 @@ var map1 = `
     W                   W             W W W W         W               W                                   W                                     W
     W                   W             W W W W         W               W                                   W                                     W
     W                   W             W W W W         W               W                                   W                                     W
-    W                   W             W W W W         W T T T         W                                   W                                     W
-    W                   W             W W W W         W T T T W W W W W                                   W                                     W
+    W                   W             W W W W         W o1o1o1        W                                   W                                     W
+    W                   W             W W W W         W o1o1o1W W W W W                                   W                                     W
     W                   W             W                               W                                   W                                     W
     W                   W             W                               W                                   W                                     W
     W W W W W W W W W W W             W                               W W W W W W W W W W W W W W W W W W W                                     W
@@ -33,7 +33,7 @@ var map1 = `
     W                   W             W                                                                                                         W
     W                                 W                                                                                                         W                                                                                                                                                            W
     W                   W             W                                                                                                         W
-    W                   W             W                           P                                                                             W
+    W                   W             W                                                                                                         W
     W W W W W W W W W W W             W                                                                                                         W
     W                   W             W                                                                                                         W
     W                   W             W                                                                                                         W
@@ -48,13 +48,13 @@ var map1 = `
     W                                 W W W W W W W W W W     W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W     W W W                                                                                                                                                                                                                 W
     W                   W                           W         W         W                                                         W               W
 W W W W W W W W W W W W W                           W         W         W                                                         W               W W W W W W W
-W       W W W W W W W W W t t t t t W T T T W t t t W         W         W                                                         W               W	          W 	
-W       W W W W W W W W W t t t t t W T T T W t t t W         W         W                                                         W                           W 
-W       W W W W W w W W W t t t t t W T T T W t t t W         W         W                                                         W               W           W
+W       W W W W W W W W W t t t t t W o o o W t t t W         W         W                                                         W               W	          W 	
+W       W W W W W W W W W t t t t t W o o o W t t t W         W         W                                                         W                           W 
+W       W W W W W w W W W t t t t t W o o o W t t t W         W         W                                                         W               W           W
 W       W                           W W W W W                 W W W   W W          S          S           S           S           W               W W W W W W W   
-W       W             W             W                         W         W                                                         W               T
-W       W             W                                                                                                                           T
-W       W W W W W W W W             W                         W         W                                                         W               T
+W       W             W             W           P             W         W                                                         W               O
+W       W             W                                                                                                                           O
+W       W W W W W W W W             W                         W         W                                                         W               O
 W                                   W W w W W W W W W W W W W W         W W W W W W W W W W W W           S           S           W               W W W W W W W
 W                                   W                                   W                     W                                   W               W   W       W
 W                                                                       W                     W                                   W               W   W       W
