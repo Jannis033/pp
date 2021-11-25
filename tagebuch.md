@@ -14,7 +14,21 @@ Haben uns nach längeren hin und her auf ein an Pokémon angelehntes Spiel mit 2
 Wir haben ein erstes Konzept, dass wir das Spiel als Webseite aufbauen um Geräteübergreifend programmieren zu können.
 In JS arbeiten wir mit canvas, um eine möglichst einfache 2d Grafik zu bekommen.
 
-
 ### 4.11.2021 
 
-Die Map kann nun aus einer Textdatei ausgelesen werden und wird im canvas dargestellt. Wir haben den Spieler testweise als Kreis dargestellt. Tastatureingaben können inzwischen erkannt werden, eine Tick Funktion sorgt für automatische Updates der Map.
+Nachdem wir festgestellt haben, dass der online Editor nicht das Wahre ist, da wir die Seite nicht live testen können, sind wir auf eine offline Kopie des Repo umgestiegen.
+Die Map kann nun aus einer Variable ausgelesen werden und wird im canvas dargestellt. Wir haben den Spieler testweise als Kreis dargestellt. Tastatureingaben können inzwischen erkannt werden, eine Tick Funktion sorgt für automatische Updates der Map alle 35 ms.
+
+### 18.11.2021
+
+Der Spieler kann jetzt auch mit Touch gesteuert werden, die Touch Steuerung funktioniert durch einfaches Ziehen auf dem Bildschirm.
+Der Code wurde optimiert und unwichtige Funktionen wurden entfernt.
+
+### 24.11.2021
+
+Die Map wird nun aus einem Multi-Line String ausgelesen und wurde um Treppen und weitere Dekorationen erweitert. Man kann mehrere Maps erstellen und nach belieben laden lassen.
+
+### 25.11.2021
+
+Es gibt Entities, also Dinge, mit denen man mal interagieren können soll. Dazu kam auch eine Technik, die erkennt, in welche Richtung der Spieler läuft und dementsprechend eine andere Textur für den Spieler anzeigt.
+Plan für die nächste Woche: 8 Spielertexturen, Interaktionen mit Entities ermöglichen, schmalere Wände, mehr Dekorationen.
