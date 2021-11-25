@@ -396,9 +396,11 @@ var Player = function(x, y) {
         }
 
         // collision
-        var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
-        this.x += collisionVector.x * currentSpeed;
-        this.y += collisionVector.y * currentSpeed;
+        if (!keyboard.shift) {
+            var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
+            this.x += collisionVector.x * currentSpeed;
+            this.y += collisionVector.y * currentSpeed;
+        }
 
         // mouse
         /*var vectorX = camera.offsetX + context.canvas.width / 2 - mouse.x;
@@ -745,7 +747,7 @@ var onRender = function() {
     camera.postRender();
 };
 
-var keyboard = { up: false, down: false, left: false, right: false, space: false, touchx: 0, touchy: 0, touch: false };
+var keyboard = { up: false, down: false, left: false, right: false, space: false, shift: false, touchx: 0, touchy: 0, touch: false };
 var mouse = { x: 0, y: 0, pressed: false };
 
 
@@ -797,6 +799,9 @@ window.addEventListener("keydown", function(event) {
         case 32:
             keyboard.space = true;
             break;
+        case 16:
+            keyboard.shift = true;
+            break;
     }
 });
 
@@ -816,6 +821,9 @@ window.addEventListener("keyup", function(event) {
             break;
         case 32:
             keyboard.space = false;
+            break;
+        case 16:
+            keyboard.shift = false;
             break;
     }
 });
