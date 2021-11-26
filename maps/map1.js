@@ -10,9 +10,9 @@ var map1 = `
         Wv                  Wv          Wv         Wv         Wv                          Wv                                            WxWhWhWhWhWhWx                                Wv
         Wv                  Wv          Wv         Wv         Wv                          Wv                    Wv                      Wv          Wv                                Wv   
         Wv                              Wv         Wv         Wvt t t Wv                  Wv                    Wv                                  Wv                                Wv
-        Wv                  Wv          Wv         Wv         Wvt t t Wv          tltltltlWv                    Wv                      Wv          Wv                                Wv
-        Wv                  Wv          Wv         Wv         Wvt t t Wv          tltltltlWv                    Wv                      Wv          Wv                                Wv
-        Wv                  W Wh  WhWhWhW WhWhWhWhWhWhWhWhWhWhWx      WxWhWhWhWhWhWhWh  WhWxWhWhWhWhWhWh  WhWhWhWxWhWhWhWhWhWh  WhWhWhWhWx          Wv                                Wv
+        Wv                  Wv          Wv         Wv         Wvt t t Wv                  Wv                    Wv                      Wv          Wv                                Wv
+        Wv                  Wv          Wv         Wv         Wvt t t Wv            T T T Wv                    Wv                      Wv          Wv                                Wv
+        Wv                  W Wh  WhWhWhW WhWhWhWhWhWhWhWhWhWhWx      WxWhWhWhWhWhWhWhWh  WxWhWhWhWhWhWh  WhWhWhWxWhWhWhWhWhWh  WhWhWhWhWx          Wv                                Wv
         Wv                  Wv                                                                                                          Wv          Wv                                Wv
         WxWhWhWhWhWhWhWhWhWhW                                                                                                           Wv          Wv                                Wv
         Wv                  Wv                                                                                                          Vv          Wv                                Wv
@@ -68,6 +68,6 @@ Wv                                                                          Wv  
 Wv                                                                                                WvH                                 Wv              Wv  Wv          Wv              Wv               
 Wv                                                                          Wv                    WvH                                 Wv              W WhW WhWhWhWhWhW               Wv                
 Wv                                                                          Wv                    Wv                                  Wv              Wv              Wv              Wv
-Wv                                                                          Wv                    Wv                                  Wv              Wv              Wv              Wv
-WxWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhW WhWhWhWhWhWhWhWhWhWhW WhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhW WhWhWhWhWhWhWhW WhWhWhWhWhWhWhWhWhWhWhWhWhWhWhW
+Wv                                                                          Wv                    Wv                                  Wv              Wv              wv              Wv
+WxWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhW WhWhWhWhWhWhWhWhWhWhW WhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWxWhWhWhWhWhWhWhWxWhWhWhWhWhWhWhWxWhWhWhWhWhWhWhW
           `
