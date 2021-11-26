@@ -30,9 +30,9 @@ var map1 = `
         Wv                  Wv            Wv          Wvt t t Wv          Wv                                  Wv                                                                      Wv
         Wv                  Wv            Wv          Wvt t t Wv                                              Wv                                                                      Wv
         Wv                  Wv            Wv          WxWhWhWhWxWhWhWhWhWhWxWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWhWx                                                                      Wv
-        Wv                  Wv            Wv  t t t t Wv                                                                                                                              Wv
-        Wv                  Wv            Wv  t t t t Wv                                                                                                                              Wv
-        W WhWhWhWhWhWhWhWhWhW             Wv  t t t t Wv                                                                                                                              Wv
+        Wv                  Wv            Wvt t t t t Wv                                                                                                                              Wv
+        Wv                  Wv            Wvt t t t t Wv                                                                                                                              Wv
+        W WhWhWhWhWhWhWhWhWhW             Wvt t t t t Wv                                                                                                                              Wv
         Wv                  Wv            Wv                                                                                                                                          Wv
         Wv                  Wv            Wv                                                                                                                                          Wv
         Wv                  Wv            Wv                                                                                                                                          Wv
