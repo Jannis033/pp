@@ -85,7 +85,7 @@ var Player = function(x, y) {
     this.angle = 0;
     this.footPosition = 0;
     this.footIncrementer = 0;
-    this.speed = 5;
+    this.speed = 12;
     this.sleep = true;
 
     this.update = function() {
