@@ -40,7 +40,7 @@ var map1 = `
         Wv                                Wv                                                                                                                                          Wv                                                                                                                            W
         Wv                  Wv            Wv                                                                                                                                          Wv
         Wv                  Wv            Wv                                                                                                                                          Wv
-        W WhWhWhWhWhWhWhWhWhW             Wv                                                                                                                                          Wv  
+        WyWhWhWhWhWhWhWhWhWhW             Wv                                                                                                                                          Wv  
         Wv                  Wv            Wv                                                                                                                                          Wv 
         Wv                  Wv            Wv                                                                                                                                          Wv 
         Wv                  Wv            Wv                          b                b               b                                                                              Wv 
@@ -48,7 +48,7 @@ var map1 = `
         Wv                                Wv                                                                                                                                          Wv 
         Wv                  Wv            Wv                                                                                                                                          Wv 
         Wv                  Wv            Wv                                                                                                                                          Wv 
-        W WhWhWhWhWhWhWhWhWhWv            Wv                                                                                                                                          Wv 
+        WyWhWhWhWhWhWhWhWhWhWv            Wv                                                                                                                                          Wv 
         Wv                  Wv            Wv                                                                                                                                          Wv 
         Wv                  Wv            Wv                                                                                                                                          Wv 
         Wv                                WxWhWhWhWhWhWhWxWhWhWhWhWxWhWhWhWhWxWhWhWhWhWhWhWh    WhWhWhWhWhWhWhWh    WhWhWhWhWhWhWhWhWhWxWhWhWh    WhWhW WhWhWhWhWhWhWhW               Wv                                                                                                                                                                                                                                W
