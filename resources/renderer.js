@@ -462,12 +462,12 @@ var EntityDrawer = {
                 context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
                 break;
             case 'x':
-                context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
-                context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
+                context.rect(x + blockSize / 4, y - blockSize / 4, blockSize / 2, blockSize);
+                context.rect(x - blockSize / 4, y + blockSize / 4, blockSize, blockSize / 2);
                 break;
             case 'y':
-                context.rect(x + blockSize / 4, y, blockSize / 1.333, blockSize);
-                context.rect(x, y + blockSize / 4, blockSize, blockSize / 1.333);
+                context.rect(x + blockSize / 2, y, blockSize / 1.333, blockSize);
+                context.rect(x, y + blockSize / 2, blockSize, blockSize / 1.333);
                 break;
             case 'z':
                 context.rect(x, y, blockSize, blockSize / 2);
