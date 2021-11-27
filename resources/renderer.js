@@ -520,7 +520,7 @@ var EntityDrawer = {
         context.fill();
         context.translate(blockSize / 2, blockSize / 2 + playerOverlap);
     },
-    wall: function(x, y, type, details) {
+    wall: function(x, y, type, details, corners) {
         context.beginPath();
 
         context.fillStyle = colors.wall;
@@ -531,26 +531,38 @@ var EntityDrawer = {
                 break;
             case 'h':
                 context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
+                if (corners.positive) {
+                    context.rect(x + blockSize, y + blockSize / 4, blockSize / 4, blockSize / 2);
+                }
+                if (corners.negative) {
+                    context.rect(x - blockSize / 4, y + blockSize / 4, blockSize / 4, blockSize / 2);
+                }
                 break;
             case 'v':
                 context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
+                if (corners.positive) {
+                    context.rect(x + blockSize / 4, y + blockSize, blockSize / 2, blockSize / 4);
+                }
+                if (corners.negative) {
+                    context.rect(x + blockSize / 4, y - blockSize / 4, blockSize / 2, blockSize / 4);
+                }
                 break;
             case 'x':
-                context.rect(x + blockSize / 4, y - blockSize / 4, blockSize / 2, blockSize);
-                context.rect(x - blockSize / 4, y + blockSize / 4, blockSize, blockSize / 2);
+                context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
+                //context.rect(x - blockSize / 4, y + blockSize / 4, blockSize, blockSize / 2);
                 break;
-            case 'a':
-                context.rect(x + blockSize / 4, y - blockSize / 4, blockSize / 2, blockSize);
-                context.rect(x + blockSize / 4, y + blockSize / 4, blockSize, blockSize / 2);
-                break;
-            case 'b':
-                context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
-                context.rect(x + blockSize / 4, y + blockSize / 2, blockSize / 2, blockSize / 2);
-                break;
-            case 'c':
-                context.rect(x + blockSize / 2, y + blockSize / 4, blockSize / 2, blockSize / 2);
-                context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
-                break;
+                /*case 'a':
+                    context.rect(x + blockSize / 4, y - blockSize / 4, blockSize / 2, blockSize);
+                    context.rect(x + blockSize / 4, y + blockSize / 4, blockSize, blockSize / 2);
+                    break;
+                case 'b':
+                    context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
+                    context.rect(x + blockSize / 4, y + blockSize / 2, blockSize / 2, blockSize / 2);
+                    break;
+                case 'c':
+                    context.rect(x + blockSize / 2, y + blockSize / 4, blockSize / 2, blockSize / 2);
+                    context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
+                    break;*/
             default:
                 context.rect(x, y, blockSize, blockSize);
                 break;
@@ -642,7 +654,7 @@ var Player = function(x, y) {
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.angle = 0;
-    this.rotation = 0;
+    this.rotation = 4;
     this.footPosition = 0;
     this.speed = 8;
 
@@ -735,6 +747,22 @@ var Player = function(x, y) {
     };
 }
 
+var cornerAt = function(x, y) {
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+        if (wall.x == x && wall.y == y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+var cornerCheck = function() {
+    for (var i = 0; i < walls.length; i++) {
+        walls[i].cornerCheck();
+    }
+}
+
 var Wall = function(x, y, type, details) {
     this.render = 'box';
     this.type = type;
@@ -742,6 +770,7 @@ var Wall = function(x, y, type, details) {
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.sleep = true;
+    this.corners = { positive: false, negative: false };
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -749,10 +778,28 @@ var Wall = function(x, y, type, details) {
 
     };
 
+    this.cornerCheck = function() {
+        if (this.details == "h") {
+            if (cornerAt(this.x + blockSize, this.y)) {
+                this.corners.positive = true;
+            }
+            if (cornerAt(this.x - blockSize, this.y)) {
+                this.corners.negative = true;
+            }
+        } else if (this.details == "v") {
+            if (cornerAt(this.x, this.y + blockSize)) {
+                this.corners.positive = true;
+            }
+            if (cornerAt(this.x, this.y - blockSize)) {
+                this.corners.negative = true;
+            }
+        }
+    }
+
     this.render = function() {
         if (this.sleep) return;
 
-        EntityDrawer.wall(this.x, this.y, this.type, this.details);
+        EntityDrawer.wall(this.x, this.y, this.type, this.details, this.corners);
     };
 };
 
@@ -784,6 +831,7 @@ var Passage = function(x, y, type, details) {
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.sleep = true;
+    this.corners = { positive: false, negative: false };
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -794,7 +842,7 @@ var Passage = function(x, y, type, details) {
     this.render = function() {
         if (this.sleep) return;
 
-        EntityDrawer.wall(this.x, this.y, this.type, this.details);
+        EntityDrawer.wall(this.x, this.y, this.type, this.details, this.corners);
     };
 };
 
@@ -1014,6 +1062,8 @@ var loadMap = function(map) {
         elements.push(wall);
         walls.push(wall);
     }
+
+    cornerCheck();
 
     for (var i = 0; i < mapProcessor.getPassagePositions().length; i++) {
         var passagePosition = mapProcessor.getPassagePositions()[i];
