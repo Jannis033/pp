@@ -21,7 +21,7 @@ var PatternHelper = {
         patterns.stairsX = this.stairsX();
         patterns.stairsY = this.stairsY();
         patterns.cookie = this.cookie();
-        patterns.player0 = this.player4();
+        patterns.player0 = this.player0();
         patterns.player1 = this.player4();
         patterns.player2 = this.player4();
         patterns.player3 = this.player4();
@@ -98,7 +98,81 @@ var PatternHelper = {
         patternCanvas.width = blockSize;
         patternCanvas.height = blockSize + playerOverlap;
 
+        // #g81
+        patternContext.save();
+        patternContext.transform(0.264583, 0.000000, 0.000000, 0.264583, -0.317336, -1.671710);
 
+        // #path7615
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(19, 19, 19)';
+        patternContext.strokeStyle = 'rgb(0, 0, 0)';
+        patternContext.lineWidth = 1.700000;
+        patternContext.lineCap = 'butt';
+        patternContext.lineJoin = 'miter';
+        patternContext.miterLimit = 4;
+        patternContext.moveTo(65.169242, 77.315107);
+        patternContext.lineTo(31.412523, 126.453890);
+        patternContext.bezierCurveTo(29.948573, 148.404890, 29.987746, 170.179050, 47.267952, 189.924850);
+        patternContext.bezierCurveTo(59.590230, 205.069610, 74.565908, 219.370110, 111.201130, 226.778930);
+        patternContext.lineTo(205.674330, 226.322510);
+        patternContext.bezierCurveTo(219.116660, 223.546540, 231.196600, 216.189150, 240.765160, 209.855700);
+        patternContext.bezierCurveTo(248.824930, 204.520930, 256.663000, 198.665020, 261.571960, 190.436710);
+        patternContext.bezierCurveTo(274.442920, 171.068070, 283.756300, 150.862350, 277.737570, 127.049080);
+        patternContext.lineTo(243.980870, 77.910293);
+        patternContext.fill();
+        patternContext.stroke();
+
+        // #path2943
+        patternContext.beginPath();
+        patternContext.globalAlpha = 1.0;
+        patternContext.fillStyle = 'rgb(26, 26, 26)';
+        patternContext.strokeStyle = 'rgb(0, 0, 0)';
+        patternContext.lineWidth = 1.983000;
+        patternContext.lineCap = 'butt';
+        patternContext.lineJoin = 'miter';
+        patternContext.miterLimit = 4;
+        patternContext.moveTo(105.707780, 10.460160);
+        patternContext.bezierCurveTo(86.795824, 19.090652, 72.290751, 25.769829, 64.070831, 55.949125);
+        patternContext.bezierCurveTo(64.706421, 81.870256, 74.480801, 103.215250, 105.287200, 114.028780);
+        patternContext.bezierCurveTo(154.585260, 115.812970, 165.850030, 114.841080, 196.131440, 115.247230);
+        patternContext.bezierCurveTo(226.800050, 105.009640, 244.244820, 88.386890, 245.759310, 64.072154);
+        patternContext.bezierCurveTo(243.026620, 37.468221, 228.123230, 20.180674, 207.486960, 10.866312);
+        patternContext.bezierCurveTo(174.682100, 10.324776, 155.041670, 11.001695, 105.707780, 10.460160);
+        patternContext.fill();
+        patternContext.stroke();
+
+        // #path1073
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(0, 0, 0)';
+        patternContext.strokeStyle = 'rgb(0, 0, 0)';
+        patternContext.lineWidth = 1.022109;
+        patternContext.lineCap = 'butt';
+        patternContext.lineJoin = 'miter';
+        patternContext.moveTo(47.267952, 190.345430);
+        patternContext.lineTo(13.511233, 250.745190);
+        patternContext.lineTo(55.451401, 320.358480);
+        patternContext.lineTo(58.520191, 363.866810);
+        patternContext.lineTo(63.634846, 378.198960);
+        patternContext.lineTo(114.269920, 379.222680);
+        patternContext.lineTo(122.964840, 366.426090);
+        patternContext.lineTo(125.522160, 342.880430);
+        patternContext.lineTo(171.042590, 342.368570);
+        patternContext.lineTo(173.088450, 361.819340);
+        patternContext.lineTo(179.226030, 377.175220);
+        patternContext.lineTo(228.326710, 377.687080);
+        patternContext.lineTo(240.601880, 362.331210);
+        patternContext.lineTo(243.159210, 316.775450);
+        patternContext.lineTo(293.794290, 247.674010);
+        patternContext.lineTo(261.571960, 190.857290);
+        patternContext.lineTo(240.090420, 212.355500);
+        patternContext.lineTo(207.356630, 224.640210);
+        patternContext.lineTo(183.317760, 228.223240);
+        patternContext.lineTo(111.201130, 227.199510);
+        patternContext.lineTo(85.116395, 219.521580);
+        patternContext.lineTo(59.543124, 205.701300);
+        patternContext.fill();
+        patternContext.stroke();
+        patternContext.restore();
 
         return context.createPattern(patternCanvas, 'repeat');
     },
