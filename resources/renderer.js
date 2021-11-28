@@ -1965,7 +1965,7 @@ var Player = function(x, y) {
     this.angle = 0;
     this.rotation = 4;
     this.footPosition = 0;
-    this.speed = 8;
+    this.speed = 30;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
