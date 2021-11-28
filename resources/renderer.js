@@ -2410,9 +2410,9 @@ var loadMap = function(map) {
 
     loaded = true;
 
-    rotateplayer = true;
+    player.startRotate();
     setTimeout(function() {
-        rotateplayer = false;
+        player.endRotate();
     }, loadingtime * 1000);
 }
 
@@ -2467,7 +2467,7 @@ resizeCallback();
 
 var tick = setInterval(function() {
     onTick();
-}, 50);
+}, 20);
 
 window.addEventListener("keydown", function(event) {
     if (rotateplayer) {
