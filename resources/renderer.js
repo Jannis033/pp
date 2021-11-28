@@ -1720,11 +1720,11 @@ var PatternHelper = {
 	    patternContext.fill();
 	
 //     rect1002
-	    ctx.beginPath();
-	    ctx.fillStyle = 'rgb(204, 204, 204)';
-	    ctx.lineWidth = 0.070899;
-	    ctx.rect(32.633125, 0.046024, 12.524000, 76.455940);
-	    ctx.fill();
+	    patternContext.beginPath();
+	    patternContext.fillStyle = 'rgb(204, 204, 204)';
+	    patternContext.lineWidth = 0.070899;
+	    patternContext.rect(32.633125, 0.046024, 12.524000, 76.455940);
+	    patternContext.fill();
 
         return context.createPattern(patternCanvas, 'repeat');
     }
