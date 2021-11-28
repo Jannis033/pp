@@ -29,6 +29,9 @@ var PatternHelper = {
         patterns.player5 = this.player5();
         patterns.player6 = this.player6();
         patterns.player7 = this.player7();
+        patterns.heizungA = this.heizungA();
+        patterns.heizungM = this.heizungM();
+        patterns.heizungE = this.heizungE();
     },
     stairsX: function() {
         const patternCanvas = document.createElement('canvas');
@@ -1292,6 +1295,119 @@ var PatternHelper = {
         patternContext.restore();
 
         return context.createPattern(patternCanvas, 'repeat');
+    },
+    heizungA: function() {
+        const patternCanvas = document.createElement('canvas');
+        const patternContext = patternCanvas.getContext('2d');
+
+        patternCanvas.width = blockSize;
+        patternCanvas.height = blockSize;
+
+        // hier ha
+
+        return context.createPattern(patternCanvas, 'repeat');
+    },
+    heizungM: function() {
+        const patternCanvas = document.createElement('canvas');
+        const patternContext = patternCanvas.getContext('2d');
+
+        patternCanvas.width = blockSize;
+        patternCanvas.height = blockSize;
+
+        // #rect611
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(204, 204, 204)';
+        patternContext.lineWidth = 0.070004;
+        patternContext.moveTo(52.141422, 27.907100);
+        patternContext.lineTo(52.141422, 27.907100);
+        patternContext.quadraticCurveTo(52.141422, 27.997414, 52.141422, 27.997414);
+        patternContext.lineTo(52.382260, 27.997414);
+        patternContext.quadraticCurveTo(52.382260, 27.997414, 52.382260, 27.907100);
+        patternContext.lineTo(52.382260, 27.907100);
+        patternContext.quadraticCurveTo(52.382260, 27.816786, 52.382260, 27.816786);
+        patternContext.lineTo(52.141422, 27.816786);
+        patternContext.quadraticCurveTo(52.141422, 27.816786, 52.141422, 27.907100);
+        patternContext.fill();
+
+        // #rect613
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(204, 204, 204)';
+        patternContext.lineWidth = 0.056212;
+        patternContext.moveTo(9.031423, 4.756549);
+        patternContext.lineTo(9.031423, 17.651829);
+        patternContext.quadraticCurveTo(9.031423, 17.651829, 13.031423, 17.651829);
+        patternContext.lineTo(65.031423, 17.651829);
+        patternContext.quadraticCurveTo(69.031423, 17.651829, 69.031423, 17.651829);
+        patternContext.lineTo(69.031423, 4.756549);
+        patternContext.quadraticCurveTo(69.031423, 4.756549, 65.031423, 4.756549);
+        patternContext.lineTo(13.031423, 4.756549);
+        patternContext.quadraticCurveTo(9.031423, 4.756549, 9.031423, 4.756549);
+        patternContext.fill();
+
+        // #rect613-2
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(204, 204, 204)';
+        patternContext.lineWidth = 0.056212;
+        patternContext.moveTo(9.031427, 24.864885);
+        patternContext.lineTo(9.031427, 37.760165);
+        patternContext.quadraticCurveTo(9.031427, 37.760165, 13.031427, 37.760165);
+        patternContext.lineTo(65.031427, 37.760165);
+        patternContext.quadraticCurveTo(69.031427, 37.760165, 69.031427, 37.760165);
+        patternContext.lineTo(69.031427, 24.864885);
+        patternContext.quadraticCurveTo(69.031427, 24.864885, 65.031427, 24.864885);
+        patternContext.lineTo(13.031427, 24.864885);
+        patternContext.quadraticCurveTo(9.031427, 24.864885, 9.031427, 24.864885);
+        patternContext.fill();
+
+        // #rect613-2-4
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(204, 204, 204)';
+        patternContext.lineWidth = 0.056212;
+        patternContext.moveTo(9.031427, 44.973240);
+        patternContext.lineTo(9.031427, 57.868520);
+        patternContext.quadraticCurveTo(9.031427, 57.868520, 13.031427, 57.868520);
+        patternContext.lineTo(65.031427, 57.868520);
+        patternContext.quadraticCurveTo(69.031427, 57.868520, 69.031427, 57.868520);
+        patternContext.lineTo(69.031427, 44.973240);
+        patternContext.quadraticCurveTo(69.031427, 44.973240, 65.031427, 44.973240);
+        patternContext.lineTo(13.031427, 44.973240);
+        patternContext.quadraticCurveTo(9.031427, 44.973240, 9.031427, 44.973240);
+        patternContext.fill();
+
+        // #rect613-2-4-7
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(204, 204, 204)';
+        patternContext.lineWidth = 0.056212;
+        patternContext.moveTo(9.031427, 64.218521);
+        patternContext.lineTo(9.031427, 77.113801);
+        patternContext.quadraticCurveTo(9.031427, 77.113801, 13.031427, 77.113801);
+        patternContext.lineTo(65.031427, 77.113801);
+        patternContext.quadraticCurveTo(69.031427, 77.113801, 69.031427, 77.113801);
+        patternContext.lineTo(69.031427, 64.218521);
+        patternContext.quadraticCurveTo(69.031427, 64.218521, 65.031427, 64.218521);
+        patternContext.lineTo(13.031427, 64.218521);
+        patternContext.quadraticCurveTo(9.031427, 64.218521, 9.031427, 64.218521);
+        patternContext.fill();
+
+        // #rect1002
+        patternContext.beginPath();
+        patternContext.fillStyle = 'rgb(204, 204, 204)';
+        patternContext.lineWidth = 0.072500;
+        patternContext.rect(32.633549, 0.010118, 12.523574, 79.948090);
+        patternContext.fill();
+
+        return context.createPattern(patternCanvas, 'repeat');
+    },
+    heizungE: function() {
+        const patternCanvas = document.createElement('canvas');
+        const patternContext = patternCanvas.getContext('2d');
+
+        patternCanvas.width = blockSize;
+        patternCanvas.height = blockSize;
+
+        // hier he
+
+        return context.createPattern(patternCanvas, 'repeat');
     }
 }
 
@@ -1411,6 +1527,19 @@ var EntityDrawer = {
                 break;
             case 'T':
                 context.fillStyle = patterns.stairsY;
+                break;
+            case 'H':
+                switch (details) {
+                    case 'a':
+                        context.fillStyle = patterns.heizungA;
+                        break;
+                    case 'm':
+                        context.fillStyle = patterns.heizungM;
+                        break;
+                    case 'e':
+                        context.fillStyle = patterns.heizungE;
+                        break;
+                }
                 break;
         }
         context.fill();
@@ -1684,9 +1813,10 @@ var Passage = function(x, y, type, details) {
     };
 };
 
-var Carpet = function(x, y, type) {
+var Carpet = function(x, y, type, details) {
     this.render = 'box';
     this.type = type;
+    this.details = details;
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.sleep = true;
@@ -1700,7 +1830,7 @@ var Carpet = function(x, y, type) {
     this.render = function() {
         if (this.sleep) return;
 
-        EntityDrawer.carpet(this.x, this.y, this.type);
+        EntityDrawer.carpet(this.x, this.y, this.type, this.details);
     };
 };
 
@@ -1814,7 +1944,8 @@ var MapProcessor = function() {
                         break;
                     case 't':
                     case 'T':
-                        this.carpetPositions.push({ x: realX, y: y, type: char });
+                    case 'H':
+                        this.carpetPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
                     case 'o':
                     case 'O':
@@ -1881,7 +2012,7 @@ var loadMap = function(map) {
 
     for (var i = 0; i < mapProcessor.getCarpetPositions().length; i++) {
         var carpetPosition = mapProcessor.getCarpetPositions()[i];
-        var carpet = new Carpet(carpetPosition.x, carpetPosition.y, carpetPosition.type);
+        var carpet = new Carpet(carpetPosition.x, carpetPosition.y, carpetPosition.type, carpetPosition.details);
         elements.push(carpet);
     }
 
@@ -1891,8 +2022,6 @@ var loadMap = function(map) {
         elements.push(entity);
         entities.push(entity);
     }
-
-
 
     for (var i = 0; i < mapProcessor.getWallPositions().length; i++) {
         var wallPosition = mapProcessor.getWallPositions()[i];
