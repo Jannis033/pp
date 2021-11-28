@@ -932,6 +932,11 @@ var Player = function(x, y) {
     this.footPosition = 0;
     this.speed = 8;
 
+    this.teleport = function(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
     this.update = function() {
         var keysCount = 0;
         keysCount += keyboard.up ? 1 : 0;
