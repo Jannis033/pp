@@ -1964,6 +1964,7 @@ var Player = function(x, y) {
     this.y = y * blockSize;
     this.angle = 0;
     this.rotation = 4;
+    this.tmprotation = 0;
     this.footPosition = 0;
     this.speed = 8;
     this.lsdspeed = 20;
@@ -1971,6 +1972,17 @@ var Player = function(x, y) {
     this.teleport = function(x, y) {
         this.x = x * blockSize;
         this.y = y * blockSize;
+    }
+
+    this.startRotate = function() {
+        this.tmprotation = this.rotation;
+        this.rotation = 4;
+        rotateplayer = true;
+    }
+
+    this.endRotate = function() {
+        this.rotation = this.tmprotation;
+        rotateplayer = false;
     }
 
     this.update = function() {
@@ -2455,7 +2467,7 @@ resizeCallback();
 
 var tick = setInterval(function() {
     onTick();
-}, 35);
+}, 50);
 
 window.addEventListener("keydown", function(event) {
     if (rotateplayer) {
