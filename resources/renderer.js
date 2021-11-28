@@ -2493,6 +2493,9 @@ window.addEventListener("keyup", function(event) {
     if (rotateplayer) {
         return;
     }
+    if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+    }
     switch (event.keyCode) {
         case 87:
             keyboard.up = false;
