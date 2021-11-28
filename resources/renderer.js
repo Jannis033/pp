@@ -2529,7 +2529,7 @@ window.addEventListener("keyup", function(event) {
             keyboard.shift = false;
             break;
         case 18:
-            stopAudio("lsd");
+            pauseAudio("lsd");
             keyboard.ctrl = false;
             break;
     }
@@ -2639,7 +2639,7 @@ function handleTouchEnd() {
 
 var audios = {};
 
-function playAudio(name, file) {
+function playAudio(name, file = name) {
     if (!audios[name]) {
         audios[name] = new Audio('audio/' + file + '.mp3');
         audios[name].loop = true;
@@ -2650,9 +2650,15 @@ function playAudio(name, file) {
     }
 }
 
+function pauseAudio(name) {
+    if (audios[name]) {
+        audios[name].pause();
+    }
+}
+
 function stopAudio(name) {
     if (audios[name]) {
         audios[name].pause();
-        //audios[name].currentTime = 0;
+        audios[name].currentTime = 0;
     }
 }
