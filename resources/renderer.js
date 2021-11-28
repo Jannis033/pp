@@ -1966,8 +1966,8 @@ var Player = function(x, y) {
     this.rotation = 4;
     this.tmprotation = 0;
     this.footPosition = 0;
-    this.speed = 8;
-    this.lsdspeed = 20;
+    this.speed = 4;
+    this.lsdspeed = 10;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -2467,7 +2467,7 @@ resizeCallback();
 
 var tick = setInterval(function() {
     onTick();
-}, 20);
+}, 16.5);
 
 window.addEventListener("keydown", function(event) {
     if (rotateplayer) {
@@ -2496,6 +2496,7 @@ window.addEventListener("keydown", function(event) {
             keyboard.shift = true;
             break;
         case 18:
+            playAudio("lsd", "lsd");
             keyboard.ctrl = true;
             break;
     }
@@ -2528,6 +2529,7 @@ window.addEventListener("keyup", function(event) {
             keyboard.shift = false;
             break;
         case 18:
+            stopAudio("lsd");
             keyboard.ctrl = false;
             break;
     }
@@ -2633,4 +2635,24 @@ function handleTouchEnd() {
     keyboard.touchy = 0;
     keyboard.touch = down;
     down = false;
+}
+
+var audios = {};
+
+function playAudio(name, file) {
+    if (!audios[name]) {
+        audios[name] = new Audio('audio/' + file + '.mp3');
+        audios[name].loop = true;
+        audios[name].volume = 0.5;
+        audios[name].play();
+    } else if (audios[name].paused) {
+        audios[name].play();
+    }
+}
+
+function stopAudio(name) {
+    if (audios[name]) {
+        audios[name].pause();
+        //audios[name].currentTime = 0;
+    }
 }
