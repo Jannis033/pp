@@ -527,7 +527,7 @@ var EntityDrawer = {
         switch (details) {
             case 'i':
                 context.fillStyle = "#00000000";
-                context.rect(x, y, blockSize, blockSize);
+                context.rect(x, y, blockSize * 1.5, blockSize *1.5);
                 break;
             case 'h':
                 context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
