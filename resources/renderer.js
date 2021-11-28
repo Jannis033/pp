@@ -65,7 +65,7 @@ var PatternHelper = {
         const patternContext = patternCanvas.getContext('2d');
 
         patternCanvas.width = blockSize;
-        patternCanvas.height = blockSize + playerOverlap;
+        patternCanvas.height = blockSize;
 
         patternContext.beginPath();
         patternContext.fillStyle = '#d2691e';
