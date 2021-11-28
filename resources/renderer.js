@@ -2642,7 +2642,13 @@ var audios = {};
 function playAudio(name, file = name) {
     if (!audios[name]) {
         audios[name] = new Audio('audio/' + file + '.mp3');
-        audios[name].loop = true;
+        audios[name].addEventListener('timeupdate', function() {
+            var buffer = .44
+            if (this.currentTime > this.duration - buffer) {
+                this.currentTime = 0
+                this.play()
+            }
+        });
         audios[name].volume = 0.5;
         audios[name].play();
     } else if (audios[name].paused) {
