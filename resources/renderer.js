@@ -1627,7 +1627,104 @@ var PatternHelper = {
         patternCanvas.width = blockSize;
         patternCanvas.height = blockSize;
 
-        // hier he
+        patternContext.beginPath();
+	    patternContext.fillStyle = 'rgb(204, 204, 204)';
+	    patternContext.lineWidth = 0.070004;
+	    patternContext.moveTo(52.140999, 27.943006);
+	    patternContext.lineTo(52.140999, 27.943006);
+	    patternContext.quadraticCurveTo(52.140999, 28.033320, 52.140999, 28.033320);
+	    patternContext.lineTo(52.381837, 28.033320);
+	    patternContext.quadraticCurveTo(52.381837, 28.033320, 52.381837, 27.943006);
+	    patternContext.lineTo(52.381837, 27.943006);
+	    patternContext.quadraticCurveTo(52.381837, 27.852692, 52.381837, 27.852692);
+	    patternContext.lineTo(52.140999, 27.852692);
+	    patternContext.quadraticCurveTo(52.140999, 27.852692, 52.140999, 27.943006);
+	    patternContext.fill();
+	
+//     rpatternContext613
+	    patternContext.beginPath();
+	    patternContext.fillStyle = 'rgb(204, 204, 204)';
+	    patternContext.lineWidth = 0.056212;
+	    patternContext.moveTo(9.031000, 4.792455);
+	    patternContext.lineTo(9.031000, 17.687735);
+	    patternContext.quadraticCurveTo(9.031000, 17.687735, 13.031000, 17.687735);
+	    patternContext.lineTo(65.031000, 17.687735);
+	    patternContext.quadraticCurveTo(69.031000, 17.687735, 69.031000, 17.687735);
+	    patternContext.lineTo(69.031000, 4.792455);
+	    patternContext.quadraticCurveTo(69.031000, 4.792455, 65.031000, 4.792455);
+	    patternContext.lineTo(13.031000, 4.792455);
+	    patternContext.quadraticCurveTo(9.031000, 4.792455, 9.031000, 4.792455);
+	    patternContext.fill();
+	
+//     rpatternContext613-2
+	    patternContext.beginPath();
+	    patternContext.fillStyle = 'rgb(204, 204, 204)';
+	    patternContext.lineWidth = 0.056212;
+	    patternContext.moveTo(9.031005, 24.900791);
+	    patternContext.lineTo(9.031005, 37.796071);
+	    patternContext.quadraticCurveTo(9.031005, 37.796071, 13.031005, 37.796071);
+	    patternContext.lineTo(65.031005, 37.796071);
+	    patternContext.quadraticCurveTo(69.031005, 37.796071, 69.031005, 37.796071);
+	    patternContext.lineTo(69.031005, 24.900791);
+	    patternContext.quadraticCurveTo(69.031005, 24.900791, 65.031005, 24.900791);
+	    patternContext.lineTo(13.031005, 24.900791);
+	    patternContext.quadraticCurveTo(9.031005, 24.900791, 9.031005, 24.900791);
+	    patternContext.fill();
+	
+//     rpatternContext613-2-4
+	    patternContext.beginPath();
+	    patternContext.fillStyle = 'rgb(204, 204, 204)';
+	    patternContext.lineWidth = 0.056212;
+	    patternContext.moveTo(9.031005, 45.009144);
+	    patternContext.lineTo(9.031005, 57.904424);
+	    patternContext.quadraticCurveTo(9.031005, 57.904424, 13.031005, 57.904424);
+	    patternContext.lineTo(65.031005, 57.904424);
+	    patternContext.quadraticCurveTo(69.031005, 57.904424, 69.031005, 57.904424);
+	    patternContext.lineTo(69.031005, 45.009144);
+	    patternContext.quadraticCurveTo(69.031005, 45.009144, 65.031005, 45.009144);
+	    patternContext.lineTo(13.031005, 45.009144);
+	    patternContext.quadraticCurveTo(9.031005, 45.009144, 9.031005, 45.009144);
+	    patternContext.fill();
+	
+//     ppatternContext6153
+	    patternContext.beginPath();
+	    patternContext.fillStyle = 'rgb(153, 153, 153)';
+	    patternContext.strokeStyle = 'rgb(153, 153, 153)';
+	    patternContext.lineWidth = 0.070004;
+	    patternContext.lineCap = 'butt';
+	    patternContext.lineJoin = 'miter';
+	    patternContext.moveTo(34.195951, 77.155711);
+	    patternContext.lineTo(34.781352, 76.623531);
+	    patternContext.lineTo(43.040813, 76.612891);
+	    patternContext.lineTo(43.594281, 77.070567);
+	    patternContext.lineTo(43.583641, 77.943345);
+	    patternContext.lineTo(43.040816, 78.550032);
+	    patternContext.lineTo(34.728137, 78.592602);
+	    patternContext.lineTo(34.206599, 77.996559);
+	    patternContext.fill();
+	    patternContext.stroke();
+	
+//     rpatternContext613-2-4-7
+	    patternContext.beginPath();
+	    patternContext.fillStyle = 'rgb(204, 204, 204)';
+	    patternContext.lineWidth = 0.056212;
+	    patternContext.moveTo(9.031005, 63.725258);
+	    patternContext.lineTo(9.031005, 76.620538);
+	    patternContext.quadraticCurveTo(9.031005, 76.620538, 13.031005, 76.620538);
+	    patternContext.lineTo(65.031005, 76.620538);
+	    patternContext.quadraticCurveTo(69.031005, 76.620538, 69.031005, 76.620538);
+	    patternContext.lineTo(69.031005, 63.725258);
+	    patternContext.quadraticCurveTo(69.031005, 63.725258, 65.031005, 63.725258);
+	    patternContext.lineTo(13.031005, 63.725258);
+	    patternContext.quadraticCurveTo(9.031005, 63.725258, 9.031005, 63.725258);
+	    patternContext.fill();
+	
+//     rect1002
+	    ctx.beginPath();
+	    ctx.fillStyle = 'rgb(204, 204, 204)';
+	    ctx.lineWidth = 0.070899;
+	    ctx.rect(32.633125, 0.046024, 12.524000, 76.455940);
+	    ctx.fill();
 
         return context.createPattern(patternCanvas, 'repeat');
     }
