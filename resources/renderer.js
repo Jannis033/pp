@@ -636,8 +636,8 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
         var wall = walls[i];
 
         if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details)) {
-            var wallCenterX = wall.x + blockSize / 2;
-            var wallCenterY = wall.y + blockSize / 2;
+            var wallCenterX = wall.x + blockSize * 0.75;
+            var wallCenterY = wall.y + blockSize * 0.75;
 
             var vectorX = arcX - wallCenterX;
             var vectorY = arcY - wallCenterY;
