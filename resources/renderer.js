@@ -1966,6 +1966,7 @@ var Player = function(x, y) {
     this.rotation = 4;
     this.footPosition = 0;
     this.speed = 8;
+    this.lsdspeed = 20;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -1981,7 +1982,7 @@ var Player = function(x, y) {
         keysCount += keyboard.touchx != 0 ? 1 : 0;
         keysCount += keyboard.touchy != 0 ? 1 : 0;
 
-        var currentSpeed = this.speed;
+        var currentSpeed = (keyboard.ctrl ? this.lsdspeed : this.speed);
 
         if (keysCount > 1) {
             currentSpeed /= Math.sqrt(2);
@@ -2354,6 +2355,8 @@ var player;
 var tmpplayerrotation = 0;
 var rotateplayer = false;
 
+var loadingtime = 0;
+
 PatternHelper.createAll();
 
 var loadMap = function(map) {
@@ -2398,7 +2401,7 @@ var loadMap = function(map) {
     rotateplayer = true;
     setTimeout(function() {
         rotateplayer = false;
-    }, 2000);
+    }, loadingtime * 1000);
 }
 
 loadMap(map1);
@@ -2423,7 +2426,7 @@ var onRender = function() {
     camera.postRender();
 };
 
-var keyboard = { up: false, down: false, left: false, right: false, space: false, shift: false, touchx: 0, touchy: 0, touch: false };
+var keyboard = { up: false, down: false, left: false, right: false, space: false, shift: false, ctrl: false, touchx: 0, touchy: 0, touch: false };
 var mouse = { x: 0, y: 0, pressed: false };
 
 
@@ -2460,7 +2463,6 @@ window.addEventListener("keydown", function(event) {
     }
     if (event.ctrlKey || event.metaKey) {
         event.preventDefault();
-        return;
     }
     switch (event.keyCode) {
         case 87:
@@ -2480,6 +2482,9 @@ window.addEventListener("keydown", function(event) {
             break;
         case 16:
             keyboard.shift = true;
+            break;
+        case 17:
+            keyboard.ctrl = true;
             break;
     }
 });
@@ -2506,6 +2511,9 @@ window.addEventListener("keyup", function(event) {
             break;
         case 16:
             keyboard.shift = false;
+            break;
+        case 17:
+            keyboard.ctrl = false;
             break;
     }
 });
