@@ -933,8 +933,8 @@ var Player = function(x, y) {
     this.speed = 8;
 
     this.teleport = function(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x = x * blockSize;
+        this.y = y * blockSize;
     }
 
     this.update = function() {
