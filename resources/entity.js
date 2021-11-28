@@ -249,8 +249,8 @@ var Entity = function(x, y) {
 
 var Wall = function(x, y) {
     this.boundingType = 'box';
-    this.x = x * blockSize * 1.25;
-    this.y = y * blockSize * 1.25;
+    this.x = x * blockSize;
+    this.y = y * blockSize;
     this.sleep = true;
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
@@ -409,7 +409,7 @@ var walls = [];
 var entities = [];
 
 var blockSize = 150;
-var arcSizeRadius = 70;
+var arcSizeRadius = 50;
 
 var mapProcessor = new MapProcessor();
 mapProcessor.selectMap(map1);

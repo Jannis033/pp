@@ -527,7 +527,7 @@ var EntityDrawer = {
         switch (details) {
             case 'i':
                 context.fillStyle = "#00000000";
-                context.rect(x, y, blockSize * 1.5, blockSize *1.5);
+                context.rect(x, y, blockSize, blockSize);
                 break;
             case 'h':
                 context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
@@ -553,7 +553,7 @@ var EntityDrawer = {
                 break;
             case 'a':
                 context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize);
-                context.rect(x + blockSize / 4, y + blockSize /4, blockSize / 2, blockSize / 2);
+                context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
                 break;
             case 'b':
                 context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
@@ -609,8 +609,8 @@ var EntityDrawer = {
 EntityCollision = {};
 
 EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSize, details) {
-    var wallSizeX = (details == "v" || details == "x" ? wallSize * 0.75 : wallSize);
-    var wallSizeY = (details == "h" || details == "x" ? wallSize * 0.75 : wallSize);
+    var wallSizeX = (details == "v" || details == "x" ? wallSize / 2 : wallSize);
+    var wallSizeY = (details == "h" || details == "x" ? wallSize / 2 : wallSize);
     wallX = (details == "v" || details == "x" ? wallX + wallSize / 4 : wallX);
     wallY = (details == "h" || details == "x" ? wallY + wallSize / 4 : wallY);
 
@@ -636,8 +636,8 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
         var wall = walls[i];
 
         if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details)) {
-            var wallCenterX = wall.x + blockSize;
-            var wallCenterY = wall.y + blockSize;
+            var wallCenterX = wall.x + blockSize / 2;
+            var wallCenterY = wall.y + blockSize / 2;
 
             var vectorX = arcX - wallCenterX;
             var vectorY = arcY - wallCenterY;
