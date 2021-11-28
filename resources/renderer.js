@@ -609,14 +609,8 @@ var EntityDrawer = {
 EntityCollision = {};
 
 EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSize, details) {
-    var wallSizeX = (details == "v" || details == "x" ? wallSize * 0.5 : wallSize);
-    var wallSizeY = (details == "h" || details == "x" ? wallSize * 0.5 : wallSize);
-    var wallSizeX = (details == "x" || details == "x" ? wallSize * 0.5 : wallSize);
-    var wallSizeY = (details == "a" || details == "x" ? wallSize * 0.5 : wallSize);
-    var wallSizeY = (details == "v" || details == "x" ? wallSize * 0.5 : wallSize);
-    var wallSizeX = (details == "h" || details == "x" ? wallSize * 0.5 : wallSize);
-    var wallSizeY = (details == "x" || details == "x" ? wallSize * 0.5 : wallSize);
-    var wallSizeX = (details == "a" || details == "x" ? wallSize * 0.5 : wallSize);
+    var wallSizeX = (details == "v" || details == "x" ? wallSize * 0.75 : wallSize);
+    var wallSizeY = (details == "h" || details == "x" ? wallSize * 0.75 : wallSize);
     wallX = (details == "v" || details == "x" ? wallX + wallSize / 4 : wallX);
     wallY = (details == "h" || details == "x" ? wallY + wallSize / 4 : wallY);
 
