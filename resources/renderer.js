@@ -2461,7 +2461,7 @@ window.addEventListener("keydown", function(event) {
     if (rotateplayer) {
         return;
     }
-    if (event.ctrlKey || event.metaKey) {
+    if (event.ctrlKey || event.metaKey || event.altKey) {
         event.preventDefault();
     }
     switch (event.keyCode) {
@@ -2493,7 +2493,7 @@ window.addEventListener("keyup", function(event) {
     if (rotateplayer) {
         return;
     }
-    if (event.ctrlKey || event.metaKey) {
+    if (event.ctrlKey || event.metaKey || event.altKey) {
         event.preventDefault();
     }
     switch (event.keyCode) {
