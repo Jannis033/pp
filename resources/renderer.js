@@ -2483,7 +2483,7 @@ window.addEventListener("keydown", function(event) {
         case 16:
             keyboard.shift = true;
             break;
-        case 17:
+        case 20:
             keyboard.ctrl = true;
             break;
     }
@@ -2515,7 +2515,7 @@ window.addEventListener("keyup", function(event) {
         case 16:
             keyboard.shift = false;
             break;
-        case 17:
+        case 20:
             keyboard.ctrl = false;
             break;
     }
