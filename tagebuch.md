@@ -32,3 +32,7 @@ Die Map wird nun aus einem Multi-Line String ausgelesen und wurde um Treppen und
 
 Es gibt Entities, also Dinge, mit denen man mal interagieren können soll. Dazu kam auch eine Technik, die erkennt, in welche Richtung der Spieler läuft und dementsprechend eine andere Textur für den Spieler anzeigt.
 Plan für die nächste Woche: 8 Spielertexturen, Interaktionen mit Entities ermöglichen, schmalere Wände, mehr Dekorationen.
+
+### 28.11.2021
+
+Die 8 Spielertexturen sind fertig, zudem wurde die Heizung modelliert. Ecken in den Wänden passen sich absofort automatisch an angrenzende Wände an.
