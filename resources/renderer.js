@@ -2496,7 +2496,7 @@ window.addEventListener("keydown", function(event) {
             keyboard.shift = true;
             break;
         case 18:
-            playAudio("lsd", "lsd");
+            getSound("lsd").play();
             keyboard.ctrl = true;
             break;
     }
@@ -2529,7 +2529,7 @@ window.addEventListener("keyup", function(event) {
             keyboard.shift = false;
             break;
         case 18:
-            pauseAudio("lsd");
+            getSound("lsd").pause();
             keyboard.ctrl = false;
             break;
     }
@@ -2637,34 +2637,58 @@ function handleTouchEnd() {
     down = false;
 }
 
-var audios = {};
+var sounds = {};
 
-function playAudio(name, file = name) {
-    if (!audios[name]) {
-        audios[name] = new Audio('audio/' + file + '.mp3');
-        audios[name].addEventListener('timeupdate', function() {
-            var buffer = .44
-            if (this.currentTime > this.duration - buffer) {
+function getSound(name, file = name) {
+    if (!sounds[name]) {
+        sounds[name] = new Sound(file);
+    }
+    return sounds[name];
+}
+
+var Sound = function(file) {
+    this.file = file;
+    this.buffer = 0.44;
+
+    this.load = function() {
+        var _self = this;
+        this.audio = new Audio('audio/' + this.file + '.mp3');
+        this.audio.addEventListener('timeupdate', function() {
+            if (this.currentTime > this.duration - _self.buffer) {
                 this.currentTime = 0
                 this.play()
             }
         });
-        audios[name].volume = 0.5;
-        audios[name].play();
-    } else if (audios[name].paused) {
-        audios[name].play();
+        return this;
     }
-}
 
-function pauseAudio(name) {
-    if (audios[name]) {
-        audios[name].pause();
+    this.play = function() {
+        this.audio.play();
+        return this;
     }
-}
 
-function stopAudio(name) {
-    if (audios[name]) {
-        audios[name].pause();
-        audios[name].currentTime = 0;
+    this.restart = function() {
+        this.audio.currentTime = 0;
+        this.audio.play();
+        return this;
     }
+
+    this.pause = function() {
+        this.audio.pause();
+        return this;
+    }
+
+    this.stop = function() {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        return this;
+    }
+
+    this.volume = function(volume) {
+        this.audio.volume = (volume / 100);
+        return this;
+    }
+
+    this.load();
+    this.volume(20);
 }
