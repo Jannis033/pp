@@ -1817,50 +1817,20 @@ var EntityDrawer = {
                 context.fillStyle = "#00000000";
                 context.rect(x, y, blockSize, blockSize);
                 break;
-            case 'h':
-                context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
-                if (corners.positive) {
-                    context.rect(x + blockSize, y + blockSize / 4, blockSize / 4, blockSize / 2);
-                }
-                if (corners.negative) {
-                    context.rect(x - blockSize / 4, y + blockSize / 4, blockSize / 4, blockSize / 2);
-                }
-                break;
-            case 'v':
-                context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
-                if (corners.positive) {
-                    context.rect(x + blockSize / 4, y + blockSize, blockSize / 2, blockSize / 4);
-                }
-                if (corners.negative) {
-                    context.rect(x + blockSize / 4, y - blockSize / 4, blockSize / 2, blockSize / 4);
-                }
-                break;
-            case 'x':
-                context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
-                //context.rect(x - blockSize / 4, y + blockSize / 4, blockSize, blockSize / 2);
-                break;
-                /*case 'a':
-                    context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize);
-                    context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
-                    break;
-                case 'b':
-                    context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
-                    context.rect(x + blockSize / 4, y + blockSize / 2, blockSize / 2, blockSize / 2);
-                    break;
-                case 'c':
-                    context.rect(x + blockSize / 2, y + blockSize / 4, blockSize / 2, blockSize / 2);
-                    context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
-                    break;
-                case 'd':
-                    context.rect(x, y + blockSize / 4, blockSize / 2, blockSize / 2);
-                    context.rect(x + blockSize / 4, y, blockSize / 2, blockSize);
-                    break;
-                case 'e':
-                    context.rect(x, y + blockSize / 4, blockSize, blockSize / 2);
-                    context.rect(x + blockSize / 4, y, blockSize / 2, blockSize / 2);
-                    break;*/
             default:
-                context.rect(x, y, blockSize, blockSize);
+                context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
+                if (corners.right) {
+                    context.rect(x + blockSize / 4 * 3, y + blockSize / 4, blockSize / 4, blockSize / 2);
+                }
+                if (corners.left) {
+                    context.rect(x, y + blockSize / 4, blockSize / 4, blockSize / 2);
+                }
+                if (corners.bottom) {
+                    context.rect(x + blockSize / 4, y + blockSize / 4 * 3, blockSize / 2, blockSize / 4);
+                }
+                if (corners.top) {
+                    context.rect(x + blockSize / 4, y, blockSize / 2, blockSize / 4);
+                }
                 break;
         }
         context.fill();
@@ -1908,12 +1878,27 @@ var EntityDrawer = {
 };
 
 EntityCollision = {};
+EntityCollision.arcToWallCorner = function(arcX, arcY, arcRadius, wallX, wallY, wallSizeX, wallSizeY) {
+    var distX = Math.abs(arcX - wallX - wallSizeX / 2);
+    var distY = Math.abs(arcY - wallY - wallSizeY / 2);
 
-EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSize, details) {
-    var wallSizeX = (details == "v" || details == "x" ? wallSize / 2 : wallSize);
-    var wallSizeY = (details == "h" || details == "x" ? wallSize / 2 : wallSize);
-    wallX = (details == "v" || details == "x" ? wallX + wallSize / 4 : wallX);
-    wallY = (details == "h" || details == "x" ? wallY + wallSize / 4 : wallY);
+    if (distX > (wallSizeX / 2 + arcRadius)) { return false; }
+    if (distY > (wallSizeY / 2 + arcRadius)) { return false; }
+
+    if (distX <= (wallSizeX / 2)) { return true; }
+    if (distY <= (wallSizeY / 2)) { return true; }
+
+    var dx = distX - wallSizeX / 2;
+    var dy = distY - wallSizeY / 2;
+
+    return (dx * dx + dy * dy <= (arcRadius * arcRadius));
+}
+EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSize, details, corners) {
+    var wallSizeX = (corners.left && corners.right ? wallSize : (corners.left || corners.right ? wallSize / 4 * 3 : wallSize / 2));
+    var wallSizeY = (corners.top && corners.bottom ? wallSize : (corners.top || corners.bottom ? wallSize / 4 * 3 : wallSize / 2));
+
+    wallX = (corners.left ? wallX : wallX + wallSize / 4);
+    wallY = (corners.top ? wallY : wallY + wallSize / 4);
 
     var distX = Math.abs(arcX - wallX - wallSizeX / 2);
     var distY = Math.abs(arcY - wallY - wallSizeY / 2);
@@ -1936,7 +1921,7 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
 
-        if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details)) {
+        if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details, wall.corners)) {
             var wallCenterX = wall.x + blockSize / 2;
             var wallCenterY = wall.y + blockSize / 2;
 
@@ -2074,10 +2059,10 @@ var Player = function(x, y) {
     };
 }
 
-var cornerAt = function(x, y) {
+var wallAt = function(x, y) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
-        if (wall.x == x && wall.y == y) {
+        if (wall.x == x && wall.y == y && wall.details != "i") {
             return true;
         }
     }
@@ -2097,7 +2082,7 @@ var Wall = function(x, y, type, details) {
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.sleep = true;
-    this.corners = { positive: false, negative: false };
+    this.corners = { right: false, left: false, top: false, bottom: false };
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -2107,18 +2092,31 @@ var Wall = function(x, y, type, details) {
 
     this.cornerCheck = function() {
         if (this.details == "h") {
-            if (cornerAt(this.x + blockSize, this.y)) {
-                this.corners.positive = true;
+            if (wallAt(this.x + blockSize, this.y)) {
+                this.corners.right = true;
             }
-            if (cornerAt(this.x - blockSize, this.y)) {
-                this.corners.negative = true;
+            if (wallAt(this.x - blockSize, this.y)) {
+                this.corners.left = true;
             }
         } else if (this.details == "v") {
-            if (cornerAt(this.x, this.y + blockSize)) {
-                this.corners.positive = true;
+            if (wallAt(this.x, this.y + blockSize)) {
+                this.corners.bottom = true;
             }
-            if (cornerAt(this.x, this.y - blockSize)) {
-                this.corners.negative = true;
+            if (wallAt(this.x, this.y - blockSize)) {
+                this.corners.top = true;
+            }
+        } else if (this.details == " ") {
+            if (wallAt(this.x + blockSize, this.y)) {
+                this.corners.right = true;
+            }
+            if (wallAt(this.x - blockSize, this.y)) {
+                this.corners.left = true;
+            }
+            if (wallAt(this.x, this.y + blockSize)) {
+                this.corners.bottom = true;
+            }
+            if (wallAt(this.x, this.y - blockSize)) {
+                this.corners.top = true;
             }
         }
     }

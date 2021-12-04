@@ -1,13 +1,13 @@
 var meetings = [];
 
 var registerMeeting = function(name) {
-    if (meetings.contains(name)) return false;
-    meetings.add(name);
+    if (meetings.includes(name)) return false;
+    meetings.push(name);
     return true;
 };
 
 var removeMeeting = function(name) {
-    meetings.remove(name);
+    removeItemOnce(meetings, name);
 };
 
 var pokefunctions = function() {
@@ -29,3 +29,23 @@ pokelist.set("1", { name: "Taubsi", function: pfnc.f1 });
 pokelist.set("2", { name: "Pikachu", function: pfnc.f2 });
 
 //pokelist.get("1")["function"]();
+
+function removeItemOnce(arr, value) {
+    var index = arr.indexOf(value);
+    if (index > -1) {
+        arr.splice(index, 1);
+    }
+    return arr;
+}
+
+function removeItemAll(arr, value) {
+    var i = 0;
+    while (i < arr.length) {
+        if (arr[i] === value) {
+            arr.splice(i, 1);
+        } else {
+            ++i;
+        }
+    }
+    return arr;
+}
