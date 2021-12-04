@@ -1878,21 +1878,7 @@ var EntityDrawer = {
 };
 
 EntityCollision = {};
-EntityCollision.arcToWallCorner = function(arcX, arcY, arcRadius, wallX, wallY, wallSizeX, wallSizeY) {
-    var distX = Math.abs(arcX - wallX - wallSizeX / 2);
-    var distY = Math.abs(arcY - wallY - wallSizeY / 2);
 
-    if (distX > (wallSizeX / 2 + arcRadius)) { return false; }
-    if (distY > (wallSizeY / 2 + arcRadius)) { return false; }
-
-    if (distX <= (wallSizeX / 2)) { return true; }
-    if (distY <= (wallSizeY / 2)) { return true; }
-
-    var dx = distX - wallSizeX / 2;
-    var dy = distY - wallSizeY / 2;
-
-    return (dx * dx + dy * dy <= (arcRadius * arcRadius));
-}
 EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSize, details, corners) {
     var wallSizeX = (corners.left && corners.right ? wallSize : (corners.left || corners.right ? wallSize / 4 * 3 : wallSize / 2));
     var wallSizeY = (corners.top && corners.bottom ? wallSize : (corners.top || corners.bottom ? wallSize / 4 * 3 : wallSize / 2));
@@ -1921,7 +1907,7 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
 
-        if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details, wall.corners)) {
+        if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details, wall.collCorners)) {
             var wallCenterX = wall.x + blockSize / 2;
             var wallCenterY = wall.y + blockSize / 2;
 
@@ -2068,6 +2054,15 @@ var wallAt = function(x, y) {
     }
     return false;
 }
+var collWallAt = function(x, y) {
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+        if (wall.x == x && wall.y == y) {
+            return true;
+        }
+    }
+    return false;
+}
 
 var cornerCheck = function() {
     for (var i = 0; i < walls.length; i++) {
@@ -2083,6 +2078,7 @@ var Wall = function(x, y, type, details) {
     this.y = y * blockSize;
     this.sleep = true;
     this.corners = { right: false, left: false, top: false, bottom: false };
+    this.collCorners = { right: false, left: false, top: false, bottom: false };
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -2091,34 +2087,14 @@ var Wall = function(x, y, type, details) {
     };
 
     this.cornerCheck = function() {
-        if (this.details == "h") {
-            if (wallAt(this.x + blockSize, this.y)) {
-                this.corners.right = true;
-            }
-            if (wallAt(this.x - blockSize, this.y)) {
-                this.corners.left = true;
-            }
-        } else if (this.details == "v") {
-            if (wallAt(this.x, this.y + blockSize)) {
-                this.corners.bottom = true;
-            }
-            if (wallAt(this.x, this.y - blockSize)) {
-                this.corners.top = true;
-            }
-        } else if (this.details == " ") {
-            if (wallAt(this.x + blockSize, this.y)) {
-                this.corners.right = true;
-            }
-            if (wallAt(this.x - blockSize, this.y)) {
-                this.corners.left = true;
-            }
-            if (wallAt(this.x, this.y + blockSize)) {
-                this.corners.bottom = true;
-            }
-            if (wallAt(this.x, this.y - blockSize)) {
-                this.corners.top = true;
-            }
-        }
+        this.corners.right = wallAt(this.x + blockSize, this.y);
+        this.corners.left = wallAt(this.x - blockSize, this.y);
+        this.corners.bottom = wallAt(this.x, this.y + blockSize);
+        this.corners.top = wallAt(this.x, this.y - blockSize);
+        this.collCorners.right = collWallAt(this.x + blockSize, this.y);
+        this.collCorners.left = collWallAt(this.x - blockSize, this.y);
+        this.collCorners.bottom = collWallAt(this.x, this.y + blockSize);
+        this.collCorners.top = collWallAt(this.x, this.y - blockSize);
     }
 
     this.render = function() {
