@@ -2238,6 +2238,7 @@ var Camera = function() {
 
 var MapProcessor = function() {
     this.map = null;
+    this.spawn = null;
 
     this.wallPositions = [];
     this.carpetPositions = [];
@@ -2246,8 +2247,12 @@ var MapProcessor = function() {
     this.entityPositions = [];
     this.playerPosition = { x: 0, y: 0 };
 
-    this.selectMap = function(m) {
-        this.map = m.split(/\r?\n/);
+    this.selectMap = function(map) {
+        this.map = map.split(/\r?\n/);
+    }
+
+    this.setSpawn = function(spawn = null) {
+        this.spawn = spawn;
     }
 
     this.generate = function() {
@@ -2274,7 +2279,9 @@ var MapProcessor = function() {
                         this.wallPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
                     case 'P':
-                        this.playerPosition = { x: realX, y: y };
+                        if (this.spawn == null || this.spawn == row[x + 1]) {
+                            this.playerPosition = { x: realX, y: y };
+                        }
                         break;
                     case 't':
                     case 'T':
@@ -2298,7 +2305,6 @@ var MapProcessor = function() {
         this.getPlayerPosition = function() {
             return this.playerPosition;
         };
-
         this.getWallPositions = function() {
             return this.wallPositions;
         };
@@ -2324,8 +2330,6 @@ var blockSize = 80;
 var arcSizeRadius = 35;
 var playerOverlap = 20;
 
-const stretch = blockSize / 100;
-
 var colors = { wall: '#666', player: '#111' };
 
 var elements = [];
@@ -2341,13 +2345,18 @@ var player;
 var tmpplayerrotation = 0;
 var rotateplayer = false;
 
-var loadingtime = 0;
+var loadingtime = 1;
 
 PatternHelper.createAll();
 
-var loadMap = function(map) {
+var loadMap = function(map, spawn = null, rotation = 4) {
     mapProcessor.selectMap(map);
+    mapProcessor.setSpawn(spawn);
     mapProcessor.generate();
+
+    elements = [];
+    entities = [];
+    walls = [];
 
     for (var i = 0; i < mapProcessor.getCarpetPositions().length; i++) {
         var carpetPosition = mapProcessor.getCarpetPositions()[i];
@@ -2379,6 +2388,8 @@ var loadMap = function(map) {
 
     playerPosition = mapProcessor.getPlayerPosition();
     player = new Player(playerPosition.x, playerPosition.y);
+
+    player.rotation = rotation;
 
     elements.push(player);
 
