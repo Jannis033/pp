@@ -36,3 +36,12 @@ Plan für die nächste Woche: 8 Spielertexturen, Interaktionen mit Entities erm�
 ### 28.11.2021
 
 Die 8 Spielertexturen sind fertig, zudem wurde die Heizung modelliert. Ecken in den Wänden passen sich absofort automatisch an angrenzende Wände an.
+
+### 29.11.2021
+
+Es gibt nun die Möglichkeit, Sounds einzufügen.
+
+### 4.12.2021
+
+Wände wurden grundlegend überarbeitet, es gibt nur noch eine Wandart, diese passt sich automatisch an angrenzende Wände an. Außerdem kann man sich nicht mehr durch Wände buggen.
+Das Soundsystem wurde überarbeitet und ist jetzt objektorientiert.
