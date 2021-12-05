@@ -35,7 +35,8 @@ Plan für die nächste Woche: 8 Spielertexturen, Interaktionen mit Entities erm�
 
 ### 28.11.2021
 
-Die 8 Spielertexturen sind fertig, zudem wurde die Heizung modelliert. Ecken in den Wänden passen sich absofort automatisch an angrenzende Wände an.
+Die 8 Spielertexturen sind fertig, zudem wurde die Heizung modelliert. Ecken in den Wänden passen sich absofort automatisch an angrenzende Wände an. 
+Die Framerate wurde auf ~ 60 FPS erhöht, damit das Spiel flüssiger läuft. Dies hat voraussichtlich keine Konsequenzen auf die Performance.
 
 ### 29.11.2021
 
