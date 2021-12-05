@@ -1858,6 +1858,10 @@ var EntityDrawer = {
                         break;
                 }
                 break;
+            case 'v':
+            case 'V':
+                context.fillStyle = '#aa0000';
+                break;
         }
         context.fill();
     },
@@ -1928,6 +1932,40 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
 
     return resultVector;
 };
+
+EntityCollision.entities = function(x, y) {
+    for (var i = 0; i < entities.length; i++) {
+        var entity = entities[i];
+
+        var entityCenterX = entity.x + blockSize / 2;
+        var entityCenterY = entity.y + blockSize / 2;
+
+        var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityInteractRadius;
+        var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityInteractRadius;
+
+        if (distX <= 0 && distY <= 0) {
+            return entity;
+        }
+    }
+    return null;
+}
+
+EntityCollision.portals = function(x, y) {
+    for (var i = 0; i < portals.length; i++) {
+        var portal = portals[i];
+
+        var portalCenterX = portal.x + blockSize / 2;
+        var portalCenterY = portal.y + blockSize / 2;
+
+        var distX = Math.abs(x - portalCenterX) - blockSize / 2;
+        var distY = Math.abs(y - portalCenterY) - blockSize / 2;
+
+        if (distX <= 0 && distY <= 0) {
+            return portal;
+        }
+    }
+    return null;
+}
 
 var Player = function(x, y) {
     this.render = 'entity';
@@ -2011,6 +2049,14 @@ var Player = function(x, y) {
             var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
             this.x += collisionVector.x * currentSpeed;
             this.y += collisionVector.y * currentSpeed;
+        }
+
+        //portal
+        var portal = EntityCollision.portals(this.x, this.y);
+
+        if (portal != null) {
+            portalList.get(portal.details)["function"]();
+            return;
         }
 
         // mouse
@@ -2286,6 +2332,7 @@ var MapProcessor = function() {
                     case 't':
                     case 'T':
                     case 'H':
+                    case 'V':
                         this.carpetPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
                     case 'o':
@@ -2328,6 +2375,7 @@ var context = canvas.getContext('2d');
 
 var blockSize = 80;
 var arcSizeRadius = 35;
+var entityInteractRadius = 20;
 var playerOverlap = 20;
 
 var colors = { wall: '#666', player: '#111' };
@@ -2335,6 +2383,7 @@ var colors = { wall: '#666', player: '#111' };
 var elements = [];
 var entities = [];
 var walls = [];
+var portals = [];
 
 var mapProcessor = new MapProcessor();
 var loaded = false;
@@ -2349,7 +2398,9 @@ var loadingtime = 1;
 
 PatternHelper.createAll();
 
-var loadMap = function(map, spawn = null, rotation = 4) {
+var camera;;
+
+var loadMap = function(map, spawn = null, rotation = 4, load = false) {
     mapProcessor.selectMap(map);
     mapProcessor.setSpawn(spawn);
     mapProcessor.generate();
@@ -2357,11 +2408,15 @@ var loadMap = function(map, spawn = null, rotation = 4) {
     elements = [];
     entities = [];
     walls = [];
+    portals = [];
 
     for (var i = 0; i < mapProcessor.getCarpetPositions().length; i++) {
         var carpetPosition = mapProcessor.getCarpetPositions()[i];
         var carpet = new Carpet(carpetPosition.x, carpetPosition.y, carpetPosition.type, carpetPosition.details);
         elements.push(carpet);
+        if (carpetPosition.type == "V" || carpetPosition.type == "v") {
+            portals.push(carpet);
+        }
     }
 
     for (var i = 0; i < mapProcessor.getEntityPositions().length; i++) {
@@ -2395,10 +2450,14 @@ var loadMap = function(map, spawn = null, rotation = 4) {
 
     loaded = true;
 
-    player.startRotate();
-    setTimeout(function() {
-        player.endRotate();
-    }, loadingtime * 1000);
+    if (load) {
+        player.startRotate();
+        setTimeout(function() {
+            player.endRotate();
+        }, loadingtime * 1000);
+    }
+
+    camera = new Camera();
 }
 
 loadMap(map1);
@@ -2433,8 +2492,6 @@ var onTick = function() {
         onRender();
     }
 }
-
-var camera = new Camera();
 
 var onResize = function(width, height) {
     context.canvas.width = width;

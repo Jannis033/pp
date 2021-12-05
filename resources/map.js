@@ -1,3 +1,5 @@
+// ENTITY INTERACTIONS
+
 var meetings = [];
 
 var registerMeeting = function(name) {
@@ -49,3 +51,21 @@ function removeItemAll(arr, value) {
     }
     return arr;
 }
+
+// PORTALS
+
+var portalFunctions = function() {
+    this.p1 = function() {
+        loadMap(map1, null, player.rotation, false);
+    }
+    this.p2 = function() {
+        loadMap(map2, 2, player.rotation, false);
+    }
+}
+
+var tpfnc = new portalFunctions();
+
+var portalList = new Map();
+
+portalList.set("1", { function: tpfnc.p1 });
+portalList.set("2", { function: tpfnc.p2 });
