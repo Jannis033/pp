@@ -46,3 +46,7 @@ Es gibt nun die Möglichkeit, Sounds einzufügen.
 
 Wände wurden grundlegend überarbeitet, es gibt nur noch eine Wandart, diese passt sich automatisch an angrenzende Wände an. Außerdem kann man sich nicht mehr durch Wände buggen.
 Das Soundsystem wurde überarbeitet und ist jetzt objektorientiert.
+
+### 5.12.2021
+
+Portale wurden hinzugefügt, man kann so in andere Welten kommen.
