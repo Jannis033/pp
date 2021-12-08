@@ -1862,6 +1862,9 @@ var EntityDrawer = {
             case 'V':
                 context.fillStyle = '#aa0000';
                 break;
+            case 'D':
+                context.fillStyle = '#cccccc';
+                break;
         }
         context.fill();
     },
@@ -1967,6 +1970,23 @@ EntityCollision.portals = function(x, y) {
     return null;
 }
 
+EntityCollision.damage = function(x, y) {
+    for (var i = 0; i < damages.length; i++) {
+        var damage = damages[i];
+
+        var damageCenterX = damage.x + blockSize / 2;
+        var damageCenterY = damage.y + blockSize / 2;
+
+        var distX = Math.abs(x - damageCenterX) - blockSize / 2;
+        var distY = Math.abs(y - damageCenterY) - blockSize / 2;
+
+        if (distX <= 0 && distY <= 0) {
+            return damage;
+        }
+    }
+    return null;
+}
+
 var Player = function(x, y) {
     this.render = 'entity';
     this.x = x * blockSize;
@@ -1977,6 +1997,7 @@ var Player = function(x, y) {
     this.footPosition = 0;
     this.speed = 4;
     this.lsdspeed = 10;
+    this.damagecounter = 0;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -1992,6 +2013,15 @@ var Player = function(x, y) {
     this.endRotate = function() {
         this.rotation = this.tmprotation;
         rotateplayer = false;
+    }
+
+    this.damage = function() {
+        if (this.damagecounter > 20) {
+            getSound("damage").loop(false).volume(100).play();
+            console.log(1);
+            this.damagecounter = 0;
+        }
+        this.damagecounter++;
     }
 
     this.update = function() {
@@ -2057,6 +2087,13 @@ var Player = function(x, y) {
         if (portal != null) {
             portalList.get(portal.details)["function"]();
             return;
+        }
+
+        //damage
+        var damage = EntityCollision.damage(this.x, this.y);
+
+        if (damage != null) {
+            this.damage();
         }
 
         // mouse
@@ -2333,6 +2370,7 @@ var MapProcessor = function() {
                     case 'T':
                     case 'H':
                     case 'V':
+                    case 'D':
                         this.carpetPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
                     case 'o':
@@ -2384,6 +2422,7 @@ var elements = [];
 var entities = [];
 var walls = [];
 var portals = [];
+var damages = [];
 
 var mapProcessor = new MapProcessor();
 var loaded = false;
@@ -2409,6 +2448,8 @@ var loadMap = function(map, spawn = null, rotation = 4, load = false) {
     entities = [];
     walls = [];
     portals = [];
+    damages = [];
+
 
     for (var i = 0; i < mapProcessor.getCarpetPositions().length; i++) {
         var carpetPosition = mapProcessor.getCarpetPositions()[i];
@@ -2416,6 +2457,9 @@ var loadMap = function(map, spawn = null, rotation = 4, load = false) {
         elements.push(carpet);
         if (carpetPosition.type == "V" || carpetPosition.type == "v") {
             portals.push(carpet);
+        }
+        if (carpetPosition.type == "D") {
+            damages.push(carpet);
         }
     }
 
@@ -2538,7 +2582,7 @@ window.addEventListener("keydown", function(event) {
             keyboard.shift = true;
             break;
         case 18:
-            getSound("lsd").play();
+            getSound("lsd").loop(true).play().volume(10);
             keyboard.ctrl = true;
             break;
     }
@@ -2691,12 +2735,13 @@ function getSound(name, file = name) {
 var Sound = function(file) {
     this.file = file;
     this.buffer = 0.44;
+    this.looped = false;
 
     this.load = function() {
         var _self = this;
         this.audio = new Audio('audio/' + this.file + '.mp3');
         this.audio.addEventListener('timeupdate', function() {
-            if (this.currentTime > this.duration - _self.buffer) {
+            if (this.currentTime > this.duration - _self.buffer && _self.looped) {
                 this.currentTime = 0
                 this.play()
             }
@@ -2705,7 +2750,8 @@ var Sound = function(file) {
     }
 
     this.play = function() {
-        this.audio.play();
+        if (!this.audio || this.audio.paused)
+            this.audio.play();
         return this;
     }
 
@@ -2728,6 +2774,11 @@ var Sound = function(file) {
 
     this.volume = function(volume) {
         this.audio.volume = (volume / 100);
+        return this;
+    }
+
+    this.loop = function(loop) {
+        this.looped = loop;
         return this;
     }
 
