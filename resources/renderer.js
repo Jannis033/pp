@@ -1997,7 +1997,7 @@ var Player = function(x, y) {
     this.footPosition = 0;
     this.speed = 4;
     this.lsdspeed = 10;
-    this.damagecounter = 0;
+    this.damagecounter = 80;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -2016,7 +2016,7 @@ var Player = function(x, y) {
     }
 
     this.damage = function() {
-        if (this.damagecounter > 20) {
+        if (this.damagecounter > 80) {
             getSound("damage").loop(false).volume(100).play();
             console.log(1);
             this.damagecounter = 0;
@@ -2082,18 +2082,24 @@ var Player = function(x, y) {
         }
 
         //portal
-        var portal = EntityCollision.portals(this.x, this.y);
+        if (!keyboard.shift) {
+            var portal = EntityCollision.portals(this.x, this.y);
 
-        if (portal != null) {
-            portalList.get(portal.details)["function"]();
-            return;
+            if (portal != null) {
+                portalList.get(portal.details)["function"]();
+                return;
+            }
         }
 
         //damage
-        var damage = EntityCollision.damage(this.x, this.y);
+        if (!keyboard.shift) {
+            var damage = EntityCollision.damage(this.x, this.y);
 
-        if (damage != null) {
-            this.damage();
+            if (damage != null) {
+                this.damage();
+            } else {
+                this.damagecounter = 80;
+            }
         }
 
         // mouse
