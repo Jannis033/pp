@@ -50,3 +50,7 @@ Das Soundsystem wurde überarbeitet und ist jetzt objektorientiert.
 ### 5.12.2021
 
 Portale wurden hinzugefügt, man kann so in andere Welten kommen.
+
+### 8.12.2021
+
+Schadenfunktion wurde hinzugefügt & kleinere Mapänderungen
