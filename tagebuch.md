@@ -54,3 +54,7 @@ Portale wurden hinzugefügt, man kann so in andere Welten kommen.
 ### 8.12.2021
 
 Schadenfunktion wurde hinzugefügt & kleinere Mapänderungen
+
+### 9.12.2021
+
+Spielfigur besitzt im Gegensatz zu uns jetzt Leben & regeneriert sich an der Heizung
