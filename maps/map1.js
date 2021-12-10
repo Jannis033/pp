@@ -16,8 +16,8 @@ var map1 = `
       WiWiW                   W W   W W W W W W W W W W W W W W W       W W W W W W W W W   W W W W W W W   W W W W W W W W W W   W W W W W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                                                                                           W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW W W W W W W W W W W                                                                                                           W           W D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W                                                                                                           Vv          W D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W                                                                                                           Vv          W D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W                                                                                                           L           W D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W                                                                                                           L           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                                                                                           W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                                                                                           W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             S         S         S           W W W W W W W W W W W W W W W W   W W W W W W W W W W W W W W W           W D D D D D D D D D D D D D D D D W Wi
@@ -54,9 +54,9 @@ var map1 = `
       WiWiW                   W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi 
 WiWiWiWiWiW                                 W W W W W W W W W     W W W W W W W W W W W W W W     W W W W W W W W     W W W W W W W W W W W W W     W W W W W W W W W W W               W Wi                                                                                                                                                                                                                                W
 WiWiWiWiWiW                   W                           W         W         W                                                         W               W               W               W Wi               
-WiW W W W W W W W W W W W W W W               P           W         W         W                                                         W               W W W W W W W W W               W Wi               
+WiW W W W W W W W W W W W W W W                           W         W         W                                                         W               W W W W W W W W W               W Wi               
 WiW         W   ek            W t t t t t W t t t W t t t W         W         W                                                         W               W   W           W               W Wi                    
-WiW         W                 W t t t t t W t t t W t t t W         W         W                                                         W               W   W           W               W Wi                
+WiW         W         P       W t t t t t W t t t W t t t W         W         W                                                         W               W   W           W               W Wi                
 WiW         W W W W W W W   W W t t t t t W V2V2V2W t t t W         W         W         W           W           W           W           W                               W               W Wi               
 WiW         W                             W W W W W       W         W W W   W W         W           W           W           W           W               W   W           W               W Wi                 
 WiW         W               W             W                         W         W                                                         W               W W W W W W W W W               W Wi            

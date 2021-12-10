@@ -1863,7 +1863,7 @@ var EntityDrawer = {
                 context.fillStyle = '#aa0000';
                 break;
             case 'D':
-                context.fillStyle = '#cccccc';
+                context.fillStyle = '#0088ff11';
                 break;
         }
         context.fill();
@@ -1953,35 +1953,20 @@ EntityCollision.entities = function(x, y) {
     return null;
 }
 
-EntityCollision.portals = function(x, y) {
-    for (var i = 0; i < portals.length; i++) {
-        var portal = portals[i];
 
-        var portalCenterX = portal.x + blockSize / 2;
-        var portalCenterY = portal.y + blockSize / 2;
+EntityCollision.carpet = function(x, y, type) {
+    for (var i = 0; i < carpets.length; i++) {
+        var carpet = carpets[i];
+        if (carpet.type == type) {
+            var carpetCenterX = carpet.x + blockSize / 2;
+            var carpetCenterY = carpet.y + blockSize / 2;
 
-        var distX = Math.abs(x - portalCenterX) - blockSize / 2;
-        var distY = Math.abs(y - portalCenterY) - blockSize / 2;
+            var distX = Math.abs(x - carpetCenterX) - blockSize / 2;
+            var distY = Math.abs(y - carpetCenterY) - blockSize / 2;
 
-        if (distX <= 0 && distY <= 0) {
-            return portal;
-        }
-    }
-    return null;
-}
-
-EntityCollision.damage = function(x, y) {
-    for (var i = 0; i < damages.length; i++) {
-        var damage = damages[i];
-
-        var damageCenterX = damage.x + blockSize / 2;
-        var damageCenterY = damage.y + blockSize / 2;
-
-        var distX = Math.abs(x - damageCenterX) - blockSize / 2;
-        var distY = Math.abs(y - damageCenterY) - blockSize / 2;
-
-        if (distX <= 0 && distY <= 0) {
-            return damage;
+            if (distX <= 0 && distY <= 0) {
+                return carpet;
+            }
         }
     }
     return null;
@@ -1998,6 +1983,11 @@ var Player = function(x, y) {
     this.speed = 4;
     this.lsdspeed = 10;
     this.damagecounter = 80;
+    this.damagevalue = 0.7;
+    this.regeneratecounter = 5;
+    this.regeneratevalue = 0.15;
+    this.health = 20;
+    this.maxhealth = 20;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -2015,13 +2005,53 @@ var Player = function(x, y) {
         rotateplayer = false;
     }
 
+    this.die = function() {
+        console.log("*dies*");
+    }
+
+    this.setHealth = function(health) {
+        this.health = health;
+        if (this.health > this.maxhealth) {
+            this.health = this.maxhealth;
+        }
+        if (this.health < 0) {
+            this.health = 0;
+        }
+        if (this.health == 0) {
+            this.die();
+        }
+        this.updatehealth();
+    }
+
+    this.updatehealth = function() {
+        document.getElementById('healthbar').children[0].style.width = (this.health / this.maxhealth * 100 + "%");
+        if ((this.health / this.maxhealth) < 0.25) {
+            document.getElementById('healthbar').children[0].style.backgroundColor = "#a83500";
+        } else if ((this.health / this.maxhealth) < 0.4) {
+            document.getElementById('healthbar').children[0].style.backgroundColor = "#c28e00";
+        } else if ((this.health / this.maxhealth) < 0.6) {
+            document.getElementById('healthbar').children[0].style.backgroundColor = "#348d00";
+        } else {
+            document.getElementById('healthbar').children[0].style.backgroundColor = "#0b5e00";
+        }
+    }
+
     this.damage = function() {
         if (this.damagecounter > 80) {
             getSound("damage").loop(false).volume(100).play();
-            console.log(1);
+            this.setHealth(this.health - this.damagevalue);
             this.damagecounter = 0;
+
         }
         this.damagecounter++;
+    }
+
+    this.regenerate = function() {
+        if (this.regeneratecounter > 5) {
+            this.setHealth(this.health + this.regeneratevalue);
+            this.regeneratecounter = 0;
+        }
+        this.regeneratecounter++;
     }
 
     this.update = function() {
@@ -2083,7 +2113,7 @@ var Player = function(x, y) {
 
         //portal
         if (!keyboard.shift) {
-            var portal = EntityCollision.portals(this.x, this.y);
+            var portal = EntityCollision.carpet(this.x, this.y, "V");
 
             if (portal != null) {
                 portalList.get(portal.details)["function"]();
@@ -2093,12 +2123,34 @@ var Player = function(x, y) {
 
         //damage
         if (!keyboard.shift) {
-            var damage = EntityCollision.damage(this.x, this.y);
+            var damage = EntityCollision.carpet(this.x, this.y, "D");
 
             if (damage != null) {
                 this.damage();
             } else {
                 this.damagecounter = 80;
+            }
+        }
+
+        //regenrate
+        if (!keyboard.shift) {
+            var heizung = EntityCollision.carpet(this.x, this.y, "H");
+
+            if (heizung != null) {
+                this.regenerate();
+            } else {
+                this.regeneratecounter = 5;
+            }
+        }
+
+        //entities
+        if (!keyboard.shift) {
+            var entity = EntityCollision.entities(this.x, this.y);
+
+            if (entity != null) {
+                console.log(1);
+                removeItemOnce(entities, entity);
+                removeItemOnce(elements, entity);
             }
         }
 
@@ -2427,8 +2479,7 @@ var colors = { wall: '#666', player: '#111' };
 var elements = [];
 var entities = [];
 var walls = [];
-var portals = [];
-var damages = [];
+var carpets = [];
 
 var mapProcessor = new MapProcessor();
 var loaded = false;
@@ -2453,20 +2504,14 @@ var loadMap = function(map, spawn = null, rotation = 4, load = false) {
     elements = [];
     entities = [];
     walls = [];
-    portals = [];
-    damages = [];
+    carpets = [];
 
 
     for (var i = 0; i < mapProcessor.getCarpetPositions().length; i++) {
         var carpetPosition = mapProcessor.getCarpetPositions()[i];
         var carpet = new Carpet(carpetPosition.x, carpetPosition.y, carpetPosition.type, carpetPosition.details);
         elements.push(carpet);
-        if (carpetPosition.type == "V" || carpetPosition.type == "v") {
-            portals.push(carpet);
-        }
-        if (carpetPosition.type == "D") {
-            damages.push(carpet);
-        }
+        carpets.push(carpet);
     }
 
     for (var i = 0; i < mapProcessor.getEntityPositions().length; i++) {
