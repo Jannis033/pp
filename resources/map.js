@@ -56,10 +56,10 @@ function removeItemAll(arr, value) {
 
 var portalFunctions = function() {
     this.p1 = function() {
-        loadMap(map1, null, player.rotation, false);
+        mapProcessor.loadMap(map1, null, player.rotation, false);
     }
     this.p2 = function() {
-        loadMap(map2, 2, player.rotation, false);
+        mapProcessor.loadMap(map2, 2, player.rotation, false);
     }
 }
 
