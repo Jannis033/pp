@@ -58,3 +58,7 @@ Schadenfunktion wurde hinzugefügt & kleinere Mapänderungen
 ### 9.12.2021
 
 Spielfigur besitzt im Gegensatz zu uns jetzt Leben & regeneriert sich an der Heizung
+
+### 14.12.2021
+
+Es wurden Hindernisse eingefügt, also Sachen über die man nicht drüberlaufen kann, aber auch keine richtigen Wände sind; als erstes kamen Tische hinzu.
