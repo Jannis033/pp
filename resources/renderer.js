@@ -714,7 +714,7 @@ var Enemy = function(x, y, type, details) {
     this.realY = y;
     this.x = x * blockSize;
     this.y = y * blockSize;
-    this.speed = 1.5;
+    this.speed = 3;
     this.sleep = true;
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
