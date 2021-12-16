@@ -6,6 +6,7 @@ body {
     background: #909090;
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #healthbar {
@@ -32,4 +33,58 @@ body {
     background-color: #0b5e00;
     transition: background-color 0.2s, width 0.2s;
     border-radius: 2px;
+}
+
+#deathscreen {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    z-index: 100;
+}
+
+#deathscreen.show {
+    display: block;
+}
+
+#deathscreen .container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+}
+
+#deathscreen .container h1 {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#deathscreen .container p {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+#deathscreen .container button {
+    height: 50px;
+    width: 200px;
+    background-color: #222;
+    color: white;
+    border-radius: 5px;
+    font-size: 20px;
+    border: none;
+}
+
+#deathscreen .container button:hover {
+    background-color: #111;
+    cursor: pointer;
 }

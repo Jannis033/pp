@@ -5,7 +5,9 @@ var zoomfactor = 1;
 
 var blockSize = 80 * zoomfactor;
 var arcSizeRadius = 35 * zoomfactor;
-var entityInteractRadius = 20 * zoomfactor;
+var entityCollectRadius = 20 * zoomfactor;
+var entityInteractRadius = 50 * zoomfactor;
+var enemyFollowRadius = 400 * zoomfactor;
 var playerOverlap = 20 * zoomfactor;
 
 var colors = { wall: '#666', player: '#111' };

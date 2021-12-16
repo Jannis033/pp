@@ -1767,7 +1767,7 @@ var PatternHelper = {
 
         // #path20713
         patternContext.beginPath();
-        patternContext.fillStyle = 'rgba(103, 57, 28, 0.643805 * zoomfactor)';
+        patternContext.fillStyle = 'rgba(103, 57, 28, 0.643805)';
         patternContext.lineWidth = 0.088960 * zoomfactor;
         patternContext.lineCap = 'butt';
         patternContext.lineJoin = 'miter';
@@ -1819,7 +1819,7 @@ var PatternHelper = {
 
         // #path20715
         patternContext.beginPath();
-        patternContext.fillStyle = 'rgba(131, 72, 35, 0.634956 * zoomfactor)';
+        patternContext.fillStyle = 'rgba(131, 72, 35, 0.634956)';
         patternContext.lineWidth = 0.070004 * zoomfactor;
         patternContext.lineCap = 'butt';
         patternContext.lineJoin = 'miter';
@@ -1907,7 +1907,7 @@ var PatternHelper = {
 
         // #path20715-9
         patternContext.beginPath();
-        patternContext.fillStyle = 'rgba(102, 57, 27, 0.670354 * zoomfactor)';
+        patternContext.fillStyle = 'rgba(102, 57, 27, 0.670354)';
         patternContext.lineWidth = 0.101431 * zoomfactor;
         patternContext.lineCap = 'butt';
         patternContext.lineJoin = 'miter';
@@ -1995,7 +1995,7 @@ var PatternHelper = {
 
         // #path20715-9-4
         patternContext.beginPath();
-        patternContext.fillStyle = 'rgba(131, 72, 35, 0.265487 * zoomfactor)';
+        patternContext.fillStyle = 'rgba(131, 72, 35, 0.265487)';
         patternContext.lineWidth = 0.070004 * zoomfactor;
         patternContext.lineCap = 'butt';
         patternContext.lineJoin = 'miter';
@@ -2083,7 +2083,7 @@ var PatternHelper = {
 
         // #path26238
         patternContext.beginPath();
-        patternContext.fillStyle = 'rgba(130, 72, 34, 0.25885 * zoomfactor)';
+        patternContext.fillStyle = 'rgba(130, 72, 34, 0.25885)';
         patternContext.lineWidth = 0.070004 * zoomfactor;
         patternContext.lineCap = 'butt';
         patternContext.lineJoin = 'miter';
@@ -2178,7 +2178,7 @@ var PatternHelper = {
 
         // #path27562
         patternContext.beginPath();
-        patternContext.fillStyle = 'rgba(174, 95, 45, 0.110619 * zoomfactor)';
+        patternContext.fillStyle = 'rgba(174, 95, 45, 0.110619)';
         patternContext.lineWidth = 0.070004 * zoomfactor;
         patternContext.lineCap = 'butt';
         patternContext.lineJoin = 'miter';

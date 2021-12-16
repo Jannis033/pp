@@ -184,6 +184,20 @@ var EntityDrawer = {
                 break;
         }
         context.fill();
+    },
+    enemy: function(x, y, type, details) {
+        context.beginPath();
+        context.rect(x, y, blockSize, blockSize);
+        switch (type) {
+            case 'E':
+                switch (details) {
+                    case '1':
+                        context.fillStyle = patterns.cookie;
+                        break;
+                }
+                break;
+        }
+        context.fill();
     }
 };
 
@@ -239,23 +253,62 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
     return resultVector;
 };
 
-EntityCollision.entities = function(x, y) {
+EntityCollision.entitiesCollect = function(x, y) {
     for (var i = 0; i < entities.length; i++) {
         var entity = entities[i];
 
-        var entityCenterX = entity.x + blockSize / 2;
-        var entityCenterY = entity.y + blockSize / 2;
+        if (entity.type == "o") {
 
-        var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityInteractRadius;
-        var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityInteractRadius;
+            var entityCenterX = entity.x + blockSize / 2;
+            var entityCenterY = entity.y + blockSize / 2;
 
-        if (distX <= 0 && distY <= 0) {
-            return entity;
+            var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityCollectRadius;
+            var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityCollectRadius;
+
+            if (distX <= 0 && distY <= 0) {
+                return entity;
+            }
         }
     }
     return null;
 }
 
+EntityCollision.entitiesInteract = function(x, y) {
+    for (var i = 0; i < entities.length; i++) {
+        var entity = entities[i];
+
+        if (entity.type == "e") {
+
+            var entityCenterX = entity.x + blockSize / 2;
+            var entityCenterY = entity.y + blockSize / 2;
+
+            var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityInteractRadius;
+            var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityInteractRadius;
+
+            if (distX <= 0 && distY <= 0) {
+                return entity;
+            }
+        }
+    }
+    return null;
+}
+
+EntityCollision.enemies = function(x, y) {
+    for (var i = 0; i < enemies.length; i++) {
+        var enemy = enemies[i];
+
+        var enemyCenterX = enemy.x + blockSize / 2;
+        var enemyCenterY = enemy.y + blockSize / 2;
+
+        var distX = Math.abs(x - enemyCenterX) - blockSize / 2 - enemyFollowRadius;
+        var distY = Math.abs(y - enemyCenterY) - blockSize / 2 - enemyFollowRadius;
+
+        if (distX <= 0 && distY <= 0) {
+            return enemy;
+        }
+    }
+    return null;
+}
 
 EntityCollision.carpet = function(x, y, type) {
     for (var i = 0; i < carpets.length; i++) {
@@ -311,7 +364,17 @@ var Player = function(x, y) {
     }
 
     this.die = function() {
-        console.log("*dies*");
+        document.getElementById("deathscreen").classList.add("show");
+        this.health = -1;
+    }
+
+    this.respawn = function() {
+        document.getElementById("deathscreen").classList.remove("show");
+        this.x = this.realX * blockSize;
+        this.y = this.realY * blockSize;
+        this.damagecounter = 80;
+        this.regeneratecounter = 5;
+        this.setHealth(20);
     }
 
     this.setHealth = function(health) {
@@ -342,13 +405,15 @@ var Player = function(x, y) {
     }
 
     this.damage = function() {
-        if (this.damagecounter > 80) {
-            getSound("damage").loop(false).volume(100).play();
-            this.setHealth(this.health - this.damagevalue);
-            this.damagecounter = 0;
+        if (this.health > 0) {
+            if (this.damagecounter > 80) {
+                getSound("damage").loop(false).volume(100).play();
+                this.setHealth(this.health - this.damagevalue);
+                this.damagecounter = 0;
 
+            }
+            this.damagecounter++;
         }
-        this.damagecounter++;
     }
 
     this.regenerate = function() {
@@ -448,14 +513,31 @@ var Player = function(x, y) {
             }
         }
 
-        //entities
+        //entities collect
         if (!keyboard.shift) {
-            var entity = EntityCollision.entities(this.x, this.y);
+            var entity = EntityCollision.entitiesCollect(this.x, this.y);
 
             if (entity != null) {
-                console.log(1);
                 removeItemOnce(entities, entity);
                 removeItemOnce(elements, entity);
+            }
+        }
+
+        //entities interact
+        if (!keyboard.shift) {
+            var entity = EntityCollision.entitiesInteract(this.x, this.y);
+
+            if (entity != null) {
+
+            }
+        }
+
+        //enemies
+        if (!keyboard.shift) {
+            var enemy = EntityCollision.enemies(this.x, this.y);
+
+            if (enemy != null) {
+                enemy.follow();
             }
         }
 
@@ -492,6 +574,11 @@ var Player = function(x, y) {
 
     this.reload = function() {
 
+    }
+
+    this.reloadTeleport = function(oldBlockSize) {
+        this.x = (this.x / oldBlockSize * blockSize);
+        this.y = (this.y / oldBlockSize * blockSize);
     }
 }
 
@@ -589,6 +676,39 @@ var Entity = function(x, y, type, details) {
 
         EntityDrawer.entity(this.x, this.y, this.type, this.details);
     };
+
+    this.reload = function() {
+        this.x = this.realX * blockSize;
+        this.y = this.realY * blockSize;
+    }
+};
+
+var Enemy = function(x, y, type, details) {
+    this.render = 'box';
+    this.type = type;
+    this.details = details;
+    this.realX = x;
+    this.realY = y;
+    this.x = x * blockSize;
+    this.y = y * blockSize;
+    this.sleep = true;
+
+    this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
+
+    this.update = function() {
+
+    };
+
+    this.render = function() {
+        if (this.sleep) return;
+
+        EntityDrawer.enemy(this.x, this.y, this.type, this.details);
+    };
+
+    this.follow = function() {
+        this.x += 3; // todo follow player
+        // todo wall collision
+    }
 
     this.reload = function() {
         this.x = this.realX * blockSize;
@@ -729,6 +849,7 @@ var MapProcessor = function() {
     this.carpetPositions = [];
     this.passagePositions = [];
     this.entityPositions = [];
+    this.enemyPositions = [];
     this.playerPosition = { x: 0, y: 0 };
 
     this.selectMap = function(map) {
@@ -742,9 +863,13 @@ var MapProcessor = function() {
     this.setZoom = function(zoom = 1) {
         zoomfactor = zoom;
 
+        player.reloadTeleport(blockSize); // todo fix
+
         blockSize = 80 * zoomfactor;
         arcSizeRadius = 35 * zoomfactor;
-        entityInteractRadius = 20 * zoomfactor;
+        entityCollectRadius = 20 * zoomfactor;
+        entityInteractRadius = 50 * zoomfactor;
+        enemyFollowRadius = 400 * zoomfactor;
         playerOverlap = 20 * zoomfactor;
 
         PatternHelper.createAll();
@@ -756,6 +881,7 @@ var MapProcessor = function() {
         this.carpetPositions = [];
         this.passagePositions = [];
         this.entityPositions = [];
+        this.enemyPositions = [];
         this.playerPosition = { x: 0, y: 0 };
 
         if (this.map == null) {
@@ -793,6 +919,9 @@ var MapProcessor = function() {
                     case 'e':
                         this.entityPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
+                    case 'E':
+                        this.enemyPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
+                        break;
                 }
             }
         };
@@ -812,6 +941,9 @@ var MapProcessor = function() {
         this.getEntityPositions = function() {
             return this.entityPositions;
         };
+        this.getEnemyPositions = function() {
+            return this.enemyPositions;
+        };
     };
 
     this.reloadMap = function() {
@@ -829,6 +961,7 @@ var MapProcessor = function() {
 
         elements = [];
         entities = [];
+        enemies = [];
         walls = [];
         carpets = [];
 
@@ -844,6 +977,13 @@ var MapProcessor = function() {
             var entity = new Entity(entityPosition.x, entityPosition.y, entityPosition.type, entityPosition.details);
             elements.push(entity);
             entities.push(entity);
+        }
+
+        for (var i = 0; i < this.getEnemyPositions().length; i++) {
+            var enemyPosition = this.getEnemyPositions()[i];
+            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
+            elements.push(enemy);
+            enemies.push(enemy);
         }
 
         for (var i = 0; i < this.getWallPositions().length; i++) {
