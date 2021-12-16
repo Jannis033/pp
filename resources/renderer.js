@@ -192,7 +192,7 @@ var EntityDrawer = {
             case 'E':
                 switch (details) {
                     case '1':
-                        context.fillStyle = patterns.cookie;
+                        context.fillStyle = "red";
                         break;
                 }
                 break;
@@ -326,6 +326,54 @@ EntityCollision.carpet = function(x, y, type) {
         }
     }
     return null;
+}
+
+EntityCollision.wallAt = function(x, y) {
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+        if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i") {
+            return true;
+        }
+    }
+    return false;
+}
+
+EntityCollision.collWallAt = function(x, y) {
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+        if (wall.x == x && wall.y == y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+EntityCollision.cornerCheck = function() {
+    for (var i = 0; i < walls.length; i++) {
+        walls[i].cornerCheck();
+    }
+}
+
+EntityCollision.playerVector = function(x, y) {
+    var resultVector = { x: 0, y: 0 };
+
+    var playerCenterX = player.x;
+    var playerCenterY = player.y;
+
+    var vectorX = playerCenterX - x;
+    var vectorY = playerCenterY - y;
+
+    var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+
+    if (length > 0) {
+        vectorX /= length;
+        vectorY /= length;
+
+        resultVector.x += vectorX;
+        resultVector.y += vectorY;
+    }
+
+    return resultVector;
 }
 
 var Player = function(x, y) {
@@ -582,31 +630,6 @@ var Player = function(x, y) {
     }
 }
 
-var wallAt = function(x, y) {
-    for (var i = 0; i < walls.length; i++) {
-        var wall = walls[i];
-        if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i") {
-            return true;
-        }
-    }
-    return false;
-}
-var collWallAt = function(x, y) {
-    for (var i = 0; i < walls.length; i++) {
-        var wall = walls[i];
-        if (wall.x == x && wall.y == y) {
-            return true;
-        }
-    }
-    return false;
-}
-
-var cornerCheck = function() {
-    for (var i = 0; i < walls.length; i++) {
-        walls[i].cornerCheck();
-    }
-}
-
 var Wall = function(x, y, type, details) {
     this.render = 'box';
     this.type = type;
@@ -627,14 +650,14 @@ var Wall = function(x, y, type, details) {
 
     this.cornerCheck = function() {
         if (this.type == "W") {
-            this.corners.right = wallAt(this.x + blockSize, this.y);
-            this.corners.left = wallAt(this.x - blockSize, this.y);
-            this.corners.bottom = wallAt(this.x, this.y + blockSize);
-            this.corners.top = wallAt(this.x, this.y - blockSize);
-            this.collCorners.right = collWallAt(this.x + blockSize, this.y);
-            this.collCorners.left = collWallAt(this.x - blockSize, this.y);
-            this.collCorners.bottom = collWallAt(this.x, this.y + blockSize);
-            this.collCorners.top = collWallAt(this.x, this.y - blockSize);
+            this.corners.right = EntityCollision.wallAt(this.x + blockSize, this.y);
+            this.corners.left = EntityCollision.wallAt(this.x - blockSize, this.y);
+            this.corners.bottom = EntityCollision.wallAt(this.x, this.y + blockSize);
+            this.corners.top = EntityCollision.wallAt(this.x, this.y - blockSize);
+            this.collCorners.right = EntityCollision.collWallAt(this.x + blockSize, this.y);
+            this.collCorners.left = EntityCollision.collWallAt(this.x - blockSize, this.y);
+            this.collCorners.bottom = EntityCollision.collWallAt(this.x, this.y + blockSize);
+            this.collCorners.top = EntityCollision.collWallAt(this.x, this.y - blockSize);
         } else if (this.type == "O") { // make it a 'full' wall
             this.collCorners.right = true;
             this.collCorners.left = true;
@@ -691,6 +714,7 @@ var Enemy = function(x, y, type, details) {
     this.realY = y;
     this.x = x * blockSize;
     this.y = y * blockSize;
+    this.speed = 1.5;
     this.sleep = true;
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
@@ -706,8 +730,16 @@ var Enemy = function(x, y, type, details) {
     };
 
     this.follow = function() {
-        this.x += 3; // todo follow player
-        // todo wall collision
+        var collisionVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
+        this.x += collisionVector.x * this.speed;
+        this.y += collisionVector.y * this.speed;
+        this.wallCollision();
+    }
+
+    this.wallCollision = function() {
+        var collisionVector = EntityCollision.arcToWalls(this.x + blockSize / 2, this.y + blockSize / 2);
+        this.x += collisionVector.x * this.speed;
+        this.y += collisionVector.y * this.speed;
     }
 
     this.reload = function() {
@@ -951,7 +983,7 @@ var MapProcessor = function() {
             var element = elements[y];
             element.reload();
         }
-        cornerCheck();
+        EntityCollision.cornerCheck();
     };
 
     this.loadMap = function(map, spawn = null, rotation = 4, load = false) {
@@ -979,13 +1011,6 @@ var MapProcessor = function() {
             entities.push(entity);
         }
 
-        for (var i = 0; i < this.getEnemyPositions().length; i++) {
-            var enemyPosition = this.getEnemyPositions()[i];
-            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
-            elements.push(enemy);
-            enemies.push(enemy);
-        }
-
         for (var i = 0; i < this.getWallPositions().length; i++) {
             var wallPosition = this.getWallPositions()[i];
             var wall = new Wall(wallPosition.x, wallPosition.y, wallPosition.type, wallPosition.details);
@@ -993,7 +1018,14 @@ var MapProcessor = function() {
             walls.push(wall);
         }
 
-        cornerCheck();
+        EntityCollision.cornerCheck();
+
+        for (var i = 0; i < this.getEnemyPositions().length; i++) {
+            var enemyPosition = this.getEnemyPositions()[i];
+            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
+            elements.push(enemy);
+            enemies.push(enemy);
+        }
 
         for (var i = 0; i < this.getPassagePositions().length; i++) {
             var passagePosition = this.getPassagePositions()[i];
