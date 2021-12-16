@@ -62,3 +62,8 @@ Spielfigur besitzt im Gegensatz zu uns jetzt Leben & regeneriert sich an der Hei
 ### 14.12.2021
 
 Es wurden Hindernisse eingefügt, also Sachen über die man nicht drüberlaufen kann, aber auch keine richtigen Wände sind; als erstes kamen Tische hinzu.
+
+### 16.12.2021
+
+Man kann nun sterben, es gibt einen Respawn Screen.
+Dazu kamen auch Enemies, also Lehrer, die einem später folgen werden.
