@@ -294,6 +294,7 @@ EntityCollision.entitiesInteract = function(x, y) {
 }
 
 EntityCollision.enemies = function(x, y) {
+    var tmpen = [];
     for (var i = 0; i < enemies.length; i++) {
         var enemy = enemies[i];
 
@@ -304,10 +305,10 @@ EntityCollision.enemies = function(x, y) {
         var distY = Math.abs(y - enemyCenterY) - blockSize / 2 - enemyFollowRadius;
 
         if (distX <= 0 && distY <= 0) {
-            return enemy;
+            tmpen.push(enemy);
         }
     }
-    return null;
+    return tmpen;
 }
 
 EntityCollision.carpet = function(x, y, type) {
@@ -582,10 +583,14 @@ var Player = function(x, y) {
 
         //enemies
         if (!keyboard.shift) {
-            var enemy = EntityCollision.enemies(this.x, this.y);
+            var tmpen = EntityCollision.enemies(this.x, this.y);
 
-            if (enemy != null) {
-                enemy.follow();
+            for (i = 0; i < tmpen.length; i++) {
+                var enemy = tmpen[i];
+
+                if (enemy != null) {
+                    enemy.follow();
+                }
             }
         }
 
