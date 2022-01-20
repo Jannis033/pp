@@ -53,11 +53,11 @@ Portale wurden hinzugefügt, man kann so in andere Welten kommen.
 
 ### 8.12.2021
 
-Schadenfunktion wurde hinzugefügt & kleinere Mapänderungen
+Schadenfunktion wurde hinzugefügt & kleinere Mapänderungen.
 
 ### 9.12.2021
 
-Spielfigur besitzt im Gegensatz zu uns jetzt Leben & regeneriert sich an der Heizung
+Spielfigur besitzt im Gegensatz zu uns jetzt Leben & regeneriert sich an der Heizung.
 
 ### 14.12.2021
 
@@ -65,5 +65,9 @@ Es wurden Hindernisse eingefügt, also Sachen über die man nicht drüberlaufen 
 
 ### 16.12.2021
 
-Man kann nun sterben, es gibt einen Respawn Screen.
-Dazu kamen auch Enemies, also Lehrer, die einem später folgen werden.
+Man kann sterben wenn man zu lange draußen im Kalten war, es gibt einen Respawn Screen.
+Dazu kamen auch Lehrer, die einem später folgen werden, wenn man verbotene Korridore betritt.
+
+### 20.1.2022
+
+Lehrer haben nun keine Superkraft mehr und können statt in alle Richtungen nur noch ein 60° Blickfeld überwachen. Kommt man ihnen zu nahe bemerken sie einen aber weiterhin.
