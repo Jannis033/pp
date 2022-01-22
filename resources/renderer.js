@@ -197,11 +197,14 @@ var EntityDrawer = {
                 var y1 = vector1.y * enemyFollowRadius + y + blockSize / 2;
                 var x2 = vector2.x * enemyFollowRadius + x + blockSize / 2;
                 var y2 = vector2.y * enemyFollowRadius + y + blockSize / 2;
-                // the triangle
+
+                var polygon = EntityCollision.getViewareaPolygon(entity);
+                // the polygon
                 context.beginPath();
-                context.moveTo(x + blockSize / 2, y + blockSize / 2);
-                context.lineTo(x1, y1);
-                context.lineTo(x2, y2);
+                context.moveTo(polygon[0].x, polygon[0].y);
+                for (i = 1; i < polygon.length; i++) {
+                    context.lineTo(polygon[i].x, polygon[i].y);
+                }
                 context.closePath();
 
                 // the outline
@@ -355,7 +358,7 @@ EntityCollision.getRotationVector = function(rotation) {
     return ({ x: vectorX, y: vectorY });
 }
 
-EntityCollision.viewAreaCollision = function(entity, player) {
+EntityCollision.getViewareaPolygon = function(entity) { // todo wall detection
     var viewArea = this.getViewarea(entity.rotation, entity.viewAngle);
 
     var vector1 = this.getRotationVector(viewArea.start);
@@ -365,12 +368,18 @@ EntityCollision.viewAreaCollision = function(entity, player) {
     var x2 = vector2.x * enemyFollowRadius + entity.x + blockSize / 2;
     var y2 = vector2.y * enemyFollowRadius + entity.y + blockSize / 2;
 
-    //console.log(viewArea.start + " " + viewArea.end + " . " + vector1.x + " " + vector1.y + " . " + x1 + " " + y1 + " . " + x2 + " " + y2 + " . " + (entity.x + blockSize / 2) + " " + (entity.y + blockSize / 2) + " . " + player.x + " " + player.y);
-
-    return this.intpoint_inside_trigon({ x: player.x, y: player.y }, { x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 }, { x: x1, y: y1 }, { x: x2, y: y2 });
+    return [{ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 }, { x: x1, y: y1 }, { x: x2, y: y2 }];
 }
 
-// copied 
+EntityCollision.viewAreaCollision = function(entity, player) {
+    //console.log(viewArea.start + " " + viewArea.end + " . " + vector1.x + " " + vector1.y + " . " + x1 + " " + y1 + " . " + x2 + " " + y2 + " . " + (entity.x + blockSize / 2) + " " + (entity.y + blockSize / 2) + " . " + player.x + " " + player.y);
+
+    var polygon = this.getViewareaPolygon(entity);
+    //return this.intpoint_inside_trigon({ x: player.x, y: player.y }, { x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 }, { x: x1, y: y1 }, { x: x2, y: y2 }) && this.isWallBetween({ x: player.x, y: player.y }, { x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 });
+    return this.pointInPolygon({ x: player.x, y: player.y }, polygon);
+}
+
+// copied , unused
 EntityCollision.intpoint_inside_trigon = function(s, a, b, c) {
     as_x = s.x - a.x;
     as_y = s.y - a.y;
@@ -383,6 +392,98 @@ EntityCollision.intpoint_inside_trigon = function(s, a, b, c) {
 
     return true;
 }
+
+// copied , unused
+EntityCollision.ray_casting = function(point, polygon) {
+    var n = polygon.length,
+        is_in = false,
+        x = point.x,
+        y = point.y,
+        x1, x2, y1, y2;
+
+    for (var i = 0; i < n - 1; i++) {
+        x1 = polygon[i].x;
+        x2 = polygon[i + 1].x;
+        y1 = polygon[i].y;
+        y2 = polygon[i + 1].y;
+
+        if (y < y1 != y < y2 && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1) {
+            is_in = !is_in;
+        }
+    }
+
+    return is_in;
+}
+
+// copied , currently used!!! working so far
+/**
+ * Performs the even-odd-rule Algorithm (a raycasting algorithm) to find out whether a point is in a given polygon.
+ * This runs in O(n) where n is the number of edges of the polygon.
+ *
+ * @param {Array} polygon an array representation of the polygon where polygon[i][0] is the x Value of the i-th point and polygon[i][1] is the y Value.
+ * @param {Array} point   an array representation of the point where point[0] is its x Value and point[1] is its y Value
+ * @return {boolean} whether the point is in the polygon (not on the edge, just turn < into <= and > into >= for that)
+ */
+EntityCollision.pointInPolygon = function(point, polygon) {
+    //A point is in a polygon if a line from the point to infinity crosses the polygon an odd number of times
+    let odd = false;
+    //For each edge (In this case for each point of the polygon and the previous one)
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; i++) {
+        //If a line from the point into infinity crosses this edge
+        if (((polygon[i].y > point.y) !== (polygon[j].y > point.y)) // One point needs to be above, one below our y coordinate
+            // ...and the edge doesn't cross our Y corrdinate before our x coordinate (but between our x coordinate and infinity)
+            &&
+            (point.x < ((polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))) {
+            // Invert odd
+            odd = !odd;
+        }
+        j = i;
+
+    }
+    //If the number of crossings was odd, the point is in the polygon
+    return odd;
+};
+
+// unused
+EntityCollision.getWallsBetween = function(pos1, pos2) {
+    var xmin = Math.min(pos1.x, pos2.x);
+    var xmax = Math.max(pos1.x, pos2.x);
+    var ymin = Math.min(pos1.y, pos2.y);
+    var ymax = Math.max(pos1.y, pos2.y);
+
+    return walls.filter(function(wall) {
+        return wall.x >= xmin && (wall.x + blockSize) <= xmax && wall.y >= ymin && (wall.y + blockSize) <= ymax;
+    });
+}
+
+// unused
+EntityCollision.isWallBetween = function(pos1, pos2) {
+    //var tmpwalls = this.getWallsBetween(pos1, pos2);
+
+
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+
+        var wallX = wall.x;
+        var wallY = wall.y;
+
+        if (this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wallX, wallY, wallX + blockSize, wallY) || this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wallX, wallY, wallX, wallY + blockSize)) return true;
+    }
+    return false;
+}
+
+// copied: returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s) , unused
+EntityCollision.intersects = function(a, b, c, d, p, q, r, s) {
+    var det, gamma, lambda;
+    det = (c - a) * (s - q) - (r - p) * (d - b);
+    if (det === 0) {
+        return false;
+    } else {
+        lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+        gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+        return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+    }
+};
 
 EntityCollision.carpet = function(x, y, type) {
     for (var i = 0; i < carpets.length; i++) {
