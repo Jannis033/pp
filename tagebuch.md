@@ -71,3 +71,7 @@ Dazu kamen auch Lehrer, die einem später folgen werden, wenn man verbotene Korr
 ### 20.1.2022
 
 Lehrer haben nun keine Superkraft mehr und können statt in alle Richtungen nur noch ein 60° Blickfeld überwachen. Kommt man ihnen zu nahe bemerken sie einen aber weiterhin.
+
+### 22.1.2022
+
+Das Blickfeld der Lehrer wurde darauf vorbereitet, nicht mehr durch Wände schauen zu können. Dafür wurde ein Algorithmus eingefügt, der testet, ob der Spieler in einem Polygon ist, anstatt nur eines einfachen Dreiecks. Dieses Polygon muss jetzt nur noch erstellt werden, indem nach Wänden im Blickfeld getestet wird.
