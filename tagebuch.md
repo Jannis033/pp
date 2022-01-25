@@ -75,3 +75,7 @@ Lehrer haben nun keine Superkraft mehr und können statt in alle Richtungen nur 
 ### 22.1.2022
 
 Das Blickfeld der Lehrer wurde darauf vorbereitet, nicht mehr durch Wände schauen zu können. Dafür wurde ein Algorithmus eingefügt, der testet, ob der Spieler in einem Polygon ist, anstatt nur eines einfachen Dreiecks. Dieses Polygon muss jetzt nur noch erstellt werden, indem nach Wänden im Blickfeld getestet wird.
+
+### 25.1.2022
+
+Das Blickfeld passt sich testweise an Wände an, das Ganze funktioniert zwar noch eher schlecht als recht, aber der Anfang ist gemacht. Man sollte vorsorglich eine zweite Grafikkarte einbauen, performancetechnisch ist das System nämmlich alles andere als ideal.

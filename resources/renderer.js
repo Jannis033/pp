@@ -190,14 +190,6 @@ var EntityDrawer = {
     enemy: function(x, y, type, details, entity) {
         switch (type) {
             case 'E':
-                var viewArea = EntityCollision.getViewarea(entity.rotation, entity.viewAngle);
-                var vector1 = EntityCollision.getRotationVector(viewArea.start);
-                var vector2 = EntityCollision.getRotationVector(viewArea.end);
-                var x1 = vector1.x * enemyFollowRadius + x + blockSize / 2;
-                var y1 = vector1.y * enemyFollowRadius + y + blockSize / 2;
-                var x2 = vector2.x * enemyFollowRadius + x + blockSize / 2;
-                var y2 = vector2.y * enemyFollowRadius + y + blockSize / 2;
-
                 var polygon = EntityCollision.getViewareaPolygon(entity);
                 // the polygon
                 context.beginPath();
@@ -346,11 +338,11 @@ EntityCollision.enemies = function(x, y, all = false) {
     return tmpen;
 }
 
-EntityCollision.getViewarea = function(rotation, angle) {
+EntityCollision.getViewarea = function(rotation, angle) { // get start end end angle
     return ({ start: rotation + angle > 360 ? rotation + angle - 360 : rotation + angle, end: rotation - angle < 0 ? rotation - angle + 360 : rotation - angle });
 }
 
-EntityCollision.getRotationVector = function(rotation) {
+EntityCollision.getRotationVector = function(rotation) { // vector with length 1 in rotation direction
     var vectorX = Math.tan(rotation / 180 * Math.PI) * ((rotation > 90 && rotation < 180) || (rotation < 270 && rotation > 180) ? -1 : 1);
     var vectorY = 1 / Math.sqrt(vectorX * vectorX + 1) * (rotation > 270 || rotation < 90 ? 1 : -1);
     vectorX = vectorX / Math.sqrt(vectorX * vectorX + 1);
@@ -358,7 +350,7 @@ EntityCollision.getRotationVector = function(rotation) {
     return ({ x: vectorX, y: vectorY });
 }
 
-EntityCollision.getViewareaPolygon = function(entity) { // todo wall detection
+EntityCollision.getViewareaPolygon2 = function(entity) { // todo wall detection
     var viewArea = this.getViewarea(entity.rotation, entity.viewAngle);
 
     var vector1 = this.getRotationVector(viewArea.start);
@@ -369,6 +361,113 @@ EntityCollision.getViewareaPolygon = function(entity) { // todo wall detection
     var y2 = vector2.y * enemyFollowRadius + entity.y + blockSize / 2;
 
     return [{ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 }, { x: x1, y: y1 }, { x: x2, y: y2 }];
+}
+
+EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
+    var viewArea = this.getViewarea(entity.rotation, entity.viewAngle);
+    var points = [];
+    points.push({ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 });
+
+    var tmpwall = null;
+    for (i = 0; i < 120; i++) {
+        var vector = this.getRotationVector((viewArea.end + i / 2) > 360 ? (viewArea.end + i / 2 - 360) : (viewArea.end + i / 2));
+        var x = vector.x * enemyFollowRadius + entity.x + blockSize / 2;
+        var y = vector.y * enemyFollowRadius + entity.y + blockSize / 2;
+
+        var tmpwalls = this.getWallsBetween({ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 }, { x: x, y: y });
+        if (tmpwalls.length > 0) {
+            var wall = tmpwalls[0];
+            if (tmpwalls.length > 1) {
+                var minr = Math.sqrt((entity.x - tmpwalls[0].x) * (entity.x - tmpwalls[0].x) + (entity.y - tmpwalls[0].y) * (entity.y - tmpwalls[0].y));
+                for (j = 1; j < tmpwalls.length; j++) {
+                    var r = Math.sqrt((entity.x - tmpwalls[j].x) * (entity.x - tmpwalls[j].x) + (entity.y - tmpwalls[j].y) * (entity.y - tmpwalls[j].y));
+                    if (r < minr) {
+                        wall = tmpwalls[j];
+                        minr = r;
+                    }
+                }
+            }
+            if (wall == tmpwall) { continue; }
+            tmpwall = wall;
+            // check which two of the four corners are the important ones
+            var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
+            var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
+            var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
+            var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
+
+            var w1 = { x: wxmin, y: wymin };
+            var w2 = { x: wxmax, y: wymin };
+            var w3 = { x: wxmax, y: wymax };
+            var w4 = { x: wxmin, y: wymax };
+
+            var p1 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+            var p2 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+
+            if (entity.x < wxmin) { // 1, 8, 7
+                if (entity.y < wymin) { // 1
+                    p1 = w4;
+                    p2 = w2;
+                    if (wall.corners.top) {
+                        p2 = w1;
+                    }
+                    if (wall.corners.left) {
+                        p1 = w1;
+                    }
+                } else if (entity.y > wymax) { // 7
+                    p1 = w3;
+                    p2 = w1;
+                    if (wall.corners.bottom) {
+                        p1 = w4;
+                    }
+                    if (wall.corners.left) {
+                        p2 = w4;
+                    }
+                } else { // 8
+                    p1 = w4;
+                    p2 = w1;
+                }
+            } else if (entity.x > wxmax) { // 3, 4, 5
+                if (entity.y < wymin) { // 3
+                    p1 = w1;
+                    p2 = w3;
+                    if (wall.corners.top) {
+                        p1 = w2;
+                    }
+                    if (wall.corners.right) {
+                        p2 = w2;
+                    }
+                } else if (entity.y > wymax) { // 5
+                    p1 = w2;
+                    p2 = w4;
+                    if (wall.corners.bottom) {
+                        p2 = w3;
+                    }
+                    if (wall.corners.right) {
+                        p2 = w3;
+                    }
+                } else { // 4
+                    p1 = w2;
+                    p2 = w3;
+                }
+            } else { // 2, 6
+                if (entity.y < wymin) { // 2
+                    p1 = w1;
+                    p2 = w2;
+                } else if (entity.y > wymax) { // 6
+                    p1 = w3;
+                    p2 = w4;
+                } else { // inside ??
+                }
+            }
+
+            points.push(p1);
+            points.push(p2);
+        } else {
+            points.push({ x: x, y: y });
+        }
+    }
+
+    return points;
 }
 
 EntityCollision.viewAreaCollision = function(entity, player) {
@@ -416,6 +515,7 @@ EntityCollision.ray_casting = function(point, polygon) {
 }
 
 // copied , currently used!!! working so far
+// https://www.algorithms-and-technologies.com/point_in_polygon/javascript
 /**
  * Performs the even-odd-rule Algorithm (a raycasting algorithm) to find out whether a point is in a given polygon.
  * This runs in O(n) where n is the number of edges of the polygon.
@@ -444,32 +544,51 @@ EntityCollision.pointInPolygon = function(point, polygon) {
     return odd;
 };
 
-// unused
-EntityCollision.getWallsBetween = function(pos1, pos2) {
+EntityCollision.getWallsInArea = function(pos1, pos2) {
     var xmin = Math.min(pos1.x, pos2.x);
     var xmax = Math.max(pos1.x, pos2.x);
     var ymin = Math.min(pos1.y, pos2.y);
     var ymax = Math.max(pos1.y, pos2.y);
 
     return walls.filter(function(wall) {
-        return wall.x >= xmin && (wall.x + blockSize) <= xmax && wall.y >= ymin && (wall.y + blockSize) <= ymax;
+        var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
+        var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
+        var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
+        var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
+        return wxmin >= xmin && wxmax <= xmax && wymin >= ymin && wymax <= ymax;
     });
 }
 
 // unused
 EntityCollision.isWallBetween = function(pos1, pos2) {
-    //var tmpwalls = this.getWallsBetween(pos1, pos2);
-
-
+    //var tmpwalls = this.getWallsInArea(pos1, pos2);
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
 
-        var wallX = wall.x;
-        var wallY = wall.y;
+        var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
+        var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
+        var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
+        var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
 
-        if (this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wallX, wallY, wallX + blockSize, wallY) || this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wallX, wallY, wallX, wallY + blockSize)) return true;
+        if (this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmax, wymin) || this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmin, wymax)) return true;
     }
     return false;
+}
+
+EntityCollision.getWallsBetween = function(pos1, pos2) {
+    var tmpwalls = this.getWallsInArea(pos1, pos2);
+    var tmp = [];
+    for (var i = 0; i < tmpwalls.length; i++) {
+        var wall = tmpwalls[i];
+
+        var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
+        var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
+        var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
+        var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
+
+        if (this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmax, wymin) || this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmin, wymax)) tmp.push(wall);
+    }
+    return tmp;
 }
 
 // copied: returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s) , unused
