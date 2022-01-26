@@ -215,6 +215,10 @@ var EntityDrawer = {
                 }
                 context.translate(x, y - playerOverlap);
                 context.fillRect(0, 0, blockSize, blockSize + playerOverlap);
+                context.beginPath();
+                context.arc(blockSize / 2, blockSize / 2 + playerOverlap, enemyFollowRadiusRotate + blockSize / 2, 0, 2 * Math.PI);
+                context.strokeStyle = "#FFCC0044";
+                context.stroke();
                 context.translate(-x, -y + playerOverlap);
 
                 break;
@@ -1533,13 +1537,6 @@ var MapProcessor = function() {
             entities.push(entity);
         }
 
-        for (var i = 0; i < this.getEnemyPositions().length; i++) {
-            var enemyPosition = this.getEnemyPositions()[i];
-            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
-            elements.push(enemy);
-            enemies.push(enemy);
-        }
-
         for (var i = 0; i < this.getWallPositions().length; i++) {
             var wallPosition = this.getWallPositions()[i];
             var wall = new Wall(wallPosition.x, wallPosition.y, wallPosition.type, wallPosition.details);
@@ -1548,6 +1545,13 @@ var MapProcessor = function() {
         }
 
         EntityCollision.cornerCheck();
+
+        for (var i = 0; i < this.getEnemyPositions().length; i++) {
+            var enemyPosition = this.getEnemyPositions()[i];
+            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
+            elements.push(enemy);
+            enemies.push(enemy);
+        }
 
         for (var i = 0; i < this.getPassagePositions().length; i++) {
             var passagePosition = this.getPassagePositions()[i];

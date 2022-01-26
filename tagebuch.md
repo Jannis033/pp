@@ -87,3 +87,4 @@ Der Wall Detection Algorithmus wurde überarbeitet und funktioniert jetzt in den
 ##### 21:52 Uhr
 
 Die Wände werden jetzt immer richtig erkannt, dank einer kleinen Änderung im Code.
+Um die Lehrer gibt es jetzt auch Kreise, die anzeigen, wenn man ihnen zu nahe kommt.
