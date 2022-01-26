@@ -368,42 +368,209 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
     var points = [];
     points.push({ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 });
 
-    var tmpwall = null;
     for (i = 0; i < 120; i++) {
         var vector = this.getRotationVector((viewArea.end + i / 2) > 360 ? (viewArea.end + i / 2 - 360) : (viewArea.end + i / 2));
         var x = vector.x * enemyFollowRadius + entity.x + blockSize / 2;
         var y = vector.y * enemyFollowRadius + entity.y + blockSize / 2;
 
-        var tmpwalls = this.getWallsBetween({ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 }, { x: x, y: y });
+        var tmpwalls = this.getWallsBetween({ x: (entity.x + blockSize / 2), y: (entity.y + blockSize / 2) }, { x: x, y: y });
         if (tmpwalls.length > 0) {
             var wall = tmpwalls[0];
             if (tmpwalls.length > 1) {
-                var minr = Math.sqrt((entity.x - tmpwalls[0].x) * (entity.x - tmpwalls[0].x) + (entity.y - tmpwalls[0].y) * (entity.y - tmpwalls[0].y));
+                var minr = Math.sqrt(((entity.x + blockSize / 2) - tmpwalls[0].x) * ((entity.x + blockSize / 2) - tmpwalls[0].x) + ((entity.y + blockSize / 2) - tmpwalls[0].y) * ((entity.y + blockSize / 2) - tmpwalls[0].y));
                 for (j = 1; j < tmpwalls.length; j++) {
-                    var r = Math.sqrt((entity.x - tmpwalls[j].x) * (entity.x - tmpwalls[j].x) + (entity.y - tmpwalls[j].y) * (entity.y - tmpwalls[j].y));
+                    var r = Math.sqrt(((entity.x + blockSize / 2) - tmpwalls[j].x) * ((entity.x + blockSize / 2) - tmpwalls[j].x) + ((entity.y + blockSize / 2) - tmpwalls[j].y) * ((entity.y + blockSize / 2) - tmpwalls[j].y));
                     if (r < minr) {
                         wall = tmpwalls[j];
                         minr = r;
                     }
                 }
             }
-            if (wall == tmpwall) { continue; }
-            tmpwall = wall;
-            // check which two of the four corners are the important ones
-            var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
-            var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
-            var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
-            var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
 
-            var w1 = { x: wxmin, y: wymin };
-            var w2 = { x: wxmax, y: wymin };
-            var w3 = { x: wxmax, y: wymax };
-            var w4 = { x: wxmin, y: wymax };
+            // min and max x and y coordinates of wall
+            var wxmin = (wall.x + (wall.corners.left ? 0 : (blockSize / 4)));
+            var wxmax = (wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3)));
+            var wymin = (wall.y + (wall.corners.top ? 0 : (blockSize / 4)));
+            var wymax = (wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3)));
 
-            var p1 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+            // inner corners
+            var wc1 = { x: (wall.x + blockSize / 4), y: (wall.y + blockSize / 4) };
+            var wc2 = { x: (wall.x + blockSize / 4 * 3), y: (wall.y + blockSize / 4) };
+            var wc3 = { x: (wall.x + blockSize / 4 * 3), y: (wall.y + blockSize / 4 * 3) };
+            var wc4 = { x: (wall.x + blockSize / 4), y: (wall.y + blockSize / 4 * 3) };
+
+            // edges of normal wall
+            //var w1 = { x: wxmin, y: wymin };
+            //var w2 = { x: wxmax, y: wymin };
+            //var w3 = { x: wxmax, y: wymax };
+            //var w4 = { x: wxmin, y: wymax };
+
+            // outer edges
+            var wt1 = { x: (wall.x + blockSize / 4), y: (wall.y) };
+            var wt2 = { x: (wall.x + blockSize / 4 * 3), y: (wall.y) };
+            var wt3 = { x: (wall.x + blockSize), y: (wall.y + blockSize / 4) };
+            var wt4 = { x: (wall.x + blockSize), y: (wall.y + blockSize / 4 * 3) };
+            var wt5 = { x: (wall.x + blockSize / 4 * 3), y: (wall.y + blockSize) };
+            var wt6 = { x: (wall.x + blockSize / 4), y: (wall.y + blockSize) };
+            var wt7 = { x: (wall.x), y: (wall.y + blockSize / 4 * 3) };
+            var wt8 = { x: (wall.x), y: (wall.y + blockSize / 4) };
+
+            // points to check for intersect
+            /*var p1 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
             var p2 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+            var p3 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+            var p4 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+            var p5 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+            var p6 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };
+            var p7 = { x: wall.x + blockSize / 2, y: wall.y + blockSize / 2 };*/
 
-            if (entity.x < wxmin) { // 1, 8, 7
+            var p = [];
+
+            if ((entity.x + blockSize / 2) < wxmin) { // 1, 8, 7
+                if ((entity.y + blockSize / 2) < wymin) { // 1
+                    if (wall.corners.top) {
+                        p.push(wt1);
+                    } else {
+                        if (wall.corners.right) {
+                            p.push(wt3);
+                        }
+                        p.push(wc2);
+                    }
+                    p.push(wc1);
+                    if (wall.corners.left) {
+                        p.push(wt8);
+                    } else {
+                        p.push(wc4);
+                        if (wall.corners.bottom) {
+                            p.push(wt6);
+                        }
+                    }
+                } else if ((entity.y + blockSize / 2) > wymax) { // 7
+                    if (wall.corners.left) {
+                        p.push(wt7);
+                    } else {
+                        if (wall.corners.top) {
+                            p.push(wt1);
+                        }
+                        p.push(wc1);
+                    }
+                    p.push(wc4);
+                    if (wall.corners.bottom) {
+                        p.push(wt6);
+                    } else {
+                        p.push(wc3);
+                        if (wall.corners.right) {
+                            p.push(wt4);
+                        }
+                    }
+                } else { // 8
+                    if (wall.corners.top) {
+                        p.push(wt1, wc1);
+                    }
+                    if (wall.corners.left) {
+                        p.push(wt8, wt7);
+                    } else {
+                        p.push(wc1, wc4);
+                    }
+                    if (wall.corners.right) {
+                        p.push(wc4, wt6);
+                    }
+                }
+            } else if ((entity.x + blockSize / 2) > wxmax) { // 3, 4, 5
+                if ((entity.y + blockSize / 2) < wymin) { // 3
+                    if (wall.corners.right) {
+                        p.push(wt3);
+                    } else {
+                        if (wall.corners.bottom) {
+                            p.push(wt5);
+                        }
+                        p.push(wc3);
+                    }
+                    p.push(wc2);
+                    if (wall.corners.top) {
+                        p.push(wt2);
+                    } else {
+                        p.push(wc1);
+                        if (wall.corners.left) {
+                            p.push(wt8);
+                        }
+                    }
+
+                } else if ((entity.y + blockSize / 2) > wymax) { // 5
+                    if (wall.corners.bottom) {
+                        p.push(wt5);
+                    } else {
+                        if (wall.corners.left) {
+                            p.push(wt7);
+                        }
+                        p.push(wc4);
+                    }
+                    p.push(wc3);
+                    if (wall.corners.right) {
+                        p.push(wt4);
+                    } else {
+                        p.push(wc2);
+                        if (wall.corners.top) {
+                            p.push(wt2);
+                        }
+                    }
+                } else { // 4
+                    if (wall.corners.bottom) {
+                        p.push(wt5, wc3);
+                    }
+                    if (wall.corners.right) {
+                        p.push(wt4, wt3);
+                    } else {
+                        p.push(wc3, wc2);
+                    }
+                    if (wall.corners.top) {
+                        p.push(wc2, wt2);
+                    }
+                }
+            } else { // 2, 6
+                if ((entity.y + blockSize / 2) < wymin) { // 2
+                    if (wall.corners.right) {
+                        p.push(wt3, wc2);
+                    }
+                    if (wall.corners.top) {
+                        p.push(wt2, wt1);
+                    } else {
+                        p.push(wc2, wc1);
+                    }
+                    if (wall.corners.left) {
+                        p.push(wc1, wt8);
+                    }
+                } else if ((entity.y + blockSize / 2) > wymax) { // 6
+                    if (wall.corners.left) {
+                        p.push(wt7, wc4);
+                    }
+                    if (wall.corners.bottom) {
+                        p.push(wt6, wt5);
+                    } else {
+                        p.push(wc4, wc3);
+                    }
+                    if (wall.corners.right) {
+                        p.push(wc3, wt4);
+                    }
+                } else { // inside ??
+                }
+            }
+
+            var pu = [...new Set(p)]; // remove duplicates
+
+            var point = false;
+            var j = 0;
+            while (point == false && j < (pu.length - 1)) {
+                point = this.line_intersect({ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 }, { x: x, y: y }, pu[j], pu[j + 1]);
+                j++;
+            }
+            if (point != false) {
+                points.push(point);
+            } else {
+                points.push({ x: x, y: y }); // no wall intersect (?)
+            }
+
+            /* if (entity.x < wxmin) { // 1, 8, 7
                 if (entity.y < wymin) { // 1
                     p1 = w4;
                     p2 = w2;
@@ -462,6 +629,7 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
 
             points.push(p1);
             points.push(p2);
+*/
         } else {
             points.push({ x: x, y: y });
         }
@@ -551,11 +719,12 @@ EntityCollision.getWallsInArea = function(pos1, pos2) {
     var ymax = Math.max(pos1.y, pos2.y);
 
     return walls.filter(function(wall) {
-        var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
-        var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
-        var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
-        var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
-        return wxmin >= xmin && wxmax <= xmax && wymin >= ymin && wymax <= ymax;
+        var wxmin = (wall.x + (wall.corners.left ? 0 : (blockSize / 4)));
+        var wxmax = (wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3)));
+        var wymin = (wall.y + (wall.corners.top ? 0 : (blockSize / 4)));
+        var wymax = (wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3)));
+        //return wxmin >= xmin && wxmax <= xmax && wymin >= ymin && wymax <= ymax; 
+        return wall.type == "W" && wall.details != "i" && xmax >= wxmin && xmin <= wxmax && ymax >= wymin && ymin <= wymax;
     });
 }
 
@@ -565,10 +734,10 @@ EntityCollision.isWallBetween = function(pos1, pos2) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
 
-        var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
-        var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
-        var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
-        var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
+        var wxmin = (wall.x + (wall.corners.left ? 0 : (blockSize / 4)));
+        var wxmax = (wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3)));
+        var wymin = (wall.y + (wall.corners.top ? 0 : (blockSize / 4)));
+        var wymax = (wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3)));
 
         if (this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmax, wymin) || this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmin, wymax)) return true;
     }
@@ -581,17 +750,17 @@ EntityCollision.getWallsBetween = function(pos1, pos2) {
     for (var i = 0; i < tmpwalls.length; i++) {
         var wall = tmpwalls[i];
 
-        var wxmin = wall.x + (wall.corners.left ? 0 : (blockSize / 4));
-        var wxmax = wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3));
-        var wymin = wall.y + (wall.corners.top ? 0 : (blockSize / 4));
-        var wymax = wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3));
+        var wxmin = (wall.x + (wall.corners.left ? 0 : (blockSize / 4)));
+        var wxmax = (wall.x + (wall.corners.right ? blockSize : (blockSize / 4 * 3)));
+        var wymin = (wall.y + (wall.corners.top ? 0 : (blockSize / 4)));
+        var wymax = (wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3)));
 
         if (this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmax, wymin) || this.intersects(pos1.x, pos1.y, pos2.x, pos2.y, wxmin, wymin, wxmin, wymax)) tmp.push(wall);
     }
     return tmp;
 }
 
-// copied: returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s) , unused
+// copied: returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
 EntityCollision.intersects = function(a, b, c, d, p, q, r, s) {
     var det, gamma, lambda;
     det = (c - a) * (s - q) - (r - p) * (d - b);
@@ -603,6 +772,39 @@ EntityCollision.intersects = function(a, b, c, d, p, q, r, s) {
         return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
     }
 };
+
+// copied
+// line intercept math by Paul Bourke http://paulbourke.net/geometry/pointlineplane/
+// Determine the intersection point of two line segments
+// Return FALSE if the lines don't intersect
+EntityCollision.line_intersect = function(p1, p2, p3, p4) {
+
+    // Check if none of the lines are of length 0
+    if ((p1.x === p2.x && p1.y === p2.y) || (p3.x === p4.x && p3.y === p4.y)) {
+        return false;
+    }
+
+    var denominator = ((p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y));
+
+    // Lines are parallel
+    if (denominator === 0) {
+        return false;
+    }
+
+    var ua = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / denominator;
+    var ub = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / denominator;
+
+    // is the intersection along the segments
+    if (ua < 0 || ua > 1 || ub < 0 || ub > 1) {
+        return false;
+    }
+
+    // Return a object with the x and y coordinates of the intersection
+    var x = p1.x + ua * (p2.x - p1.x);
+    var y = p1.y + ua * (p2.y - p1.y);
+
+    return { x: x, y: y };
+}
 
 EntityCollision.carpet = function(x, y, type) {
     for (var i = 0; i < carpets.length; i++) {
@@ -1331,6 +1533,13 @@ var MapProcessor = function() {
             entities.push(entity);
         }
 
+        for (var i = 0; i < this.getEnemyPositions().length; i++) {
+            var enemyPosition = this.getEnemyPositions()[i];
+            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
+            elements.push(enemy);
+            enemies.push(enemy);
+        }
+
         for (var i = 0; i < this.getWallPositions().length; i++) {
             var wallPosition = this.getWallPositions()[i];
             var wall = new Wall(wallPosition.x, wallPosition.y, wallPosition.type, wallPosition.details);
@@ -1339,13 +1548,6 @@ var MapProcessor = function() {
         }
 
         EntityCollision.cornerCheck();
-
-        for (var i = 0; i < this.getEnemyPositions().length; i++) {
-            var enemyPosition = this.getEnemyPositions()[i];
-            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
-            elements.push(enemy);
-            enemies.push(enemy);
-        }
 
         for (var i = 0; i < this.getPassagePositions().length; i++) {
             var passagePosition = this.getPassagePositions()[i];

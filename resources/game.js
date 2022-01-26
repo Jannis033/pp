@@ -31,7 +31,7 @@ var loadingtime = 1;
 
 PatternHelper.createAll();
 
-var camera;;
+var camera;
 
 mapProcessor.loadMap(map1);
 
@@ -58,7 +58,6 @@ var onRender = function() {
 var keyboard = { up: false, down: false, left: false, right: false, space: false, shift: false, ctrl: false, touchx: 0, touchy: 0, touch: false };
 var mouse = { x: 0, y: 0, pressed: false };
 
-
 var onTick = function() {
     if (loaded) {
         onUpdate();
@@ -80,9 +79,10 @@ var resizeCallback = function() {
 window.addEventListener('resize', resizeCallback);
 resizeCallback();
 
+var tickinterval = 20;
 var tick = setInterval(function() {
     onTick();
-}, 16.5);
+}, tickinterval);
 
 window.addEventListener("keydown", function(event) {
     if (rotateplayer) {
