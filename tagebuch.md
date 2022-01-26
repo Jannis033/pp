@@ -78,4 +78,8 @@ Das Blickfeld der Lehrer wurde darauf vorbereitet, nicht mehr durch Wände schau
 
 ### 25.1.2022
 
-Das Blickfeld passt sich testweise an Wände an, das Ganze funktioniert zwar noch eher schlecht als recht, aber der Anfang ist gemacht. Man sollte vorsorglich eine zweite Grafikkarte einbauen, performancetechnisch ist das System nämmlich alles andere als ideal.
+Das Blickfeld passt sich testweise an Wände an, das Ganze funktioniert zwar noch eher schlecht als recht, aber der Anfang ist gemacht. Man sollte vorsorglich eine zweite Grafikkarte einbauen, performancetechnisch ist das System nämlich alles andere als ideal.
+
+### 26.1.2022
+
+Der Wall Detection Algorithmus wurde überarbeitet und funktioniert jetzt in den meisten Fällen. Die FPS wurden auf 50 reduziert, weil es sonst zu performance Problemen kommen könnte.
