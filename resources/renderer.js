@@ -205,7 +205,11 @@ var EntityDrawer = {
                 //context.stroke();
 
                 // the fill color
-                context.fillStyle = "#FFCC0044";
+                if (entity.following) {
+                    context.fillStyle = "#FF220044";
+                } else {
+                    context.fillStyle = "#FFCC0044";
+                }
                 context.fill();
 
                 switch (details) {
@@ -217,7 +221,11 @@ var EntityDrawer = {
                 context.fillRect(0, 0, blockSize, blockSize + playerOverlap);
                 context.beginPath();
                 context.arc(blockSize / 2, blockSize / 2 + playerOverlap, enemyFollowRadiusRotate + blockSize / 2, 0, 2 * Math.PI);
-                context.strokeStyle = "#FFCC0044";
+                if (entity.rotating) {
+                    context.strokeStyle = "#FF220066";
+                } else {
+                    context.strokeStyle = "#FFCC0044";
+                }
                 context.stroke();
                 context.translate(-x, -y + playerOverlap);
 
@@ -1236,6 +1244,8 @@ var Enemy = function(x, y, type, details) {
     this.viewAngle = 30;
     this.rotation = 0;
     this.rotateFollow = true;
+    this.following = false;
+    this.rotating = false;
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -1247,6 +1257,8 @@ var Enemy = function(x, y, type, details) {
         if (this.sleep) return;
 
         EntityDrawer.enemy(this.x, this.y, this.type, this.details, this);
+        this.following = false;
+        this.rotating = false;
     };
     this.follow = function() {
         var collisionVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
@@ -1254,11 +1266,13 @@ var Enemy = function(x, y, type, details) {
         this.y += collisionVector.y * this.speed;
         this.wallCollision();
         this.rotate();
+        this.following = true;
     }
     this.rotate = function() {
         var collisionVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
         //degrees = (degrees + 360) % 360;
         this.rotation = (Math.atan2(collisionVector.x, collisionVector.y) / Math.PI * 180 + 360) % 360;
+        this.rotating = true;
     }
 
     this.wallCollision = function() {
