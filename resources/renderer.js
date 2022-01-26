@@ -1460,7 +1460,7 @@ var MapProcessor = function() {
                         break;
                     case 'P':
                         if (this.spawn == null || this.spawn == row[x + 1]) {
-                            this.playerPosition = { x: realX, y: y };
+                            this.playerPosition = { x: realX + 0.5, y: y + 0.5 };
                         }
                         break;
                     case 't':
