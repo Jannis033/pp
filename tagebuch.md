@@ -83,3 +83,7 @@ Das Blickfeld passt sich testweise an Wände an, das Ganze funktioniert zwar noc
 ### 26.1.2022
 
 Der Wall Detection Algorithmus wurde überarbeitet und funktioniert jetzt in den meisten Fällen. Die FPS wurden auf 50 reduziert, weil es sonst zu performance Problemen kommen könnte.
+
+##### 21:52 Uhr
+
+Die Wände werden jetzt immer richtig erkannt, dank einer kleinen Änderung im Code.
