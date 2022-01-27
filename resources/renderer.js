@@ -1186,7 +1186,7 @@ var Player = function(x, y) {
             var entity = EntityCollision.entitiesInteract(this.x, this.y);
 
             if (entity != null) {
-                if (keyboard.space) {
+                if (keyboard.space || touch.touch) {
                     entityList.get(entity.details).interact();
                     document.getElementById("interactInfo").classList.remove("show");
                 } else {
@@ -1196,6 +1196,7 @@ var Player = function(x, y) {
                 document.getElementById("interactInfo").classList.remove("show");
             }
         }
+
         //enemies
         if (!keyboard.shift) {
             var tmpenall = EntityCollision.enemies(this.x, this.y, true);
