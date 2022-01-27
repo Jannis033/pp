@@ -194,10 +194,17 @@ var EntityDrawer = {
 
         switch (type) {
             case 't':
-                context.fillStyle = patterns.stairsX;
-                break;
-            case 'T':
-                context.fillStyle = patterns.stairsY;
+                switch (details) {
+                    case 't':
+                        context.fillStyle = patterns.stairsX;
+                        break;
+                    case 'T':
+                        context.fillStyle = patterns.stairsY;
+                        break;
+                    case 'L':
+                        context.fillStyle = patterns.cookie;
+                        break;
+                }
                 break;
             case 'H':
                 switch (details) {
@@ -214,7 +221,10 @@ var EntityDrawer = {
                 break;
             case 'v':
             case 'V':
-                context.fillStyle = '#aa0000';
+                switch (details) {
+                    default: context.fillStyle = patterns.portal;
+                    break;
+                }
                 break;
             case 'D':
                 context.fillStyle = '#0088ff11';
@@ -1003,6 +1013,7 @@ var Player = function(x, y) {
     this.regeneratevalue = 0.15;
     this.health = 20;
     this.maxhealth = 20;
+    this.inventory = {};
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -1018,6 +1029,42 @@ var Player = function(x, y) {
     this.endRotate = function() {
         this.rotation = this.tmprotation;
         rotateplayer = false;
+    }
+
+    this.updateInventory = function(item) {
+        document.getElementById("inv_" + item).innerHTML = this.countInventory(item);
+    }
+
+    this.countInventory = function(item) {
+        if (this.inventory.hasOwnProperty(item)) {
+            return this.inventory[item];
+        } else {
+            return 0;
+        }
+    }
+
+    this.addInventory = function(item, count = 1) {
+        if (this.inventory.hasOwnProperty(item)) {
+            this.inventory[item] = this.inventory[item] + count;
+            if (this.inventory[item] < 0) this.inventory[item] = 0;
+        } else {
+            this.inventory[item] = 1;
+        }
+        this.updateInventory(item);
+    }
+    this.removeInventory = function(item, count = 1) {
+        if (this.inventory.hasOwnProperty(item)) {
+            this.inventory[item] = this.inventory[item] - count;
+            if (this.inventory[item] < 0) this.inventory[item] = 0;
+        } else {
+            this.inventory[item] = 0;
+        }
+        this.updateInventory(item);
+    }
+
+    this.clearInventory = function(item) {
+        this.inventory[item] = 0;
+        this.updateInventory(item);
     }
 
     this.die = function() {
@@ -1190,10 +1237,13 @@ var Player = function(x, y) {
                     entityList.get(entity.details).interact();
                     document.getElementById("interactInfo").classList.remove("show");
                 } else {
-                    document.getElementById("interactInfo").classList.add("show");
+                    if (!document.getElementById("entityText").classList.contains("show")) {
+                        document.getElementById("interactInfo").classList.add("show");
+                    }
                 }
             } else {
                 document.getElementById("interactInfo").classList.remove("show");
+                hideEntityText();
             }
         }
 
@@ -1247,7 +1297,6 @@ var Player = function(x, y) {
     };
 
     this.render = function() {
-
         EntityHelper.beginRotationOffset(this.x, this.y, this.angle);
 
         EntityDrawer.player(this.rotation);
@@ -1504,7 +1553,6 @@ var Camera = function() {
     };
 
     this.preRender = function() {
-
         var targetX = -player.x + context.canvas.width / 2;
         var targetY = -player.y + context.canvas.height / 2;
 
@@ -1616,7 +1664,6 @@ var MapProcessor = function() {
                         this.wallPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
                     case 't':
-                    case 'T':
                     case 'H':
                     case 'V':
                     case 'D':

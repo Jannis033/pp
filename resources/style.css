@@ -35,6 +35,21 @@ body {
     border-radius: 2px;
 }
 
+#inventory {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: bottom;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    max-width: 150px;
+    width: 10%;
+    min-width: 50px;
+    height: 60px;
+    pointer-events: none;
+}
+
 #info {
     display: flex;
     justify-content: center;
@@ -48,11 +63,13 @@ body {
 }
 
 #info div {
+    position: absolute;
     opacity: 0;
     background-color: #aaa;
     pointer-events: none;
     border-radius: 5px;
     padding: 5px 10px;
+    margin-bottom: 20px;
     transition: opacity 0.2s;
 }
 

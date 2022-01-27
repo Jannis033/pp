@@ -21,6 +21,7 @@ var PatternHelper = {
         patterns.heizungM = this.heizungM();
         patterns.heizungE = this.heizungE();
         patterns.tisch2 = this.tisch2();
+        patterns.portal = this.portal();
     },
     stairsX: function() {
         const patternCanvas = document.createElement('canvas');
@@ -2249,6 +2250,19 @@ var PatternHelper = {
         patternContext.bezierCurveTo(26.467546 * zoomfactor, 0.600649 * zoomfactor, 26.160676 * zoomfactor, 0.442056 * zoomfactor, 25.885321 * zoomfactor, 0.510894 * zoomfactor);
         patternContext.bezierCurveTo(25.649804 * zoomfactor, 0.569774 * zoomfactor, 25.317172 * zoomfactor, 0.780655 * zoomfactor, 25.033830 * zoomfactor, 0.851491 * zoomfactor);
         patternContext.bezierCurveTo(24.489042 * zoomfactor, 0.987688 * zoomfactor, 23.189346 * zoomfactor, 1.021789 * zoomfactor, 22.649656 * zoomfactor, 1.021789 * zoomfactor);
+        patternContext.fill();
+
+        return context.createPattern(patternCanvas, 'repeat');
+    },
+    portal: function() {
+        const patternCanvas = document.createElement('canvas');
+        const patternContext = patternCanvas.getContext('2d');
+
+        patternCanvas.width = blockSize;
+        patternCanvas.height = blockSize;
+
+        patternContext.arc(blockSize / 2, blockSize / 2, blockSize / 2, 0, 2 * Math.PI);
+        patternContext.fillStyle = "#888";
         patternContext.fill();
 
         return context.createPattern(patternCanvas, 'repeat');

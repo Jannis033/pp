@@ -93,3 +93,4 @@ Um die Lehrer gibt es jetzt auch Kreise, die anzeigen, wenn man ihnen zu nahe ko
 
 Glasscheiben wurden eingefügt, Lehrer können dadurch schauen.
 Wenn man über ein Portal in eine andere Welt geht, wird die vorherige Welt gespeichert und beim erneuten Betreten wiederhergestellt.
+Es wurden die ersten Aufgaben eingefügt, man kann Kekse sammeln und sie bei Lehrern abgeben.

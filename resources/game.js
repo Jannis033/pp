@@ -251,6 +251,7 @@ function handleTouchEnd() {
     keyboard.touchx = 0;
     keyboard.touchy = 0;
     keyboard.touch = down;
+    removeAllMeetings();
     down = false;
 }
 
