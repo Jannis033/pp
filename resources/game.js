@@ -6,7 +6,7 @@ var zoomfactor = 1;
 var blockSize = 80 * zoomfactor;
 var arcSizeRadius = 35 * zoomfactor;
 var entityCollectRadius = 20 * zoomfactor;
-var entityInteractRadius = 50 * zoomfactor;
+var entityInteractRadius = 80 * zoomfactor;
 var enemyFollowRadius = 400 * zoomfactor;
 var enemyFollowRadiusRotate = 100 * zoomfactor;
 var playerOverlap = 20 * zoomfactor;
@@ -139,6 +139,7 @@ window.addEventListener("keyup", function(event) {
             break;
         case 32:
             keyboard.space = false;
+            removeAllMeetings();
             break;
         case 16:
             keyboard.shift = false;

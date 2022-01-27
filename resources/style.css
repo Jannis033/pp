@@ -35,6 +35,31 @@ body {
     border-radius: 2px;
 }
 
+#info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    width: calc(100% - 10px);
+    height: 60px;
+    pointer-events: none;
+}
+
+#info div {
+    opacity: 0;
+    background-color: #aaa;
+    pointer-events: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: opacity 0.2s;
+}
+
+#info div.show {
+    opacity: 1;
+}
+
 #deathscreen {
     display: none;
     position: absolute;

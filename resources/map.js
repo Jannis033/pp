@@ -12,25 +12,9 @@ var removeMeeting = function(name) {
     removeItemOnce(meetings, name);
 };
 
-var pokefunctions = function() {
-    this.f1 = function() {
-        if (registerMeeting('f1')) {
-            console.log('meeting f1');
-        }
-    }
-    this.f2 = function() {
-        console.log("taubsu");
-    }
-}
-
-var pfnc = new pokefunctions();
-
-var pokelist = new Map();
-
-pokelist.set("1", { name: "Taubsi", function: pfnc.f1 });
-pokelist.set("2", { name: "Pikachu", function: pfnc.f2 });
-
-//pokelist.get("1")["function"]();
+var removeAllMeetings = function() {
+    meetings.length = 0; // clear array, should be more performant than the use of meetings = [];
+};
 
 function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
@@ -51,6 +35,32 @@ function removeItemAll(arr, value) {
     }
     return arr;
 }
+
+var entityFunctions = function() {
+    this.ek = function() {
+        console.log("collected cookie!");
+    }
+    this.e1 = function() {
+        if (registerMeeting('e1')) {
+            console.log("interacted!");
+        }
+    }
+    this.e2 = function() {
+        if (registerMeeting('e2')) {
+            console.log("mueller!");
+        }
+    }
+}
+
+var efnc = new entityFunctions();
+
+var entityList = new Map();
+
+entityList.set("k", { name: "Keks", texture: "cookie", collect: efnc.ek });
+entityList.set("1", { name: "Glauben", texture: "player4", overlap: true, interact: efnc.e1 });
+entityList.set("2", { name: "Müller", texture: "player0", overlap: true, interact: efnc.e2 });
+
+
 
 // PORTALS
 

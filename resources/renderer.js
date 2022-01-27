@@ -243,17 +243,16 @@ var EntityDrawer = {
     },
     entity: function(x, y, type, details) {
         context.beginPath();
-        context.rect(x, y, blockSize, blockSize);
-        switch (type) {
-            case 'e':
-                switch (details) {
-                    case 'k':
-                        context.fillStyle = patterns.cookie;
-                        break;
-                }
-                break;
+        context.save();
+        if (entityList.get(details).overlap) {
+            context.translate(x, y - playerOverlap);
+            context.rect(0, 0, blockSize, blockSize + playerOverlap);
+        } else {
+            context.rect(x, y, blockSize, blockSize);
         }
+        context.fillStyle = patterns[entityList.get(details).texture];
         context.fill();
+        context.restore();
     },
     enemy: function(x, y, type, details, entity) {
         switch (type) {
@@ -361,7 +360,7 @@ EntityCollision.entitiesCollect = function(x, y) {
     for (var i = 0; i < entities.length; i++) {
         var entity = entities[i];
 
-        if (entity.type == "o") {
+        if (entity.type == "c") {
 
             var entityCenterX = entity.x + blockSize / 2;
             var entityCenterY = entity.y + blockSize / 2;
@@ -448,8 +447,8 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
     var points = [];
     points.push({ x: entity.x + blockSize / 2, y: entity.y + blockSize / 2 });
 
-    for (i = 0; i < 120; i++) {
-        var vector = this.getRotationVector((viewArea.end + i / 2) > 360 ? (viewArea.end + i / 2 - 360) : (viewArea.end + i / 2));
+    for (i = 0; i < 60; i++) {
+        var vector = this.getRotationVector((viewArea.end + i) > 360 ? (viewArea.end + i - 360) : (viewArea.end + i));
         var x = vector.x * enemyFollowRadius + entity.x + blockSize / 2;
         var y = vector.y * enemyFollowRadius + entity.y + blockSize / 2;
 
@@ -1178,6 +1177,7 @@ var Player = function(x, y) {
             if (entity != null) {
                 removeItemOnce(entities, entity);
                 removeItemOnce(elements, entity);
+                entityList.get(entity.details).collect();
             }
         }
 
@@ -1186,7 +1186,14 @@ var Player = function(x, y) {
             var entity = EntityCollision.entitiesInteract(this.x, this.y);
 
             if (entity != null) {
-
+                if (keyboard.space) {
+                    entityList.get(entity.details).interact();
+                    document.getElementById("interactInfo").classList.remove("show");
+                } else {
+                    document.getElementById("interactInfo").classList.add("show");
+                }
+            } else {
+                document.getElementById("interactInfo").classList.remove("show");
             }
         }
         //enemies
@@ -1546,7 +1553,7 @@ var MapProcessor = function() {
         blockSize = 80 * zoomfactor;
         arcSizeRadius = 35 * zoomfactor;
         entityCollectRadius = 20 * zoomfactor;
-        entityInteractRadius = 50 * zoomfactor;
+        entityInteractRadius = 80 * zoomfactor;
         enemyFollowRadius = 400 * zoomfactor;
         enemyFollowRadiusRotate = 100 * zoomfactor;
         playerOverlap = 20 * zoomfactor;
@@ -1596,6 +1603,7 @@ var MapProcessor = function() {
                         this.passagePositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
                     case 'e':
+                    case 'c':
                         this.entityPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
                     case 'E':
