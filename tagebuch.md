@@ -5,9 +5,9 @@
 Nach Eintragung in die Datenbank, um ganz oben zu sein, haben wir ein Github Repo erstellt und angefangen, mit VS-Code im online-Editor zu arbeiten. 
 Wir wissen aber immer noch nicht, was wir programmieren wollen.
 
-### 28.10.2021 17.03 uhr 
+#### 17.03 Uhr 
 
-Haben uns nach längeren hin und her auf ein an Pokémon angelehntes Spiel mit 2D Grafik geeinigt.
+Haben uns nach längeren Hin und Her auf ein an Pokémon angelehntes Spiel mit 2D Grafik geeinigt.
 
 ### 3.11.2021 
 
@@ -84,7 +84,7 @@ Das Blickfeld passt sich testweise an Wände an, das Ganze funktioniert zwar noc
 
 Der Wall Detection Algorithmus wurde überarbeitet und funktioniert jetzt in den meisten Fällen. Die FPS wurden auf 50 reduziert, weil es sonst zu performance Problemen kommen könnte.
 
-##### 21:52 Uhr
+#### 21:52 Uhr
 
 Die Wände werden jetzt immer richtig erkannt, dank einer kleinen Änderung im Code.
 Um die Lehrer gibt es jetzt auch Kreise, die anzeigen, wenn man ihnen zu nahe kommt.
