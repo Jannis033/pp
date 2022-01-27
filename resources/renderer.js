@@ -95,15 +95,60 @@ var EntityDrawer = {
         context.translate(blockSize / 2, blockSize / 2 + playerOverlap);
     },
     wall: function(x, y, type, details, corners) {
-        context.beginPath();
+        var rotation = 0;
 
         switch (type) {
             case 'W':
+                context.beginPath();
                 context.fillStyle = colors.wall;
                 switch (details) {
                     case 'i':
                         context.fillStyle = "#00000000";
                         context.rect(x, y, blockSize, blockSize);
+                        break;
+                    case 'g':
+                        context.fillStyle = colors.window;
+                        if (corners.left && corners.right && corners.top && corners.bottom) {
+
+                        } else if (corners.left && corners.right && corners.top) {
+
+                        } else if (corners.left && corners.right && corners.bottom) {
+
+                        } else if (corners.top && corners.right && corners.bottom) {
+
+                        } else if (corners.top && corners.left && corners.bottom) {
+
+                        } else if (corners.left && corners.top) {
+
+                        } else if (corners.right && corners.top) {
+
+                        } else if (corners.left && corners.bottom) {
+
+                        } else if (corners.right && corners.bottom) {
+
+                        } else if (corners.left && corners.right) {
+                            context.rect(x, y + blockSize / 4 + 5, blockSize, blockSize / 8);
+                            context.rect(x, y + blockSize / 8 * 5 - 5, blockSize, blockSize / 8);
+                        } else if (corners.top && corners.bottom) {
+                            context.rect(x + blockSize / 4 + 5, y, blockSize / 8, blockSize);
+                            context.rect(x + blockSize / 8 * 5 - 5, y, blockSize / 8, blockSize);
+                        } else if (corners.top) {
+                            context.rect(x + blockSize / 4 + 5, y, blockSize / 8, blockSize / 4 * 3);
+                            context.rect(x + blockSize / 8 * 5 - 5, y, blockSize / 8, blockSize / 4 * 3);
+                            context.rect(x + blockSize / 4, y + blockSize / 8 * 5, blockSize / 2, blockSize / 8);
+                        } else if (corners.bottom) {
+                            context.rect(x + blockSize / 4 + 5, y + blockSize / 4, blockSize / 8, blockSize / 4 * 3);
+                            context.rect(x + blockSize / 8 * 5 - 5, y + blockSize / 4, blockSize / 8, blockSize / 4 * 3);
+                            context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 8);
+                        } else if (corners.left) {
+                            context.rect(x, y + blockSize / 4 + 5, blockSize / 4 * 3, blockSize / 8);
+                            context.rect(x, y + blockSize / 8 * 5 - 5, blockSize / 4 * 3, blockSize / 8);
+                            context.rect(x + blockSize / 8 * 5, y + blockSize / 4, blockSize / 8, blockSize / 2);
+                        } else if (corners.right) {
+                            context.rect(x + blockSize / 4, y + blockSize / 4 + 5, blockSize / 4 * 3, blockSize / 8);
+                            context.rect(x + blockSize / 4, y + blockSize / 8 * 5 - 5, blockSize / 4 * 3, blockSize / 8);
+                            context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 8, blockSize / 2);
+                        }
                         break;
                     default:
                         context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
@@ -121,21 +166,32 @@ var EntityDrawer = {
                         }
                         break;
                 }
+                context.fill();
                 break;
             case 'O':
-                context.rect(x, y, blockSize, blockSize);
                 switch (details) {
                     case 't':
                         context.fillStyle = patterns.tisch2;
                         break;
+                    case 'T':
+                        context.fillStyle = patterns.tisch2;
+                        rotation = 90;
+                        break;
                 }
+                context.save();
+                context.translate(x + blockSize / 2, y + blockSize / 2);
+                context.rotate(rotation / 180 * Math.PI);
+                context.translate(-blockSize / 2, -blockSize / 2);
+                context.beginPath();
+                context.rect(0, 0, blockSize, blockSize);
+                context.fill();
+                context.restore();
                 break;
         }
-        context.fill();
     },
     carpet: function(x, y, type, details) {
-        context.beginPath();
-        context.rect(x, y, blockSize, blockSize);
+        var rotation = 0;
+
         switch (type) {
             case 't':
                 context.fillStyle = patterns.stairsX;
@@ -168,10 +224,22 @@ var EntityDrawer = {
                     case 't':
                         context.fillStyle = patterns.tisch2;
                         break;
+                    case 'T':
+                        context.fillStyle = patterns.tisch2;
+                        rotation = 90;
+                        break;
                 }
                 break;
         }
+
+        context.save();
+        context.translate(x + blockSize / 2, y + blockSize / 2);
+        context.rotate(rotation / 180 * Math.PI);
+        context.translate(-blockSize / 2, -blockSize / 2);
+        context.beginPath();
+        context.rect(0, 0, blockSize, blockSize);
         context.fill();
+        context.restore();
     },
     entity: function(x, y, type, details) {
         context.beginPath();
@@ -441,6 +509,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
             if ((entity.x + blockSize / 2) < wxmin) { // 1, 8, 7
                 if ((entity.y + blockSize / 2) < wymin) { // 1
                     if (wall.corners.top) {
+                        if (!wall.solidCorners.top) {
+                            p.push(wt2);
+                        }
                         p.push(wt1);
                     } else {
                         if (wall.corners.right) {
@@ -451,6 +522,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
                     p.push(wc1);
                     if (wall.corners.left) {
                         p.push(wt8);
+                        if (!wall.solidCorners.left) {
+                            p.push(wt7);
+                        }
                     } else {
                         p.push(wc4);
                         if (wall.corners.bottom) {
@@ -459,6 +533,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
                     }
                 } else if ((entity.y + blockSize / 2) > wymax) { // 7
                     if (wall.corners.left) {
+                        if (!wall.solidCorners.left) {
+                            p.push(wt8);
+                        }
                         p.push(wt7);
                     } else {
                         if (wall.corners.top) {
@@ -469,6 +546,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
                     p.push(wc4);
                     if (wall.corners.bottom) {
                         p.push(wt6);
+                        if (!wall.solidCorners.bottom) {
+                            p.push(wt5);
+                        }
                     } else {
                         p.push(wc3);
                         if (wall.corners.right) {
@@ -491,6 +571,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
             } else if ((entity.x + blockSize / 2) > wxmax) { // 3, 4, 5
                 if ((entity.y + blockSize / 2) < wymin) { // 3
                     if (wall.corners.right) {
+                        if (!wall.solidCorners.right) {
+                            p.push(wt4);
+                        }
                         p.push(wt3);
                     } else {
                         if (wall.corners.bottom) {
@@ -501,6 +584,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
                     p.push(wc2);
                     if (wall.corners.top) {
                         p.push(wt2);
+                        if (!wall.solidCorners.top) {
+                            p.push(wt1);
+                        }
                     } else {
                         p.push(wc1);
                         if (wall.corners.left) {
@@ -510,6 +596,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
 
                 } else if ((entity.y + blockSize / 2) > wymax) { // 5
                     if (wall.corners.bottom) {
+                        if (!wall.solidCorners.bottom) {
+                            p.push(wt6);
+                        }
                         p.push(wt5);
                     } else {
                         if (wall.corners.left) {
@@ -520,6 +609,9 @@ EntityCollision.getViewareaPolygon = function(entity) { // with wall detection
                     p.push(wc3);
                     if (wall.corners.right) {
                         p.push(wt4);
+                        if (!wall.solidCorners.right) {
+                            p.push(wt3);
+                        }
                     } else {
                         p.push(wc2);
                         if (wall.corners.top) {
@@ -736,7 +828,7 @@ EntityCollision.getWallsInArea = function(pos1, pos2) {
         var wymin = (wall.y + (wall.corners.top ? 0 : (blockSize / 4)));
         var wymax = (wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3)));
         //return wxmin >= xmin && wxmax <= xmax && wymin >= ymin && wymax <= ymax; 
-        return wall.type == "W" && wall.details != "i" && xmax >= wxmin && xmin <= wxmax && ymax >= wymin && ymin <= wymax;
+        return wall.type == "W" && wall.details != "i" && wall.details != "g" && xmax >= wxmin && xmin <= wxmax && ymax >= wymin && ymin <= wymax;
     });
 }
 
@@ -840,6 +932,16 @@ EntityCollision.wallAt = function(x, y) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
         if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i") {
+            return true;
+        }
+    }
+    return false;
+}
+
+EntityCollision.solidWallAt = function(x, y) {
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+        if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i" && wall.details != "g") {
             return true;
         }
     }
@@ -1165,6 +1267,7 @@ var Wall = function(x, y, type, details) {
     this.y = y * blockSize;
     this.sleep = true;
     this.corners = { right: false, left: false, top: false, bottom: false };
+    this.solidCorners = { right: false, left: false, top: false, bottom: false };
     this.collCorners = { right: false, left: false, top: false, bottom: false };
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
@@ -1179,6 +1282,10 @@ var Wall = function(x, y, type, details) {
             this.corners.left = EntityCollision.wallAt(this.x - blockSize, this.y);
             this.corners.bottom = EntityCollision.wallAt(this.x, this.y + blockSize);
             this.corners.top = EntityCollision.wallAt(this.x, this.y - blockSize);
+            this.solidCorners.right = EntityCollision.solidWallAt(this.x + blockSize, this.y);
+            this.solidCorners.left = EntityCollision.solidWallAt(this.x - blockSize, this.y);
+            this.solidCorners.bottom = EntityCollision.solidWallAt(this.x, this.y + blockSize);
+            this.solidCorners.top = EntityCollision.solidWallAt(this.x, this.y - blockSize);
             this.collCorners.right = EntityCollision.collWallAt(this.x + blockSize, this.y);
             this.collCorners.left = EntityCollision.collWallAt(this.x - blockSize, this.y);
             this.collCorners.bottom = EntityCollision.collWallAt(this.x, this.y + blockSize);

@@ -11,7 +11,7 @@ var enemyFollowRadius = 400 * zoomfactor;
 var enemyFollowRadiusRotate = 100 * zoomfactor;
 var playerOverlap = 20 * zoomfactor;
 
-var colors = { wall: '#666', player: '#111' };
+var colors = { wall: '#666', window: '#777', player: '#111' };
 
 var elements = [];
 var entities = [];

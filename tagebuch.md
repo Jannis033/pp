@@ -88,3 +88,7 @@ Der Wall Detection Algorithmus wurde überarbeitet und funktioniert jetzt in den
 
 Die Wände werden jetzt immer richtig erkannt, dank einer kleinen Änderung im Code.
 Um die Lehrer gibt es jetzt auch Kreise, die anzeigen, wenn man ihnen zu nahe kommt.
+
+### 27.1.2022
+
+Glasscheiben wurden eingefügt, Lehrer können dadurch schauen.
