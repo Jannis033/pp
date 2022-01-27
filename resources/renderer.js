@@ -1530,6 +1530,9 @@ var MapProcessor = function() {
     this.map = null;
     this.spawn = null;
 
+    this.mapName = null;
+    this.mapsSave = new Map();
+
     this.wallPositions = [];
     this.carpetPositions = [];
     this.passagePositions = [];
@@ -1537,7 +1540,8 @@ var MapProcessor = function() {
     this.enemyPositions = [];
     this.playerPosition = { x: 0, y: 0 };
 
-    this.selectMap = function(map) {
+    this.selectMap = function(map, mapName) {
+        this.mapName = mapName;
         this.map = map.split(/\r?\n/);
     }
 
@@ -1560,6 +1564,30 @@ var MapProcessor = function() {
 
         PatternHelper.createAll();
         this.reloadMap();
+    }
+
+    this.generateSpawn = function() {
+        this.playerPosition = { x: 0, y: 0 };
+
+        if (this.map == null) {
+            return;
+        }
+        for (var y = 0; y < this.map.length; y++) {
+            var row = this.map[y];
+
+            for (var x = 0; x < row.length; x += 2) {
+                var char = row[x];
+                var realX = x / 2;
+
+                switch (char) {
+                    case 'P':
+                        if (this.spawn == null || this.spawn == row[x + 1]) {
+                            this.playerPosition = { x: realX + 0.5, y: y + 0.5 };
+                        }
+                        break;
+                }
+            }
+        };
     }
 
     this.generate = function() {
@@ -1586,11 +1614,6 @@ var MapProcessor = function() {
                     case 'O':
                         this.wallPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
                         break;
-                    case 'P':
-                        if (this.spawn == null || this.spawn == row[x + 1]) {
-                            this.playerPosition = { x: realX + 0.5, y: y + 0.5 };
-                        }
-                        break;
                     case 't':
                     case 'T':
                     case 'H':
@@ -1612,25 +1635,25 @@ var MapProcessor = function() {
                 }
             }
         };
+    };
 
-        this.getPlayerPosition = function() {
-            return this.playerPosition;
-        };
-        this.getWallPositions = function() {
-            return this.wallPositions;
-        };
-        this.getCarpetPositions = function() {
-            return this.carpetPositions;
-        };
-        this.getPassagePositions = function() {
-            return this.passagePositions;
-        };
-        this.getEntityPositions = function() {
-            return this.entityPositions;
-        };
-        this.getEnemyPositions = function() {
-            return this.enemyPositions;
-        };
+    this.getPlayerPosition = function() {
+        return this.playerPosition;
+    };
+    this.getWallPositions = function() {
+        return this.wallPositions;
+    };
+    this.getCarpetPositions = function() {
+        return this.carpetPositions;
+    };
+    this.getPassagePositions = function() {
+        return this.passagePositions;
+    };
+    this.getEntityPositions = function() {
+        return this.entityPositions;
+    };
+    this.getEnemyPositions = function() {
+        return this.enemyPositions;
     };
 
     this.reloadMap = function() {
@@ -1641,52 +1664,70 @@ var MapProcessor = function() {
         EntityCollision.cornerCheck();
     };
 
-    this.loadMap = function(map, spawn = null, rotation = 4, load = false) {
-        this.selectMap(map);
+    this.saveMap = function() {
+        if (this.mapName == null || this.map == null) return;
+        removeItemAll(elements, player);
+        this.mapsSave.set(this.mapName, { elements: elements, entities: entities, enemies: enemies, walls: walls, carpets: carpets })
+    }
+
+    this.loadMap = function(map, mapName, spawn = null, rotation = 4, reset = false, load = false) {
+        this.saveMap();
+        this.selectMap(map, mapName);
         this.setSpawn(spawn);
-        this.generate();
 
-        elements = [];
-        entities = [];
-        enemies = [];
-        walls = [];
-        carpets = [];
+        if (this.mapsSave.has(mapName) && !reset) {
+            var m = this.mapsSave.get(mapName);
+            elements = m.elements;
+            entities = m.entities;
+            enemies = m.enemies;
+            walls = m.walls;
+            carpets = m.carpets;
+        } else {
+            this.generate();
 
-        for (var i = 0; i < this.getCarpetPositions().length; i++) {
-            var carpetPosition = this.getCarpetPositions()[i];
-            var carpet = new Carpet(carpetPosition.x, carpetPosition.y, carpetPosition.type, carpetPosition.details);
-            elements.push(carpet);
-            carpets.push(carpet);
+            elements = [];
+            entities = [];
+            enemies = [];
+            walls = [];
+            carpets = [];
+
+            for (var i = 0; i < this.getCarpetPositions().length; i++) {
+                var carpetPosition = this.getCarpetPositions()[i];
+                var carpet = new Carpet(carpetPosition.x, carpetPosition.y, carpetPosition.type, carpetPosition.details);
+                elements.push(carpet);
+                carpets.push(carpet);
+            }
+
+            for (var i = 0; i < this.getEntityPositions().length; i++) {
+                var entityPosition = this.getEntityPositions()[i];
+                var entity = new Entity(entityPosition.x, entityPosition.y, entityPosition.type, entityPosition.details);
+                elements.push(entity);
+                entities.push(entity);
+            }
+
+            for (var i = 0; i < this.getWallPositions().length; i++) {
+                var wallPosition = this.getWallPositions()[i];
+                var wall = new Wall(wallPosition.x, wallPosition.y, wallPosition.type, wallPosition.details);
+                elements.push(wall);
+                walls.push(wall);
+            }
+
+            EntityCollision.cornerCheck();
+
+            for (var i = 0; i < this.getEnemyPositions().length; i++) {
+                var enemyPosition = this.getEnemyPositions()[i];
+                var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
+                elements.push(enemy);
+                enemies.push(enemy);
+            }
+
+            for (var i = 0; i < this.getPassagePositions().length; i++) {
+                var passagePosition = this.getPassagePositions()[i];
+                var passage = new Passage(passagePosition.x, passagePosition.y, passagePosition.type, passagePosition.details);
+                elements.push(passage);
+            }
         }
-
-        for (var i = 0; i < this.getEntityPositions().length; i++) {
-            var entityPosition = this.getEntityPositions()[i];
-            var entity = new Entity(entityPosition.x, entityPosition.y, entityPosition.type, entityPosition.details);
-            elements.push(entity);
-            entities.push(entity);
-        }
-
-        for (var i = 0; i < this.getWallPositions().length; i++) {
-            var wallPosition = this.getWallPositions()[i];
-            var wall = new Wall(wallPosition.x, wallPosition.y, wallPosition.type, wallPosition.details);
-            elements.push(wall);
-            walls.push(wall);
-        }
-
-        EntityCollision.cornerCheck();
-
-        for (var i = 0; i < this.getEnemyPositions().length; i++) {
-            var enemyPosition = this.getEnemyPositions()[i];
-            var enemy = new Enemy(enemyPosition.x, enemyPosition.y, enemyPosition.type, enemyPosition.details);
-            elements.push(enemy);
-            enemies.push(enemy);
-        }
-
-        for (var i = 0; i < this.getPassagePositions().length; i++) {
-            var passagePosition = this.getPassagePositions()[i];
-            var passage = new Passage(passagePosition.x, passagePosition.y, passagePosition.type, passagePosition.details);
-            elements.push(passage);
-        }
+        this.generateSpawn();
 
         playerPosition = this.getPlayerPosition();
         player = new Player(playerPosition.x, playerPosition.y);
@@ -1705,5 +1746,5 @@ var MapProcessor = function() {
         }
 
         camera = new Camera();
-    };
+    }
 }

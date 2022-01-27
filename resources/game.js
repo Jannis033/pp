@@ -15,6 +15,7 @@ var colors = { wall: '#666', window: '#777', player: '#111' };
 
 var elements = [];
 var entities = [];
+var enemies = [];
 var walls = [];
 var carpets = [];
 
@@ -33,7 +34,7 @@ PatternHelper.createAll();
 
 var camera;
 
-mapProcessor.loadMap(map1);
+mapProcessor.loadMap(map1, "map1");
 
 var onUpdate = function() {
     camera.update();

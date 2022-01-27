@@ -66,10 +66,10 @@ entityList.set("2", { name: "Müller", texture: "player0", overlap: true, intera
 
 var portalFunctions = function() {
     this.p1 = function() {
-        mapProcessor.loadMap(map1, null, player.rotation, false);
+        mapProcessor.loadMap(map1, "map1", null, player.rotation, false, false);
     }
     this.p2 = function() {
-        mapProcessor.loadMap(map2, 2, player.rotation, false);
+        mapProcessor.loadMap(map2, "map2", 2, player.rotation, false, false);
     }
 }
 

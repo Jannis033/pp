@@ -92,3 +92,4 @@ Um die Lehrer gibt es jetzt auch Kreise, die anzeigen, wenn man ihnen zu nahe ko
 ### 27.1.2022
 
 Glasscheiben wurden eingefügt, Lehrer können dadurch schauen.
+Wenn man über ein Portal in eine andere Welt geht, wird die vorherige Welt gespeichert und beim erneuten Betreten wiederhergestellt.
