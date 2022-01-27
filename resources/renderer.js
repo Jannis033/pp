@@ -1186,7 +1186,7 @@ var Player = function(x, y) {
             var entity = EntityCollision.entitiesInteract(this.x, this.y);
 
             if (entity != null) {
-                if (keyboard.space || touch.touch) {
+                if (keyboard.space || keyboard.touch) {
                     entityList.get(entity.details).interact();
                     document.getElementById("interactInfo").classList.remove("show");
                 } else {
