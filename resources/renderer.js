@@ -366,6 +366,60 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
     return resultVector;
 };
 
+EntityCollision.arcToEntity = function(arcX, arcY, arcRadius, entityX, entityY, entitySize, details) {
+    var wallAt = { right: EntityCollision.collWallAt(entityX + blockSize, entityY), left: EntityCollision.collWallAt(entityX - blockSize, entityY), top: EntityCollision.collWallAt(entityX, entityY - blockSize), bottom: EntityCollision.collWallAt(entityX, entityY + blockSize) };
+    var entitySizeX = (wallAt.left && wallAt.right ? entitySize * 1.5 : (wallAt.left || wallAt.right ? entitySize : entitySize));
+    var entitySizeY = (wallAt.top && wallAt.bottom ? entitySize * 1.5 : (wallAt.top || wallAt.bottom ? entitySize : entitySize));
+
+    entityX = (wallAt.left ? entityX - blockSize / 4 : entityX);
+    entityY = (wallAt.top ? entityY - blockSize / 4 : entityY);
+
+    var distX = Math.abs(arcX - entityX - entitySizeX / 2);
+    var distY = Math.abs(arcY - entityY - entitySizeY / 2);
+
+    if (distX > (entitySizeX / 2 + arcRadius)) { return false; }
+    if (distY > (entitySizeY / 2 + arcRadius)) { return false; }
+
+    if (distX <= (entitySizeX / 2)) { return true; }
+    if (distY <= (entitySizeY / 2)) { return true; }
+
+    var dx = distX - entitySizeX / 2;
+    var dy = distY - entitySizeY / 2;
+
+    return (dx * dx + dy * dy <= (arcRadius * arcRadius));
+};
+
+EntityCollision.arcToEntities = function(arcX, arcY) {
+    var collTmp = [];
+    collTmp.push(...entities.filter(entity => entity.collision), ...enemies.filter(enemy => enemy.collision));
+
+    var resultVector = { x: 0, y: 0 };
+
+    for (var i = 0; i < collTmp.length; i++) {
+        var entity = collTmp[i];
+
+        if (EntityCollision.arcToEntity(arcX, arcY, arcSizeRadiusEntity, entity.x, entity.y, blockSize, entity.details)) {
+            var entityCenterX = entity.x + blockSize / 2;
+            var entityCenterY = entity.y + blockSize / 2;
+
+            var vectorX = arcX - entityCenterX;
+            var vectorY = arcY - entityCenterY;
+
+            var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+
+            if (length > 0) {
+                vectorX /= length;
+                vectorY /= length;
+
+                resultVector.x += vectorX * 1.2;
+                resultVector.y += vectorY * 1.2;
+            }
+        }
+    }
+
+    return resultVector;
+}
+
 EntityCollision.entitiesCollect = function(x, y) {
     for (var i = 0; i < entities.length; i++) {
         var entity = entities[i];
@@ -995,6 +1049,25 @@ EntityCollision.playerVector = function(x, y) {
     return resultVector;
 }
 
+EntityCollision.posVector = function(pos1, pos2) {
+    var resultVector = { x: 0, y: 0 };
+
+    var vectorX = pos2.x - pos1.x;
+    var vectorY = pos2.y - pos1.y;
+
+    var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+
+    if (length > 0) {
+        vectorX /= length;
+        vectorY /= length;
+
+        resultVector.x += vectorX;
+        resultVector.y += vectorY;
+    }
+
+    return resultVector;
+}
+
 var Player = function(x, y) {
     this.render = 'entity';
     this.realX = x;
@@ -1213,9 +1286,13 @@ var Player = function(x, y) {
 
         // collision
         if (!keyboard.shift) {
-            var collisionVector = EntityCollision.arcToWalls(this.x, this.y);
-            this.x += collisionVector.x * currentSpeed;
-            this.y += collisionVector.y * currentSpeed;
+            var collisionVectorWalls = EntityCollision.arcToWalls(this.x, this.y);
+            this.x += collisionVectorWalls.x * currentSpeed;
+            this.y += collisionVectorWalls.y * currentSpeed;
+
+            var collisionVectorEntites = EntityCollision.arcToEntities(this.x, this.y);
+            this.x += collisionVectorEntites.x * currentSpeed;
+            this.y += collisionVectorEntites.y * currentSpeed;
         }
 
         //portal
@@ -1257,7 +1334,7 @@ var Player = function(x, y) {
             if (entity != null) {
                 removeItemOnce(entities, entity);
                 removeItemOnce(elements, entity);
-                entityList.get(entity.details).collect();
+                entityList.get(entity.details).collect(entity);
             }
         }
 
@@ -1267,7 +1344,7 @@ var Player = function(x, y) {
 
             if (entity != null) {
                 if (keyboard.space || keyboard.touch) {
-                    entityList.get(entity.details).interact();
+                    entityList.get(entity.details).interact(entity);
                     document.getElementById("interactInfo").classList.remove("show");
                 } else {
                     if (!document.getElementById("entityText").classList.contains("show")) {
@@ -1408,7 +1485,10 @@ var Entity = function(x, y, type, details) {
     this.realY = y;
     this.x = x * blockSize;
     this.y = y * blockSize;
+    this.speed = 3;
     this.sleep = true;
+    this.movePos = [];
+    this.collision = (type == "e");
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -1419,8 +1499,37 @@ var Entity = function(x, y, type, details) {
     this.render = function() {
         if (this.sleep) return;
 
+        if (this.movePos.length > 0) {
+            if (this.movePos[0].hasOwnProperty("pos")) {
+                var pos = this.movePos[0].pos;
+                var posVector = EntityCollision.posVector({ x: this.x, y: this.y }, pos);
+                this.x += posVector.x * this.speed;
+                this.y += posVector.y * this.speed;
+                this.wallCollision();
+                if (Math.abs(pos.x - this.x) < 5 && Math.abs(pos.y - this.y)) {
+                    this.movePos.shift();
+                }
+            }
+        }
+
         EntityDrawer.entity(this.x, this.y, this.type, this.details);
     };
+
+    this.moveAbs = function(pos) {
+        this.movePos.push({ pos: pos });
+    }
+
+    this.moveRel = function(x, y) {
+        this.movePos.push({
+            pos: { x: (this.x + x * blockSize), y: (this.y + y * blockSize) }
+        });
+    }
+
+    this.wallCollision = function() {
+        var collisionVector = EntityCollision.arcToWalls(this.x + blockSize / 2, this.y + blockSize / 2);
+        this.x += collisionVector.x * this.speed;
+        this.y += collisionVector.y * this.speed;
+    }
 
     this.reload = function() {
         this.x = this.realX * blockSize;
@@ -1443,6 +1552,8 @@ var Enemy = function(x, y, type, details) {
     this.rotateFollow = true;
     this.following = false;
     this.rotating = false;
+    this.movePos = [];
+    this.collision = true;
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -1453,23 +1564,48 @@ var Enemy = function(x, y, type, details) {
     this.render = function() {
         if (this.sleep) return;
 
+        if (this.movePos.length > 0) {
+            if (this.movePos[0].hasOwnProperty("pos")) {
+                var pos = this.movePos[0].pos;
+                var posVector = EntityCollision.posVector({ x: this.x, y: this.y }, pos);
+                this.x += posVector.x * this.speed;
+                this.y += posVector.y * this.speed;
+                this.wallCollision();
+                if (Math.abs(pos.x - this.x) < 5 && Math.abs(pos.y - this.y)) {
+                    this.movePos.shift();
+                }
+            }
+        }
+
         EntityDrawer.enemy(this.x, this.y, this.type, this.details, this);
         this.following = false;
         this.rotating = false;
     };
+
     this.follow = function() {
-        var collisionVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
-        this.x += collisionVector.x * this.speed;
-        this.y += collisionVector.y * this.speed;
+        var playerVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
+        this.x += playerVector.x * this.speed;
+        this.y += playerVector.y * this.speed;
         this.wallCollision();
         this.rotate();
         this.following = true;
     }
+
     this.rotate = function() {
-        var collisionVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
+        var playerVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
         //degrees = (degrees + 360) % 360;
-        this.rotation = (Math.atan2(collisionVector.x, collisionVector.y) / Math.PI * 180 + 360) % 360;
+        this.rotation = (Math.atan2(playerVector.x, playerVector.y) / Math.PI * 180 + 360) % 360;
         this.rotating = true;
+    }
+
+    this.moveAbs = function(pos) {
+        this.movePos.push({ pos: pos });
+    }
+
+    this.moveRel = function(x, y) {
+        this.movePos.push({
+            pos: { x: (this.x + x * blockSize), y: (this.y + y * blockSize) }
+        });
     }
 
     this.wallCollision = function() {
@@ -1638,6 +1774,7 @@ var MapProcessor = function() {
 
         blockSize = 80 * zoomfactor;
         arcSizeRadius = 35 * zoomfactor;
+        arcSizeRadiusEntity = 35 * zoomfactor;
         entityCollectRadius = 20 * zoomfactor;
         entityInteractRadius = 80 * zoomfactor;
         enemyFollowRadius = 400 * zoomfactor;

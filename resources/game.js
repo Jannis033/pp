@@ -5,6 +5,7 @@ var zoomfactor = 1;
 
 var blockSize = 80 * zoomfactor;
 var arcSizeRadius = 35 * zoomfactor;
+var arcSizeRadiusEntity = 35 * zoomfactor;
 var entityCollectRadius = 20 * zoomfactor;
 var entityInteractRadius = 80 * zoomfactor;
 var enemyFollowRadius = 400 * zoomfactor;

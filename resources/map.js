@@ -47,34 +47,40 @@ function showEntityText(text) {
 }
 
 var entityFunctions = function() {
-    this.ek = function() {
+    this.ek = function(entity) {
         player.inventory.addInventory("cookie");
     }
-    this.e1 = function() {
-        if (registerMeeting('e1')) {
-            if (player.inventory.countInventory(entityList.get("1").task.item) < entityList.get("1").task.count) {
-                showEntityText(entityList.get("1").text.t1);
-                player.inventory.setInventoryTask(entityList.get("1").task.item);
+    this.e1 = function(entity) {
+        var entityNum = 1;
+        var entityData = entityList.get(entityNum.toString());
+        if (registerMeeting('e' + entityNum)) {
+            if (player.inventory.countInventory(entityData.task.item) < entityData.task.count) {
+                showEntityText(entityData.text.t1);
+                player.inventory.setInventoryTask(entityData.task.item);
             } else {
-                if (entityList.get("1").mode.give) {
-                    showEntityText(entityList.get("1").text.t2);
-                    player.inventory.removeInventory(entityList.get("1").task.item, entityList.get("1").task.count);
-                    // todo: handle task success
+                if (entityData.mode.give) {
+                    showEntityText(entityData.text.t2);
+                    player.inventory.removeInventory(entityData.task.item, entityData.task.count);
+                    entity.moveRel(-3, 2);
                 } else {
-                    showEntityText(entityList.get("1").text.t1 + " [Space]");
-                    entityList.get("1").mode.give = true;
+                    showEntityText(entityData.text.t1 + " [Space]");
+                    entityData.mode.give = true;
                 }
             }
         }
     }
-    this.e2 = function() {
-        if (registerMeeting('e2')) {
-            console.log("mueller!");
+    this.e2 = function(entity) {
+        var entityNum = 2;
+        var entityData = entityList.get(entityNum.toString());
+        if (registerMeeting('e' + entityNum)) {
+            showEntityText(entityData.text.t1);
         }
     }
-    this.e3 = function() {
-        if (registerMeeting('e3')) {
-            console.log("glauben!");
+    this.e3 = function(entity) {
+        var entityNum = 3;
+        var entityData = entityList.get(entityNum.toString());
+        if (registerMeeting('e' + entityNum)) {
+            showEntityText(entityData.text.t1);
         }
     }
 }
@@ -85,8 +91,8 @@ var entityList = new Map();
 
 entityList.set("k", { name: "Keks", texture: "cookie", collect: efnc.ek });
 entityList.set("1", { name: "Hilchenbach", texture: "player4", overlap: true, interact: efnc.e1, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" }, mode: { give: false }, task: { item: "cookie", count: 5 } });
-entityList.set("2", { name: "Müller", texture: "player0", overlap: true, interact: efnc.e2 });
-entityList.set("3", { name: "Glauben", texture: "player2", overlap: true, interact: efnc.e3 });
+entityList.set("2", { name: "Müller", texture: "player0", overlap: true, interact: efnc.e2, text: { t1: "Ich bin Frau Müller" } });
+entityList.set("3", { name: "Glauben", texture: "player2", overlap: true, interact: efnc.e3, text: { t1: "Ich bin Herr Glauben" } });
 
 
 
