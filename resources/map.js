@@ -48,16 +48,17 @@ function showEntityText(text) {
 
 var entityFunctions = function() {
     this.ek = function() {
-        player.addInventory("cookie");
+        player.inventory.addInventory("cookie");
     }
     this.e1 = function() {
         if (registerMeeting('e1')) {
-            if (player.countInventory(entityList.get("1").task.item) < entityList.get("1").task.count) {
+            if (player.inventory.countInventory(entityList.get("1").task.item) < entityList.get("1").task.count) {
                 showEntityText(entityList.get("1").text.t1);
+                player.inventory.setInventoryTask(entityList.get("1").task.item);
             } else {
                 if (entityList.get("1").mode.give) {
                     showEntityText(entityList.get("1").text.t2);
-                    player.removeInventory(entityList.get("1").task.item, entityList.get("1").task.count);
+                    player.inventory.removeInventory(entityList.get("1").task.item, entityList.get("1").task.count);
                     // todo: handle task success
                 } else {
                     showEntityText(entityList.get("1").text.t1 + " [Space]");

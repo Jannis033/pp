@@ -43,11 +43,32 @@ body {
     position: absolute;
     right: 5px;
     bottom: 5px;
-    max-width: 150px;
-    width: 10%;
-    min-width: 50px;
-    height: 60px;
+    padding: 10px;
     pointer-events: none;
+}
+
+#inventory>div {
+    display: none;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+#inventory>div.show {
+    display: block;
+}
+
+#inventory>div>img {
+    float: right;
+    width: 40px;
+    height: 40px;
+}
+
+#inventory>div>p {
+    float: left;
+    margin: 0 5px 0 0;
+    line-height: 40px;
+    font-size: 25px;
+    text-align: right;
 }
 
 #info {

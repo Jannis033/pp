@@ -1013,7 +1013,6 @@ var Player = function(x, y) {
     this.regeneratevalue = 0.15;
     this.health = 20;
     this.maxhealth = 20;
-    this.inventory = {};
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -1030,42 +1029,76 @@ var Player = function(x, y) {
         this.rotation = this.tmprotation;
         rotateplayer = false;
     }
+    this.inventory = {
+        items: {},
 
-    this.updateInventory = function(item) {
-        document.getElementById("inv_" + item).innerHTML = this.countInventory(item);
-    }
+        updateInventory: function(item) {
+            document.getElementById("inv_" + item).innerHTML = this.countInventory(item);
+            if (this.countInventoryAll(item) != 0) {
+                document.getElementById("inv_" + item).parentElement.classList.add("show");
+            } else {
+                document.getElementById("inv_" + item).parentElement.classList.remove("show");
+            }
+        },
 
-    this.countInventory = function(item) {
-        if (this.inventory.hasOwnProperty(item)) {
-            return this.inventory[item];
-        } else {
-            return 0;
+        hasInventory: function(item) {
+            return this.countInventoryAll(item) != 0;
+        },
+
+        setInventory: function(item, count) {
+            this.items[item] = count;
+            this.updateInventory(item);
+        },
+
+        setInventoryTask: function(item) {
+            if (!this.hasInventory(item)) {
+                this.setInventory(item, -1);
+                this.updateInventory(item);
+            }
+        },
+
+        countInventory: function(item) {
+            if (this.items.hasOwnProperty(item)) {
+                return (this.items[item] < 0 ? 0 : this.items[item]);
+            } else {
+                return 0;
+            }
+        },
+
+        countInventoryAll: function(item) {
+            if (this.items.hasOwnProperty(item)) {
+                return this.items[item];
+            } else {
+                return 0;
+            }
+        },
+
+        addInventory: function(item, count = 1) {
+            if (this.items.hasOwnProperty(item)) {
+                if (this.items[item] < 0) this.items[item] = 0;
+                this.items[item] = this.items[item] + count;
+                if (this.items[item] < 0) this.items[item] = 0;
+            } else {
+                this.items[item] = 1;
+            }
+            this.updateInventory(item);
+        },
+
+        removeInventory: function(item, count = 1) {
+            if (this.items.hasOwnProperty(item)) {
+                this.items[item] = this.items[item] - count;
+                if (this.items[item] < 0) this.items[item] = 0;
+            } else {
+                this.items[item] = 0;
+            }
+            this.updateInventory(item);
+        },
+
+        clearInventory: function(item) {
+            this.items[item] = 0;
+            this.updateInventory(item);
         }
-    }
-
-    this.addInventory = function(item, count = 1) {
-        if (this.inventory.hasOwnProperty(item)) {
-            this.inventory[item] = this.inventory[item] + count;
-            if (this.inventory[item] < 0) this.inventory[item] = 0;
-        } else {
-            this.inventory[item] = 1;
-        }
-        this.updateInventory(item);
-    }
-    this.removeInventory = function(item, count = 1) {
-        if (this.inventory.hasOwnProperty(item)) {
-            this.inventory[item] = this.inventory[item] - count;
-            if (this.inventory[item] < 0) this.inventory[item] = 0;
-        } else {
-            this.inventory[item] = 0;
-        }
-        this.updateInventory(item);
-    }
-
-    this.clearInventory = function(item) {
-        this.inventory[item] = 0;
-        this.updateInventory(item);
-    }
+    };
 
     this.die = function() {
         document.getElementById("deathscreen").classList.add("show");
