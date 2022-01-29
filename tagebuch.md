@@ -105,3 +105,9 @@ Das Inventarsystem wurde überarbeitet und wird nun unten rechts schön angezeig
 Unbenutzter Code wurde entfernt, die Dateien wurden aufgeräumt und sortiert.
 Es gibt Barrieren, die ausgeblendet und wieder angezeigt werden können. So können verschiedene Bereiche der Map zwischenzeitlich gesperrt werden.
 Die Spieler Positionen und die Verlinkungen zu den entsprechenden Portalen wurden aktualisiert.
+
+#### 23:00 Uhr
+
+Lehrer haben eigene Wände bekommen, damit sie bestimmte Bereiche nicht verlassen können.
+Es wurden verschiedene Lehrer Texturen eingefügt.
+Man bekommt im Sichtfeld von Lehrern nun Schaden und stirbt, wenn man ihnen zu nahe kommt.
