@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg4064"
+   sodipodi:docname="stop.svg"
+   width="80"
+   height="80"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4068" />
+  <sodipodi:namedview
+     id="namedview4066"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     width="80px"
+     inkscape:zoom="4.1877866"
+     inkscape:cx="36.534813"
+     inkscape:cy="20.297118"
+     inkscape:window-width="2045"
+     inkscape:window-height="1090"
+     inkscape:window-x="1649"
+     inkscape:window-y="67"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4064" />
+  <path
+     fill="#ffffff"
+     stroke-width="4.2278"
+     stroke="#bb0000"
+     d="m 21.366168,21.509076 a 26.280922,26.280922 0 1 0 0.114265,-0.114265 z m 0,0 37.250352,37.021821"
+     id="path4062"
+     style="fill:#ffffff;fill-opacity:0;stroke:#b42323;stroke-opacity:0.53318584" />
+</svg>

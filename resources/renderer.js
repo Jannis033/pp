@@ -98,6 +98,12 @@ var EntityDrawer = {
         var rotation = 0;
 
         switch (type) {
+            case 'B':
+                context.beginPath();
+                context.fillStyle = patterns.stop;
+                context.rect(x, y, blockSize, blockSize);
+                context.fill();
+                break;
             case 'W':
                 context.beginPath();
                 context.fillStyle = config.colors.wall;
@@ -661,6 +667,7 @@ var Wall = function(x, y, type, details) {
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.sleep = true;
+    this.hidden = false;
     this.corners = { right: false, left: false, top: false, bottom: false };
     this.solidCorners = { right: false, left: false, top: false, bottom: false };
     this.collCorners = { right: false, left: false, top: false, bottom: false };
@@ -672,7 +679,7 @@ var Wall = function(x, y, type, details) {
     };
 
     this.cornerCheck = function() {
-        if (this.type == "W") {
+        if (this.type == "W" || this.type == "B") {
             this.corners.right = EntityCollision.wallAt(this.x + blockSize, this.y);
             this.corners.left = EntityCollision.wallAt(this.x - blockSize, this.y);
             this.corners.bottom = EntityCollision.wallAt(this.x, this.y + blockSize);
@@ -694,7 +701,7 @@ var Wall = function(x, y, type, details) {
     }
 
     this.render = function() {
-        if (this.sleep) return;
+        if (this.sleep || this.hidden) return;
 
         EntityDrawer.wall(this.x, this.y, this.type, this.details, this.corners);
     };
@@ -1028,7 +1035,7 @@ var MapProcessor = function() {
 
                 switch (char) {
                     case 'P':
-                        if (this.spawn == null || this.spawn == row[x + 1]) {
+                        if ((this.spawn == null && row[x + 1] == " ") || this.spawn == row[x + 1]) {
                             this.playerPosition = { x: realX + 0.5, y: y + 0.5 };
                         }
                         break;
@@ -1057,6 +1064,7 @@ var MapProcessor = function() {
 
                 switch (char) {
                     case 'W':
+                    case 'B':
                     case 'S':
                     case 'O':
                         this.wallPositions.push({ x: realX, y: y, type: char, details: row[x + 1] });
