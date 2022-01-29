@@ -321,8 +321,6 @@ var EntityDrawer = {
 
 var Player = function(x, y) {
     this.render = 'entity';
-    this.realX = x;
-    this.realY = y;
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.angle = 0;
@@ -353,6 +351,7 @@ var Player = function(x, y) {
         this.rotation = this.tmprotation;
         rotateplayer = false;
     }
+
     this.inventory = {
         items: {},
 
@@ -471,7 +470,6 @@ var Player = function(x, y) {
                 getSound("damage").loop(false).volume(100).play();
                 this.setHealth(this.health - this.damagevalue);
                 this.damagecounter = 0;
-
             }
             this.damagecounter++;
         }
@@ -652,9 +650,9 @@ var Player = function(x, y) {
 
     }
 
-    this.reloadTeleport = function(oldBlockSize) {
-        this.x = (this.x / oldBlockSize * blockSize);
-        this.y = (this.y / oldBlockSize * blockSize);
+    this.reloadTeleport = function(newBlockSize) {
+        this.x = (this.x / blockSize * newBlockSize);
+        this.y = (this.y / blockSize * newBlockSize);
     }
 }
 
@@ -1004,7 +1002,7 @@ var MapProcessor = function() {
     this.setZoom = function(zoom = 1) {
         zoomfactor = zoom;
 
-        player.reloadTeleport(blockSize); // todo fix
+        player.reloadTeleport(config.dimensions.blockSize * zoomfactor); // todo fix
 
         blockSize = config.dimensions.blockSize * zoomfactor;
         playerOverlap = config.dimensions.playerOverlap * zoomfactor;
@@ -1184,7 +1182,12 @@ var MapProcessor = function() {
         this.generateSpawn();
 
         playerPosition = this.getPlayerPosition();
-        player = new Player(playerPosition.x, playerPosition.y);
+
+        if (player == null) {
+            player = new Player(playerPosition.x, playerPosition.y);
+        } else {
+            player.teleport(playerPosition.x, playerPosition.y);
+        }
 
         player.rotation = rotation;
 

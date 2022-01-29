@@ -23,7 +23,7 @@ var mapProcessor = new MapProcessor();
 var loaded = false;
 
 var playerPosition;
-var player;
+var player = null;
 
 var tmpplayerrotation = 0;
 var rotateplayer = false;
