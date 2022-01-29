@@ -26,11 +26,41 @@ EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSi
 EntityCollision.arcToWalls = function(arcX, arcY) {
     var resultVector = { x: 0, y: 0 };
 
-    var tmpWalls = walls.filter(wall => !wall.hidden);
+    var tmpWalls = walls.filter(wall => !wall.hidden && wall.details != "l");
     for (var i = 0; i < tmpWalls.length; i++) {
         var wall = tmpWalls[i];
 
         if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details, wall.collCorners)) {
+            var wallCenterX = wall.x + blockSize / 2;
+            var wallCenterY = wall.y + blockSize / 2;
+
+            var vectorX = arcX - wallCenterX;
+            var vectorY = arcY - wallCenterY;
+
+            var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+
+            if (length > 0) {
+                vectorX /= length;
+                vectorY /= length;
+
+                resultVector.x += vectorX;
+                resultVector.y += vectorY;
+            }
+        }
+    }
+
+    return resultVector;
+};
+
+
+EntityCollision.arcToWallsEntity = function(arcX, arcY) {
+    var resultVector = { x: 0, y: 0 };
+
+    var tmpWalls = walls.filter(wall => !wall.hidden);
+    for (var i = 0; i < tmpWalls.length; i++) {
+        var wall = tmpWalls[i];
+
+        if (EntityCollision.arcToWall(arcX, arcY, arcSizeRadius, wall.x, wall.y, blockSize, wall.details, wall.collCornersEntity)) {
             var wallCenterX = wall.x + blockSize / 2;
             var wallCenterY = wall.y + blockSize / 2;
 
@@ -452,7 +482,7 @@ EntityCollision.getWallsInArea = function(pos1, pos2) {
         var wymin = (wall.y + (wall.corners.top ? 0 : (blockSize / 4)));
         var wymax = (wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3)));
         //return wxmin >= xmin && wxmax <= xmax && wymin >= ymin && wymax <= ymax; 
-        return wall.type == "W" && wall.details != "i" && wall.details != "g" && !wall.hidden && xmax >= wxmin && xmin <= wxmax && ymax >= wymin && ymin <= wymax;
+        return wall.type == "W" && wall.details != "i" && wall.details != "l" && wall.details != "g" && !wall.hidden && xmax >= wxmin && xmin <= wxmax && ymax >= wymin && ymin <= wymax;
     });
 }
 
@@ -539,7 +569,7 @@ EntityCollision.carpet = function(x, y, type) {
 EntityCollision.wallAt = function(x, y) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
-        if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i" && !wall.hidden) {
+        if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i" && wall.details != "l" && !wall.hidden) {
             return true;
         }
     }
@@ -549,7 +579,7 @@ EntityCollision.wallAt = function(x, y) {
 EntityCollision.solidWallAt = function(x, y) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
-        if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i" && wall.details != "g" && !wall.hidden) {
+        if (wall.x == x && wall.y == y && wall.type == "W" && wall.details != "i" && wall.details != "l" && wall.details != "g" && !wall.hidden) {
             return true;
         }
     }
@@ -557,6 +587,16 @@ EntityCollision.solidWallAt = function(x, y) {
 }
 
 EntityCollision.collWallAt = function(x, y) {
+    for (var i = 0; i < walls.length; i++) {
+        var wall = walls[i];
+        if (wall.x == x && wall.y == y && !wall.hidden && wall.details != "l") {
+            return true;
+        }
+    }
+    return false;
+}
+
+EntityCollision.collWallEntityAt = function(x, y) {
     for (var i = 0; i < walls.length; i++) {
         var wall = walls[i];
         if (wall.x == x && wall.y == y && !wall.hidden) {

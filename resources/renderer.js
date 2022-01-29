@@ -112,6 +112,9 @@ var EntityDrawer = {
                         context.fillStyle = "#00000000";
                         context.rect(x, y, blockSize, blockSize);
                         break;
+                    case 'l':
+                        context.fillStyle = "#00000000";
+                        break;
                     case 'g':
                         context.fillStyle = config.colors.window;
                         if (corners.left && corners.right && corners.top && corners.bottom) {
@@ -228,8 +231,12 @@ var EntityDrawer = {
             case 'v':
             case 'V':
                 switch (details) {
-                    default: context.fillStyle = patterns.portal;
-                    break;
+                    case '3':
+                        context.fillStyle = patterns.pissoir;
+                        break;
+                    default:
+                        context.fillStyle = patterns.portal;
+                        break;
                 }
                 break;
             case 'D':
@@ -243,6 +250,9 @@ var EntityDrawer = {
                     case 'T':
                         context.fillStyle = patterns.tisch2;
                         rotation = 90;
+                        break;
+                    case 'p':
+                        context.fillStyle = patterns.pissoir;
                         break;
                 }
                 break;
@@ -492,7 +502,7 @@ var Player = function(x, y) {
         keysCount += keyboard.touchx != 0 ? 1 : 0;
         keysCount += keyboard.touchy != 0 ? 1 : 0;
 
-        var currentSpeed = (keyboard.ctrl ? this.lsdspeed : this.speed);
+        var currentSpeed = (keyboard.ctrl ? this.lsdspeed : this.speed) * zoomfactor;
 
         if (keysCount > 1) {
             currentSpeed /= Math.sqrt(2);
@@ -669,6 +679,7 @@ var Wall = function(x, y, type, details) {
     this.corners = { right: false, left: false, top: false, bottom: false };
     this.solidCorners = { right: false, left: false, top: false, bottom: false };
     this.collCorners = { right: false, left: false, top: false, bottom: false };
+    this.collCornersEntity = { right: false, left: false, top: false, bottom: false };
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -690,6 +701,10 @@ var Wall = function(x, y, type, details) {
             this.collCorners.left = EntityCollision.collWallAt(this.x - blockSize, this.y);
             this.collCorners.bottom = EntityCollision.collWallAt(this.x, this.y + blockSize);
             this.collCorners.top = EntityCollision.collWallAt(this.x, this.y - blockSize);
+            this.collCornersEntity.right = EntityCollision.collWallEntityAt(this.x + blockSize, this.y);
+            this.collCornersEntity.left = EntityCollision.collWallEntityAt(this.x - blockSize, this.y);
+            this.collCornersEntity.bottom = EntityCollision.collWallEntityAt(this.x, this.y + blockSize);
+            this.collCornersEntity.top = EntityCollision.collWallEntityAt(this.x, this.y - blockSize);
         } else if (this.type == "O") { // make it a 'full' wall
             this.collCorners.right = true;
             this.collCorners.left = true;
@@ -736,8 +751,8 @@ var Entity = function(x, y, type, details) {
             if (this.movePos[0].hasOwnProperty("pos")) {
                 var pos = this.movePos[0].pos;
                 var posVector = EntityCollision.posVector({ x: this.x, y: this.y }, pos);
-                this.x += posVector.x * this.speed;
-                this.y += posVector.y * this.speed;
+                this.x += posVector.x * this.speed * zoomfactor;
+                this.y += posVector.y * this.speed * zoomfactor;
                 this.wallCollision();
                 if (Math.abs(pos.x - this.x) < 5 && Math.abs(pos.y - this.y)) {
                     this.movePos.shift();
@@ -760,8 +775,8 @@ var Entity = function(x, y, type, details) {
 
     this.wallCollision = function() {
         var collisionVector = EntityCollision.arcToWalls(this.x + blockSize / 2, this.y + blockSize / 2);
-        this.x += collisionVector.x * this.speed;
-        this.y += collisionVector.y * this.speed;
+        this.x += collisionVector.x * this.speed * zoomfactor;
+        this.y += collisionVector.y * this.speed * zoomfactor;
     }
 
     this.reload = function() {
@@ -800,8 +815,8 @@ var Enemy = function(x, y, type, details) {
             if (this.movePos[0].hasOwnProperty("pos")) {
                 var pos = this.movePos[0].pos;
                 var posVector = EntityCollision.posVector({ x: this.x, y: this.y }, pos);
-                this.x += posVector.x * this.speed;
-                this.y += posVector.y * this.speed;
+                this.x += posVector.x * this.speed * zoomfactor;
+                this.y += posVector.y * this.speed * zoomfactor;
                 this.wallCollision();
                 if (Math.abs(pos.x - this.x) < 5 && Math.abs(pos.y - this.y)) {
                     this.movePos.shift();
@@ -816,8 +831,8 @@ var Enemy = function(x, y, type, details) {
 
     this.follow = function() {
         var playerVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
-        this.x += playerVector.x * this.speed;
-        this.y += playerVector.y * this.speed;
+        this.x += playerVector.x * this.speed * zoomfactor;
+        this.y += playerVector.y * this.speed * zoomfactor;
         this.wallCollision();
         this.rotate();
         this.following = true;
@@ -841,9 +856,9 @@ var Enemy = function(x, y, type, details) {
     }
 
     this.wallCollision = function() {
-        var collisionVector = EntityCollision.arcToWalls(this.x + blockSize / 2, this.y + blockSize / 2);
-        this.x += collisionVector.x * this.speed;
-        this.y += collisionVector.y * this.speed;
+        var collisionVector = EntityCollision.arcToWallsEntity(this.x + blockSize / 2, this.y + blockSize / 2);
+        this.x += collisionVector.x * this.speed * zoomfactor;
+        this.y += collisionVector.y * this.speed * zoomfactor;
     }
 
     this.reload = function() {
