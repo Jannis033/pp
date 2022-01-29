@@ -99,3 +99,9 @@ Es wurden die ersten Aufgaben eingefügt, man kann Kekse sammeln und sie bei Leh
 
 Man kann nicht mehr durch Lehrer durchlaufen, so können bspw. Türen versperrt werden.
 Das Inventarsystem wurde überarbeitet und wird nun unten rechts schön angezeigt.
+
+### 29.1.2022
+
+Unbenutzter Code wurde entfernt, die Dateien wurden aufgeräumt und sortiert.
+Es gibt Barrieren, die ausgeblendet und wieder angezeigt werden können. So können verschiedene Bereiche der Map zwischenzeitlich gesperrt werden.
+Die Spieler Positionen und die Verlinkungen zu den entsprechenden Portalen wurden aktualisiert.
