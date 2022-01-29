@@ -116,9 +116,9 @@ var entityList = new Map();
 
 entityList.set("k", { name: "Keks", texture: "cookie", collect: efnc.ek });
 entityList.set("w", { name: "Wolle", texture: "wool", collect: efnc.ew });
-entityList.set("1", { name: "Hilchenbach", texture: "player4", overlap: true, interact: efnc.e1, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" }, mode: { give: false }, task: { item: "cookie", count: 5 } });
-entityList.set("2", { name: "Müller", texture: "player0", overlap: true, interact: efnc.e2, text: { t1: "Ich bin Frau Müller" } });
-entityList.set("3", { name: "Glauben", texture: "player2", overlap: true, interact: efnc.e3, text: { t1: "Ich bin Herr Glauben" } });
+entityList.set("1", { name: "Hilchenbach", texture: "en_hilchenbach", overlap: true, interact: efnc.e1, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" }, mode: { give: false }, task: { item: "cookie", count: 5 } });
+entityList.set("2", { name: "Müller", texture: "en_mueller", overlap: true, interact: efnc.e2, text: { t1: "Ich bin Frau Müller" } });
+entityList.set("3", { name: "Glauben", texture: "en_glauben", overlap: true, interact: efnc.e3, text: { t1: "Ich bin Herr Glauben" } });
 
 
 

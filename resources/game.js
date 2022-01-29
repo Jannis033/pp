@@ -142,8 +142,12 @@ window.addEventListener("keyup", function(event) {
             keyboard.right = false;
             break;
         case 32:
-            keyboard.space = false;
-            removeAllMeetings();
+            if (document.getElementById("deathscreen").classList.contains("show")) {
+                player.respawn();
+            } else {
+                keyboard.space = false;
+                removeAllMeetings();
+            }
             break;
         case 16:
             keyboard.shift = false;
@@ -236,7 +240,13 @@ function handleTouchEnd() {
     keyboard.touchx = 0;
     keyboard.touchy = 0;
     keyboard.touch = down;
-    removeAllMeetings();
+    if (down) {
+        if (document.getElementById("deathscreen").classList.contains("show")) {
+            player.respawn();
+        } else {
+            removeAllMeetings();
+        }
+    }
     down = false;
 }
 

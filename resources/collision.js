@@ -197,6 +197,23 @@ EntityCollision.enemies = function(x, y, all = false) {
     return tmpen;
 }
 
+EntityCollision.enemieInside = function(x, y) {
+    for (var i = 0; i < enemies.length; i++) {
+        var enemy = enemies[i];
+
+        var enemyCenterX = enemy.x + blockSize / 2;
+        var enemyCenterY = enemy.y + blockSize / 2;
+
+        var distX = Math.abs(x - enemyCenterX) - blockSize / 2;
+        var distY = Math.abs(y - enemyCenterY) - blockSize / 2;
+
+        if (distX <= 0 && distY <= 0 && Math.sqrt((x - enemy.x - blockSize / 2) * (x - enemy.x - blockSize / 2) + (y - enemy.y - blockSize / 2) * (y - enemy.y - blockSize / 2)) > 4) {
+            return true;
+        }
+    }
+    return false;
+}
+
 EntityCollision.getViewarea = function(rotation, angle) { // get start end end angle (currently only end angle is used)
     return ({ start: rotation + angle > 360 ? rotation + angle - 360 : rotation + angle, end: rotation - angle < 0 ? rotation - angle + 360 : rotation - angle });
 }

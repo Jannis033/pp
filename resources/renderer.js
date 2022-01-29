@@ -233,6 +233,7 @@ var EntityDrawer = {
                 switch (details) {
                     case '3':
                         context.fillStyle = patterns.pissoir;
+                        rotation = 90;
                         break;
                     default:
                         context.fillStyle = patterns.portal;
@@ -307,7 +308,7 @@ var EntityDrawer = {
 
                 switch (details) {
                     case '1':
-                        context.fillStyle = patterns.player4;
+                        context.fillStyle = patterns.en_mueller;
                         break;
                 }
                 context.translate(x, y - playerOverlap);
@@ -331,6 +332,8 @@ var EntityDrawer = {
 
 var Player = function(x, y) {
     this.render = 'entity';
+    this.realX = x;
+    this.realY = y;
     this.x = x * blockSize;
     this.y = y * blockSize;
     this.angle = 0;
@@ -341,6 +344,7 @@ var Player = function(x, y) {
     this.lsdspeed = config.entities.player.lsdspeed;
     this.damagecounter = config.entities.player.damagecounter;
     this.damagevalue = config.entities.player.damagevalue;
+    this.damagevalueenemy = config.entities.player.damagevalueenemy;
     this.regeneratecounter = config.entities.player.regeneratecounter;
     this.regeneratevalue = config.entities.player.regeneratevalue;
     this.health = config.entities.player.health;
@@ -636,8 +640,15 @@ var Player = function(x, y) {
                 var enemy = tmpen[i];
 
                 if (enemy != null) {
+                    this.setHealth(this.health - this.damagevalueenemy);
                     enemy.follow();
                 }
+            }
+        }
+
+        if (!keyboard.shift) {
+            if (EntityCollision.enemieInside(this.x, this.y)) {
+                this.die();
             }
         }
 
