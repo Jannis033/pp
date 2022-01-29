@@ -1,18 +1,17 @@
 var canvas = document.querySelector('canvas#main');
 var context = canvas.getContext('2d');
 
-var zoomfactor = 1;
+var zoomfactor = config.zoomfactor;
 
-var blockSize = 80 * zoomfactor;
-var arcSizeRadius = 35 * zoomfactor;
-var arcSizeRadiusEntity = 35 * zoomfactor;
-var entityCollectRadius = 20 * zoomfactor;
-var entityInteractRadius = 80 * zoomfactor;
-var enemyFollowRadius = 400 * zoomfactor;
-var enemyFollowRadiusRotate = 100 * zoomfactor;
-var playerOverlap = 20 * zoomfactor;
+var blockSize = config.dimensions.blockSize * zoomfactor;
+var playerOverlap = config.dimensions.playerOverlap * zoomfactor;
 
-var colors = { wall: '#666', window: '#777', player: '#111' };
+var arcSizeRadius = config.collision.arcSizeRadius * zoomfactor;
+var arcSizeRadiusEntity = config.collision.arcSizeRadiusEntity * zoomfactor;
+var entityCollectRadius = config.collision.entityCollectRadius * zoomfactor;
+var entityInteractRadius = config.collision.entityInteractRadius * zoomfactor;
+var enemyFollowRadius = config.collision.enemyFollowRadius * zoomfactor;
+var enemyFollowRadiusRotate = config.collision.enemyFollowRadiusRotate * zoomfactor;
 
 var elements = [];
 var entities = [];
@@ -29,7 +28,7 @@ var player;
 var tmpplayerrotation = 0;
 var rotateplayer = false;
 
-var loadingtime = 1;
+var loadingtime = config.loadingtime;
 
 PatternHelper.createAll();
 
@@ -81,10 +80,9 @@ var resizeCallback = function() {
 window.addEventListener('resize', resizeCallback);
 resizeCallback();
 
-var tickinterval = 20;
 var tick = setInterval(function() {
     onTick();
-}, tickinterval);
+}, 1000 / config.fps);
 
 window.addEventListener("keydown", function(event) {
     if (rotateplayer) {
@@ -110,11 +108,15 @@ window.addEventListener("keydown", function(event) {
             keyboard.space = true;
             break;
         case 16:
-            keyboard.shift = true;
+            if (config.debug) {
+                keyboard.shift = true;
+            }
             break;
         case 18:
-            getSound("lsd").loop(true).play().volume(10);
-            keyboard.ctrl = true;
+            if (config.debug) {
+                getSound("lsd").loop(true).play().volume(10);
+                keyboard.ctrl = true;
+            }
             break;
     }
 });
@@ -222,24 +224,6 @@ function handleTouchMove(evt) {
     keyboard.touchx = limitNumberWithinRange(-xDiff / 50, -1, 1);
     keyboard.touchy = limitNumberWithinRange(-yDiff / 50, -1, 1);
     down = Math.abs(xDiff) < 10 && Math.abs(yDiff) < 10;
-
-    // if (Math.abs(xDiff) > Math.abs(yDiff)) { /*most significant*/
-    //     if (xDiff > 0) {
-    //         /* right swipe */
-    //         keyboard.left = true;
-    //     } else {
-    //         /* left swipe */
-    //         keyboard.right = true;
-    //     }
-    // } else {
-    //     if (yDiff > 0) {
-    //         /* down swipe */
-    //         keyboard.up = true;
-    //     } else {
-    //         /* up swipe */
-    //         keyboard.down = true;
-    //     }
-    // }
 };
 
 function handleTouchEnd() {
@@ -306,7 +290,8 @@ var Sound = function(file) {
     }
 
     this.volume = function(volume) {
-        this.audio.volume = (volume / 100);
+        if (config.sounds)
+            this.audio.volume = (volume / 100);
         return this;
     }
 
@@ -316,7 +301,9 @@ var Sound = function(file) {
     }
 
     this.load();
-    this.volume(20);
+    if (config.sounds)
+        this.volume(20);
+    else this.audio.volume = 0;
 }
 
 // todo entspannungs sound

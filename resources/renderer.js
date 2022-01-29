@@ -100,14 +100,14 @@ var EntityDrawer = {
         switch (type) {
             case 'W':
                 context.beginPath();
-                context.fillStyle = colors.wall;
+                context.fillStyle = config.colors.wall;
                 switch (details) {
                     case 'i':
                         context.fillStyle = "#00000000";
                         context.rect(x, y, blockSize, blockSize);
                         break;
                     case 'g':
-                        context.fillStyle = colors.window;
+                        context.fillStyle = config.colors.window;
                         if (corners.left && corners.right && corners.top && corners.bottom) {
 
                         } else if (corners.left && corners.right && corners.top) {
@@ -323,14 +323,14 @@ var Player = function(x, y) {
     this.rotation = 4;
     this.tmprotation = 0;
     this.footPosition = 0;
-    this.speed = 4;
-    this.lsdspeed = 10;
-    this.damagecounter = 80;
-    this.damagevalue = 0.7;
-    this.regeneratecounter = 5;
-    this.regeneratevalue = 0.15;
-    this.health = 20;
-    this.maxhealth = 20;
+    this.speed = config.entities.player.speed;
+    this.lsdspeed = config.entities.player.lsdspeed;
+    this.damagecounter = config.entities.player.damagecounter;
+    this.damagevalue = config.entities.player.damagevalue;
+    this.regeneratecounter = config.entities.player.regeneratecounter;
+    this.regeneratevalue = config.entities.player.regeneratevalue;
+    this.health = config.entities.player.health;
+    this.maxhealth = config.entities.player.health;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -427,9 +427,9 @@ var Player = function(x, y) {
         document.getElementById("deathscreen").classList.remove("show");
         this.x = this.realX * blockSize;
         this.y = this.realY * blockSize;
-        this.damagecounter = 80;
-        this.regeneratecounter = 5;
-        this.setHealth(20);
+        this.damagecounter = config.entities.player.damagecounter;
+        this.regeneratecounter = config.entities.player.regeneratecounter;
+        this.setHealth(config.entities.player.health);
     }
 
     this.setHealth = function(health) {
@@ -461,7 +461,7 @@ var Player = function(x, y) {
 
     this.damage = function() {
         if (this.health > 0) {
-            if (this.damagecounter > 80) {
+            if (this.damagecounter > config.entities.player.damagecounter) {
                 getSound("damage").loop(false).volume(100).play();
                 this.setHealth(this.health - this.damagevalue);
                 this.damagecounter = 0;
@@ -472,7 +472,7 @@ var Player = function(x, y) {
     }
 
     this.regenerate = function() {
-        if (this.regeneratecounter > 5) {
+        if (this.regeneratecounter > config.entities.player.regeneratecounter) {
             this.setHealth(this.health + this.regeneratevalue);
             this.regeneratecounter = 0;
         }
@@ -557,7 +557,7 @@ var Player = function(x, y) {
             if (damage != null) {
                 this.damage();
             } else {
-                this.damagecounter = 80;
+                this.damagecounter = config.entities.player.damagecounter;
             }
         }
 
@@ -568,7 +568,7 @@ var Player = function(x, y) {
             if (heizung != null) {
                 this.regenerate();
             } else {
-                this.regeneratecounter = 5;
+                this.regeneratecounter = config.entities.player.regeneratecounter;
             }
         }
 
@@ -626,23 +626,6 @@ var Player = function(x, y) {
                 }
             }
         }
-
-
-
-        // mouse
-        /*var vectorX = camera.offsetX + context.canvas.width / 2 - mouse.x;
-        var vectorY = camera.offsetY + context.canvas.height / 2 - mouse.y;
-
-        var length = Math.sqrt(vectorX * vectorX + vectorY * vectorY);
-
-        if (length > 0) {
-            vectorX /= length;
-            vectorY /= length;
-
-            this.angle = Math.atan2(vectorY, vectorX) + 90 * Math.PI / 180;
-        }*/
-
-        // foot
 
         if (keyboard.up || keyboard.down || keyboard.left || keyboard.right || keyboard.touchx > 0 || keyboard.touchy > 0) {
             this.footIncrementer += this.speed;
@@ -730,10 +713,10 @@ var Entity = function(x, y, type, details) {
     this.realY = y;
     this.x = x * blockSize;
     this.y = y * blockSize;
-    this.speed = 3;
+    this.speed = config.entities.entity.speed;
     this.sleep = true;
     this.movePos = [];
-    this.collision = (type == "e");
+    this.collision = (type == "e" && config.entities.entity.collision);
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -790,15 +773,14 @@ var Enemy = function(x, y, type, details) {
     this.realY = y;
     this.x = x * blockSize;
     this.y = y * blockSize;
-    this.speed = 3;
+    this.speed = config.entities.enemy.speed;
     this.sleep = true;
-    this.viewAngle = 30;
+    this.viewAngle = config.entities.enemy.viewangle;
     this.rotation = 0;
-    this.rotateFollow = true;
     this.following = false;
     this.rotating = false;
     this.movePos = [];
-    this.collision = true;
+    this.collision = config.entities.enemy.collision;
 
     this.bounds = { x: this.x, y: this.y, width: blockSize, height: blockSize };
 
@@ -1017,14 +999,15 @@ var MapProcessor = function() {
 
         player.reloadTeleport(blockSize); // todo fix
 
-        blockSize = 80 * zoomfactor;
-        arcSizeRadius = 35 * zoomfactor;
-        arcSizeRadiusEntity = 35 * zoomfactor;
-        entityCollectRadius = 20 * zoomfactor;
-        entityInteractRadius = 80 * zoomfactor;
-        enemyFollowRadius = 400 * zoomfactor;
-        enemyFollowRadiusRotate = 100 * zoomfactor;
-        playerOverlap = 20 * zoomfactor;
+        blockSize = config.dimensions.blockSize * zoomfactor;
+        playerOverlap = config.dimensions.playerOverlap * zoomfactor;
+
+        arcSizeRadius = config.collision.arcSizeRadius * zoomfactor;
+        arcSizeRadiusEntity = config.collision.arcSizeRadiusEntity * zoomfactor;
+        entityCollectRadius = config.collision.entityCollectRadius * zoomfactor;
+        entityInteractRadius = config.collision.entityInteractRadius * zoomfactor;
+        enemyFollowRadius = config.collision.enemyFollowRadius * zoomfactor;
+        enemyFollowRadiusRotate = config.collision.enemyFollowRadiusRotate * zoomfactor;
 
         PatternHelper.createAll();
         this.reloadMap();
