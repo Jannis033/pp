@@ -48,7 +48,7 @@ var patternHelper = {
 
         this.loadPattern("glauben", "entities");
         this.loadPattern("hilchenbach", "entities");
-        this.loadPattern("mueller", "entities");
+        //this.loadPattern("mueller", "entities");
         this.loadPattern("peter", "entities");
 
         this.loadPattern("base", "items");
