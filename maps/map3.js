@@ -1,9 +1,17 @@
 var map3 = `
-WiWiWiWiWiWiWiWiWiWi
-Wi  tLtLtLtLtLtL  Wi
-WitL            tLWi
-WitL  P     V4  tLWi
-WitL            tLWi
-Wi  tLtLtLtLtLtL  Wi
-WiWiWiWiWiWiWiWiWiWi
+WiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtL            tLtLtLtLtLtLWi
+WitLtLtLtLtL  P     V4  tLtLtLtLtLtLWi
+WitLtLtLtLtL            tLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WitLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLtLWi
+WiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWiWi
 `
