@@ -52,8 +52,8 @@ var map1 = `
       WiWiW W W W W W W W W W W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
-WiWiWiWiWiW                                 W W W W W W W W WgB1B1WgW WgWgWgWgW WgWgWgW WgWgWgWlWlWgWgWgW WgWgWgWgWlWlWgWgWgW WgWgWgWgWgW WgWgWgB1B1WgWgW W W W W W W W W               W Wi
-WiWiWiWiWiW                   W                 e2        W         W   ck    Wg  cd          B1B1                B1B1                  W               W               W               W Wi
+WiWiWiWiWiW                                 W W W W W W W W WgB1B1WgW WgWgWgWgW WgWgWgW WgWgWgB1B1WgWgWgW WgWgWgWgB1B1WgWgWgW WgWgWgWgWgW WgWgWgB1B1WgWgW W W W W W W W W               W Wi
+WiWiWiWiWiW                   W                 e2        W         W   ck    Wg  cd        WlWlWlWl            WlWlWlWl                W               W               W               W Wi
 WiW WgWgWgW W W W W W W W W W W               P3          W Wg    WgW   Ot    Wg                                                      cdW               W W W W W W W W W               W Wi
 WiW         W   ck            W ttttttttttW ttttttW ttttttW         W   Ot    Wg                                                        W               W   W       ck  W               W Wi
 WiWg        W                 W ttttttttttW ttttttW ttttttW         W   Ot    Wg                                                        W               W   W           W               W Wi
