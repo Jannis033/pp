@@ -25,8 +25,8 @@ EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSi
 
 EntityCollision.arcToWalls = function(arcX, arcY) {
     var resultVector = { x: 0, y: 0 };
+    var tmpWalls = walls.filter(wall => (!wall.sleep && !wall.hidden && wall.details != "l"));
 
-    var tmpWalls = walls.filter(wall => !wall.hidden && wall.details != "l");
     for (var i = 0; i < tmpWalls.length; i++) {
         var wall = tmpWalls[i];
 
@@ -48,15 +48,14 @@ EntityCollision.arcToWalls = function(arcX, arcY) {
             }
         }
     }
-
     return resultVector;
 };
 
 
 EntityCollision.arcToWallsEntity = function(arcX, arcY) {
     var resultVector = { x: 0, y: 0 };
+    var tmpWalls = walls.filter(wall => (!wall.sleep && !wall.hidden));
 
-    var tmpWalls = walls.filter(wall => !wall.hidden);
     for (var i = 0; i < tmpWalls.length; i++) {
         var wall = tmpWalls[i];
 
@@ -78,7 +77,6 @@ EntityCollision.arcToWallsEntity = function(arcX, arcY) {
             }
         }
     }
-
     return resultVector;
 };
 
@@ -106,13 +104,11 @@ EntityCollision.arcToEntity = function(arcX, arcY, arcRadius, entityX, entityY, 
 };
 
 EntityCollision.arcToEntities = function(arcX, arcY) {
-    var collTmp = [];
-    collTmp.push(...entities.filter(entity => entity.collision), ...enemies.filter(enemy => enemy.collision));
-
     var resultVector = { x: 0, y: 0 };
+    var tmpEntities = [...entities.filter(entity => (entity.collision && !entity.sleep)), ...enemies.filter(enemy => (enemy.collision && !enemy.sleep))];
 
-    for (var i = 0; i < collTmp.length; i++) {
-        var entity = collTmp[i];
+    for (var i = 0; i < tmpEntities.length; i++) {
+        var entity = tmpEntities[i];
 
         if (EntityCollision.arcToEntity(arcX, arcY, arcSizeRadiusEntity, entity.x, entity.y, blockSize, entity.details)) {
             var entityCenterX = entity.x + blockSize / 2;
@@ -137,49 +133,49 @@ EntityCollision.arcToEntities = function(arcX, arcY) {
 }
 
 EntityCollision.entitiesCollect = function(x, y) {
-    for (var i = 0; i < entities.length; i++) {
-        var entity = entities[i];
+    var tmpEntities = entities.filter(entity => (!entity.sleep && entity.type == "c"));
 
-        if (entity.type == "c") {
+    for (var i = 0; i < tmpEntities.length; i++) {
+        var entity = tmpEntities[i];
 
-            var entityCenterX = entity.x + blockSize / 2;
-            var entityCenterY = entity.y + blockSize / 2;
+        var entityCenterX = entity.x + blockSize / 2;
+        var entityCenterY = entity.y + blockSize / 2;
 
-            var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityCollectRadius;
-            var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityCollectRadius;
+        var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityCollectRadius;
+        var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityCollectRadius;
 
-            if (distX <= 0 && distY <= 0) {
-                return entity;
-            }
+        if (distX <= 0 && distY <= 0) {
+            return entity;
         }
     }
     return null;
 }
 
 EntityCollision.entitiesInteract = function(x, y) {
-    for (var i = 0; i < entities.length; i++) {
-        var entity = entities[i];
+    var tmpEntities = entities.filter(entity => (!entity.sleep && entity.type == "e"));
 
-        if (entity.type == "e") {
+    for (var i = 0; i < tmpEntities.length; i++) {
+        var entity = tmpEntities[i];
 
-            var entityCenterX = entity.x + blockSize / 2;
-            var entityCenterY = entity.y + blockSize / 2;
+        var entityCenterX = entity.x + blockSize / 2;
+        var entityCenterY = entity.y + blockSize / 2;
 
-            var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityInteractRadius;
-            var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityInteractRadius;
+        var distX = Math.abs(x - entityCenterX) - blockSize / 2 - entityInteractRadius;
+        var distY = Math.abs(y - entityCenterY) - blockSize / 2 - entityInteractRadius;
 
-            if (distX <= 0 && distY <= 0) {
-                return entity;
-            }
+        if (distX <= 0 && distY <= 0) {
+            return entity;
         }
     }
     return null;
 }
 
 EntityCollision.enemies = function(x, y, all = false) {
+    var tmpEnemies = enemies.filter(enemy => !enemy.sleep);
     var tmpen = [];
-    for (var i = 0; i < enemies.length; i++) {
-        var enemy = enemies[i];
+
+    for (var i = 0; i < tmpEnemies.length; i++) {
+        var enemy = tmpEnemies[i];
 
         var enemyCenterX = enemy.x + blockSize / 2;
         var enemyCenterY = enemy.y + blockSize / 2;
@@ -198,8 +194,10 @@ EntityCollision.enemies = function(x, y, all = false) {
 }
 
 EntityCollision.enemieInside = function(x, y) {
-    for (var i = 0; i < enemies.length; i++) {
-        var enemy = enemies[i];
+    var tmpEnemies = enemies.filter(enemy => !enemy.sleep);
+
+    for (var i = 0; i < tmpEnemies.length; i++) {
+        var enemy = tmpEnemies[i];
 
         var enemyCenterX = enemy.x + blockSize / 2;
         var enemyCenterY = enemy.y + blockSize / 2;
@@ -499,13 +497,14 @@ EntityCollision.getWallsInArea = function(pos1, pos2) {
         var wymin = (wall.y + (wall.corners.top ? 0 : (blockSize / 4)));
         var wymax = (wall.y + (wall.corners.bottom ? blockSize : (blockSize / 4 * 3)));
         //return wxmin >= xmin && wxmax <= xmax && wymin >= ymin && wymax <= ymax; 
-        return wall.type == "W" && wall.details != "i" && wall.details != "l" && wall.details != "g" && !wall.hidden && xmax >= wxmin && xmin <= wxmax && ymax >= wymin && ymin <= wymax;
+        return !wall.sleep && wall.type == "W" && wall.details != "i" && wall.details != "l" && wall.details != "g" && !wall.hidden && xmax >= wxmin && xmin <= wxmax && ymax >= wymin && ymin <= wymax;
     });
 }
 
 EntityCollision.getWallsBetween = function(pos1, pos2) {
     var tmpwalls = this.getWallsInArea(pos1, pos2);
     var tmp = [];
+
     for (var i = 0; i < tmpwalls.length; i++) {
         var wall = tmpwalls[i];
 
@@ -566,18 +565,19 @@ EntityCollision.line_intersect = function(p1, p2, p3, p4) {
 }
 
 EntityCollision.carpet = function(x, y, type) {
-    for (var i = 0; i < carpets.length; i++) {
-        var carpet = carpets[i];
-        if (carpet.type == type) {
-            var carpetCenterX = carpet.x + blockSize / 2;
-            var carpetCenterY = carpet.y + blockSize / 2;
+    var tmpCarpets = carpets.filter(carpet => (!carpet.sleep && carpet.type == type));
 
-            var distX = Math.abs(x - carpetCenterX) - blockSize / 2;
-            var distY = Math.abs(y - carpetCenterY) - blockSize / 2;
+    for (var i = 0; i < tmpCarpets.length; i++) {
+        var carpet = tmpCarpets[i];
 
-            if (distX <= 0 && distY <= 0) {
-                return carpet;
-            }
+        var carpetCenterX = carpet.x + blockSize / 2;
+        var carpetCenterY = carpet.y + blockSize / 2;
+
+        var distX = Math.abs(x - carpetCenterX) - blockSize / 2;
+        var distY = Math.abs(y - carpetCenterY) - blockSize / 2;
+
+        if (distX <= 0 && distY <= 0) {
+            return carpet;
         }
     }
     return null;

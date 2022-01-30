@@ -331,7 +331,7 @@ var EntityDrawer = {
 };
 
 var Player = function(x, y) {
-    this.render = 'entity';
+    this.renderType = 'entity';
     this.realX = x;
     this.realY = y;
     this.x = x * blockSize;
@@ -678,7 +678,7 @@ var Player = function(x, y) {
 }
 
 var Wall = function(x, y, type, details) {
-    this.render = 'box';
+    this.renderType = 'box';
     this.type = type;
     this.details = details;
     this.realX = x;
@@ -737,7 +737,7 @@ var Wall = function(x, y, type, details) {
 };
 
 var Entity = function(x, y, type, details) {
-    this.render = 'box';
+    this.renderType = 'box';
     this.type = type;
     this.details = details;
     this.realX = x;
@@ -797,7 +797,7 @@ var Entity = function(x, y, type, details) {
 };
 
 var Enemy = function(x, y, type, details) {
-    this.render = 'box';
+    this.renderType = 'box';
     this.type = type;
     this.details = details;
     this.realX = x;
@@ -879,7 +879,7 @@ var Enemy = function(x, y, type, details) {
 };
 
 var Passage = function(x, y, type, details) {
-    this.render = 'box';
+    this.renderType = 'box';
     this.type = type;
     this.details = details;
     this.realX = x;
@@ -908,7 +908,7 @@ var Passage = function(x, y, type, details) {
 };
 
 var Carpet = function(x, y, type, details) {
-    this.render = 'box';
+    this.renderType = 'box';
     this.type = type;
     this.details = details;
     this.realX = x;
@@ -948,29 +948,28 @@ var Camera = function() {
 
     this.update = function() {
         frames++;
-        if (frames >= 5) {
+        if (frames >= 10) {
             frames = 0;
 
-            var screen = { x: player.x - this.offsetX - context.canvas.width / 2 - blockSize, y: player.y - this.offsetY - context.canvas.height / 2 - blockSize, width: context.canvas.width + blockSize * 2, height: context.canvas.height + blockSize * 2 };
+            var screen = { x: player.x - this.offsetX - context.canvas.width / 2 - blockSize * 5, y: player.y - this.offsetY - context.canvas.height / 2 - blockSize * 5, width: context.canvas.width + blockSize * 8, height: context.canvas.height + blockSize * 8 };
 
             for (var i = 0; i < elements.length; i++) {
-                var entity = elements[i];
+                var element = elements[i];
                 var bounds = {};
 
-                if (entity.render === 'entity') {
-                    bounds.x = entity.x - arcSizeRadius;
-                    bounds.y = entity.y - arcSizeRadius;
-                    bounds.width = arcSizeRadius * 2;
-                    bounds.height = arcSizeRadius * 2;
-
-                } else if (entity.render === 'box') {
-                    bounds.x = entity.x;
-                    bounds.y = entity.y;
+                if (element.renderType === 'entity') {
+                    bounds.x = element.x - arcSizeRadius;
+                    bounds.y = element.y - arcSizeRadius;
+                    bounds.width = arcSizeRadius * 2 + blockSize;
+                    bounds.height = arcSizeRadius * 2 + blockSize;
+                } else if (element.renderType === 'box') {
+                    bounds.x = element.x;
+                    bounds.y = element.y;
                     bounds.width = blockSize;
                     bounds.height = blockSize;
                 }
 
-                entity.sleep = !this.rectangleIntersection(bounds, screen);
+                element.sleep = !this.rectangleIntersection(bounds, screen);
             }
         }
     };
