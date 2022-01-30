@@ -30,6 +30,7 @@ var PatternHelper = {
         patterns.en_glauben = this.en_glauben();
         patterns.en_mueller = this.en_mueller();
         patterns.en_hilchenbach = this.en_hilchenbach();
+	patterns.logo = this.logo();
     },
     stairsX: function() {
         const patternCanvas = document.createElement('canvas');
@@ -11393,7 +11394,7 @@ var PatternHelper = {
 
         return context.createPattern(patternCanvas, 'repeat');
     },
-        logo: function() {
+    logo: function() {
         const patternCanvas = document.createElement('canvas');
         const patternContext = patternCanvas.getContext('2d');
 
