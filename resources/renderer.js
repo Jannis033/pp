@@ -255,11 +255,11 @@ var EntityDrawer = {
                         rotation = 90;
                         break;
                     case 'p':
-                        context.fillStyle = patterns.pissoir;
+                        context.fillStyle = patterns.carpets.pissoir;
                         rotation = 90;
                         break;
                     case 'P':
-                        context.fillStyle = patterns.pissoir;
+                        context.fillStyle = patterns.carpets.pissoir;
                         break;
                 }
                 break;
@@ -283,7 +283,11 @@ var EntityDrawer = {
         } else {
             context.rect(x, y, blockSize, blockSize);
         }
-        context.fillStyle = patterns["entities"][entityList.get(details).texture];
+        if (type == "e") { // e
+            context.fillStyle = patterns["entities"][entityList.get(details).texture];
+        } else { // c
+            context.fillStyle = patterns["items"][entityList.get(details).texture];
+        }
         context.fill();
         context.restore();
     },
