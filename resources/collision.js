@@ -2,11 +2,11 @@
 EntityCollision = {};
 
 EntityCollision.arcToWall = function(arcX, arcY, arcRadius, wallX, wallY, wallSize, details, corners) {
-    var wallSizeX = (corners.left && corners.right ? wallSize : (corners.left || corners.right ? wallSize / 4 * 3 : wallSize / 2));
-    var wallSizeY = (corners.top && corners.bottom ? wallSize : (corners.top || corners.bottom ? wallSize / 4 * 3 : wallSize / 2));
+    var wallSizeX = (details == "f" ? wallSize : (corners.left && corners.right ? wallSize : (corners.left || corners.right ? wallSize / 4 * 3 : wallSize / 2)));
+    var wallSizeY = (details == "f" ? wallSize : (corners.top && corners.bottom ? wallSize : (corners.top || corners.bottom ? wallSize / 4 * 3 : wallSize / 2)));
 
-    wallX = (corners.left ? wallX : wallX + wallSize / 4);
-    wallY = (corners.top ? wallY : wallY + wallSize / 4);
+    wallX = (details == "f" ? wallSize : (corners.left ? wallX : wallX + wallSize / 4));
+    wallY = (details == "f" ? wallSize : (corners.top ? wallY : wallY + wallSize / 4));
 
     var distX = Math.abs(arcX - wallX - wallSizeX / 2);
     var distY = Math.abs(arcY - wallY - wallSizeY / 2);

@@ -23,26 +23,26 @@ var EntityDrawer = {
         context.translate(-blockSize / 2, -blockSize / 2 - playerOverlap);
         switch (rotation) {
             case 1:
-                context.fillStyle = patterns.player1;
+                context.fillStyle = patterns.players.player1;
                 break;
             case 2:
-                context.fillStyle = patterns.player2;
+                context.fillStyle = patterns.players.player2;
                 break;
             case 3:
-                context.fillStyle = patterns.player3;
+                context.fillStyle = patterns.players.player3;
                 break;
             case 4:
                 /*if (tmpplayerrotation == 20) {
                     tmpplayerrotation = 0;
                 }
                 if (tmpplayerrotation < 5) {
-                    context.fillStyle = patterns.player5;
+                    context.fillStyle = patterns.players.player5;
                 } else if (tmpplayerrotation < 10) {
-                    context.fillStyle = patterns.player4;
+                    context.fillStyle = patterns.players.player4;
                 } else if (tmpplayerrotation < 15) {
-                    context.fillStyle = patterns.player3;
+                    context.fillStyle = patterns.players.player3;
                 } else {
-                    context.fillStyle = patterns.player4;
+                    context.fillStyle = patterns.players.player4;
                 }
                 tmpplayerrotation += 1;*/
                 if (rotateplayer) {
@@ -51,38 +51,38 @@ var EntityDrawer = {
                     }
 
                     if (tmpplayerrotation < 5) {
-                        context.fillStyle = patterns.player0;
+                        context.fillStyle = patterns.players.player0;
                     } else if (tmpplayerrotation < 10) {
-                        context.fillStyle = patterns.player1;
+                        context.fillStyle = patterns.players.player1;
                     } else if (tmpplayerrotation < 15) {
-                        context.fillStyle = patterns.player2;
+                        context.fillStyle = patterns.players.player2;
                     } else if (tmpplayerrotation < 20) {
-                        context.fillStyle = patterns.player3;
+                        context.fillStyle = patterns.players.player3;
                     } else if (tmpplayerrotation < 25) {
-                        context.fillStyle = patterns.player4;
+                        context.fillStyle = patterns.players.player4;
                     } else if (tmpplayerrotation < 30) {
-                        context.fillStyle = patterns.player5;
+                        context.fillStyle = patterns.players.player5;
                     } else if (tmpplayerrotation < 35) {
-                        context.fillStyle = patterns.player6;
+                        context.fillStyle = patterns.players.player6;
                     } else {
-                        context.fillStyle = patterns.player7;
+                        context.fillStyle = patterns.players.player7;
                     }
                     tmpplayerrotation += 1;
                 } else {
-                    context.fillStyle = patterns.player4;
+                    context.fillStyle = patterns.players.player4;
                 }
                 break;
             case 5:
-                context.fillStyle = patterns.player5;
+                context.fillStyle = patterns.players.player5;
                 break;
             case 6:
-                context.fillStyle = patterns.player6;
+                context.fillStyle = patterns.players.player6;
                 break;
             case 7:
-                context.fillStyle = patterns.player7;
+                context.fillStyle = patterns.players.player7;
                 break;
             default:
-                context.fillStyle = patterns.player0;
+                context.fillStyle = patterns.players.player0;
                 break;
 
         }
@@ -100,7 +100,7 @@ var EntityDrawer = {
         switch (type) {
             case 'B':
                 context.beginPath();
-                context.fillStyle = patterns.stop;
+                context.fillStyle = patterns.obstacles.barrier;
                 context.rect(x, y, blockSize, blockSize);
                 context.fill();
                 break;
@@ -108,6 +108,8 @@ var EntityDrawer = {
                 context.beginPath();
                 context.fillStyle = config.colors.wall;
                 switch (details) {
+                    case 'f':
+                        context.rect(x, y, blockSize, blockSize);
                     case 'i':
                         context.fillStyle = "#00000000";
                         context.rect(x, y, blockSize, blockSize);
@@ -180,10 +182,10 @@ var EntityDrawer = {
             case 'O':
                 switch (details) {
                     case 't':
-                        context.fillStyle = patterns.tisch2;
+                        context.fillStyle = patterns.obstacles.table;
                         break;
                     case 'T':
-                        context.fillStyle = patterns.tisch2;
+                        context.fillStyle = patterns.obstacles.table;
                         rotation = 90;
                         break;
                 }
@@ -205,26 +207,26 @@ var EntityDrawer = {
             case 't':
                 switch (details) {
                     case 't':
-                        context.fillStyle = patterns.stairsX;
+                        context.fillStyle = patterns.carpets.stairsX;
                         break;
                     case 'T':
-                        context.fillStyle = patterns.stairsY;
+                        context.fillStyle = patterns.carpets.stairsY;
                         break;
                     case 'L':
-                        context.fillStyle = patterns.logo;
+                        context.fillStyle = patterns.carpets.logo;
                         break;
                 }
                 break;
             case 'H':
                 switch (details) {
                     case 'a':
-                        context.fillStyle = patterns.heizungA;
+                        context.fillStyle = patterns.carpets.heizungA;
                         break;
                     case 'm':
-                        context.fillStyle = patterns.heizungM;
+                        context.fillStyle = patterns.carpets.heizungM;
                         break;
                     case 'e':
-                        context.fillStyle = patterns.heizungE;
+                        context.fillStyle = patterns.carpets.heizungE;
                         break;
                 }
                 break;
@@ -232,11 +234,11 @@ var EntityDrawer = {
             case 'V':
                 switch (details) {
                     case '3':
-                        context.fillStyle = patterns.pissoir;
+                        context.fillStyle = patterns.carpets.pissoir;
                         rotation = 90;
                         break;
                     default:
-                        context.fillStyle = patterns.portal;
+                        context.fillStyle = patterns.carpets.portal;
                         break;
                 }
                 break;
@@ -246,10 +248,10 @@ var EntityDrawer = {
             case 'C':
                 switch (details) {
                     case 't':
-                        context.fillStyle = patterns.tisch2;
+                        context.fillStyle = patterns.carpets.table;
                         break;
                     case 'T':
-                        context.fillStyle = patterns.tisch2;
+                        context.fillStyle = patterns.carpets.table;
                         rotation = 90;
                         break;
                     case 'p':
@@ -281,7 +283,7 @@ var EntityDrawer = {
         } else {
             context.rect(x, y, blockSize, blockSize);
         }
-        context.fillStyle = patterns[entityList.get(details).texture];
+        context.fillStyle = patterns["entities"][entityList.get(details).texture];
         context.fill();
         context.restore();
     },
@@ -312,7 +314,7 @@ var EntityDrawer = {
 
                 switch (details) {
                     case '1':
-                        context.fillStyle = patterns.en_mueller;
+                        context.fillStyle = patterns["entities"]["mueller"];
                         break;
                 }
                 context.translate(x, y - playerOverlap);
@@ -1049,7 +1051,7 @@ var MapProcessor = function() {
         enemyFollowRadius = config.collision.enemyFollowRadius * zoomfactor;
         enemyFollowRadiusRotate = config.collision.enemyFollowRadiusRotate * zoomfactor;
 
-        PatternHelper.createAll();
+        //patternHelper.createAll(); // todo not load files again
         this.reloadMap();
     }
 

@@ -30,7 +30,7 @@ var rotateplayer = false;
 
 var loadingtime = config.loadingtime;
 
-PatternHelper.createAll();
+patternHelper.createAll();
 
 var camera;
 
