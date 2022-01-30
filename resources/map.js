@@ -75,6 +75,21 @@ var entityFunctions = function() {
     this.ew = function(entity) {
         player.inventory.addInventory("wool");
     }
+    this.ed = function(entity) {
+        player.inventory.addInventory("desi");
+    }
+    this.eb = function(entity) {
+        player.inventory.setInventorySingle("base");
+    }
+    this.eg = function(entity) {
+        player.inventory.setInventorySingle("water");
+    }
+    this.es = function(entity) {
+        player.inventory.setInventorySingle("key");
+    }
+    this.ec = function(entity) {
+        player.inventory.setInventorySingle("coffee");
+    }
     this.e1 = function(entity) {
         var entityNum = 1;
         var entityData = entityList.get(entityNum.toString());
@@ -108,6 +123,20 @@ var entityFunctions = function() {
             showEntityText(entityData.text.t1);
         }
     }
+    this.e4 = function(entity) {
+        var entityNum = 4;
+        var entityData = entityList.get(entityNum.toString());
+        if (registerMeeting('e' + entityNum)) {
+            showEntityText(entityData.text.t1);
+        }
+    }
+    this.e5 = function(entity) {
+        var entityNum = 5;
+        var entityData = entityList.get(entityNum.toString());
+        if (registerMeeting('e' + entityNum)) {
+            showEntityText(entityData.text.t1);
+        }
+    }
 }
 
 var efnc = new entityFunctions();
@@ -116,9 +145,16 @@ var entityList = new Map();
 
 entityList.set("k", { name: "Keks", texture: "cookie", collect: efnc.ek });
 entityList.set("w", { name: "Wolle", texture: "wool", collect: efnc.ew });
+entityList.set("d", { name: "Desi", texture: "desi", collect: efnc.ed });
+entityList.set("b", { name: "Base", texture: "base", collect: efnc.eb });
+entityList.set("g", { name: "Gießkanne", texture: "water", collect: efnc.eg });
+entityList.set("s", { name: "Schlüssel", texture: "key", collect: efnc.es });
+entityList.set("c", { name: "Kaffee", texture: "coffee", collect: efnc.ec });
 entityList.set("1", { name: "Hilchenbach", texture: "en_hilchenbach", overlap: true, interact: efnc.e1, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" }, mode: { give: false }, task: { item: "cookie", count: 5 } });
-entityList.set("2", { name: "Müller", texture: "en_mueller", overlap: true, interact: efnc.e2, text: { t1: "Ich bin Frau Müller" } });
+entityList.set("2", { name: "Goldi", texture: "en_goldi", overlap: true, interact: efnc.e2, text: { t1: "Ich bin Herr Goldhorn" } });
 entityList.set("3", { name: "Glauben", texture: "en_glauben", overlap: true, interact: efnc.e3, text: { t1: "Ich bin Herr Glauben" } });
+entityList.set("4", { name: "Reiner", texture: "en_reiner", overlap: true, interact: efnc.e4, text: { t1: "Ich bin der Reiner" } });
+entityList.set("5", { name: "Fischer", texture: "en_fischer", overlap: true, interact: efnc.e5, text: { t1: "Ich brauche Kaffee!" } });
 
 
 
