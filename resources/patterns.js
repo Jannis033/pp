@@ -13004,5 +13004,5 @@ var PatternHelper = {
 	patternContext.fill();
             
         return context.createPattern(patternCanvas, 'repeat');
-     }
+    }
 }
