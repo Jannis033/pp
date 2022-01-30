@@ -16,4 +16,4 @@ config.entities = {};
 
 config.entities.player = { speed: 4, lsdspeed: 20, damagecounter: 80, damagevalue: 0.7, damagevalueenemy: 0.015, regeneratecounter: 5, regeneratevalue: 0.15, health: 20 };
 config.entities.entity = { speed: 3, collision: true };
-config.entities.enemy = { speed: 3, viewangle: 30, collision: false };
+config.entities.enemy = { speed: 3, viewangle: 30, collision: true };

@@ -105,7 +105,7 @@ EntityCollision.arcToEntity = function(arcX, arcY, arcRadius, entityX, entityY, 
 
 EntityCollision.arcToEntities = function(arcX, arcY) {
     var resultVector = { x: 0, y: 0 };
-    var tmpEntities = [...entities.filter(entity => (entity.collision && !entity.sleep)), ...enemies.filter(enemy => (enemy.collision && !enemy.sleep))];
+    var tmpEntities = [...entities.filter(entity => (entity.collision && !entity.sleep)), ...enemies.filter(enemy => (enemy.peaceful() && enemy.collision && !enemy.sleep))];
 
     for (var i = 0; i < tmpEntities.length; i++) {
         var entity = tmpEntities[i];

@@ -54,6 +54,7 @@ var patternHelper = {
         this.loadPattern("base", "items");
         this.loadPattern("cookie", "items");
         this.loadPattern("desi", "items");
+        this.loadPattern("key", "items");
 
         this.loadPattern("barrier", "obstacles");
         this.loadPattern("table", "obstacles");

@@ -111,3 +111,11 @@ Die Spieler Positionen und die Verlinkungen zu den entsprechenden Portalen wurde
 Lehrer haben eigene Wände bekommen, damit sie bestimmte Bereiche nicht verlassen können.
 Es wurden verschiedene Lehrer Texturen eingefügt.
 Man bekommt im Sichtfeld von Lehrern nun Schaden und stirbt, wenn man ihnen zu nahe kommt.
+
+### 30.1.2022
+
+Ein großes Performance-Problem wurde behoben; es werden nur noch die Elemente geladen, die auch sichtbar sind.
+Die Texturen werden jetzt dymanisch geladen und ausgelagert, da die patterns Datei > 11k Zeilen hatte.
+Es wurden viele neue Texturen eingefügt, darunter die Kaffeemaschine und Desinfektionsmittel.
+Frau Müller verfolgt einen nun nichtmehr, wenn man 5 oder mehr Desinfektionsmittel dabei hat.
+Viele weitere Mapänderungen.
