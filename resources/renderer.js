@@ -211,7 +211,7 @@ var EntityDrawer = {
                         context.fillStyle = patterns.stairsY;
                         break;
                     case 'L':
-                        context.fillStyle = patterns.cookie;
+                        context.fillStyle = patterns.logo;
                         break;
                 }
                 break;
