@@ -13003,6 +13003,6 @@ var PatternHelper = {
 	patternContext.bezierCurveTo(20.690492, 14.544410, 20.421277, 14.691777, 20.398259, 14.654267);
 	patternContext.fill();
             
-     return context.createPattern(patternCanvas, 'repeat');
+        return context.createPattern(patternCanvas, 'repeat');
      }
 }
