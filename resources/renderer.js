@@ -370,7 +370,7 @@ var Player = function(x, y) {
         items: {},
 
         updateInventory: function(item) {
-            document.getElementById("inv_" + item).innerHTML = this.countInventory(item);
+            document.getElementById("inv_" + item).innerHTML = (this.countInventoryAll(item) == -2 ? '' : this.countInventory(item));
             if (this.countInventoryAll(item) != 0) {
                 document.getElementById("inv_" + item).parentElement.classList.add("show");
             } else {
@@ -387,6 +387,11 @@ var Player = function(x, y) {
             this.updateInventory(item);
         },
 
+        setInventorySingle: function(item) {
+            this.items[item] = -2;
+            this.updateInventory(item);
+        },
+
         setInventoryTask: function(item) {
             if (!this.hasInventory(item)) {
                 this.setInventory(item, -1);
@@ -396,7 +401,7 @@ var Player = function(x, y) {
 
         countInventory: function(item) {
             if (this.items.hasOwnProperty(item)) {
-                return (this.items[item] < 0 ? 0 : this.items[item]);
+                return (this.items[item] == -2 ? 1 : (this.items[item] < 0 ? 0 : this.items[item]));
             } else {
                 return 0;
             }
@@ -412,6 +417,7 @@ var Player = function(x, y) {
 
         addInventory: function(item, count = 1) {
             if (this.items.hasOwnProperty(item)) {
+                if (this.items[item] == -2) this.items[item] = 1;
                 if (this.items[item] < 0) this.items[item] = 0;
                 this.items[item] = this.items[item] + count;
                 if (this.items[item] < 0) this.items[item] = 0;
