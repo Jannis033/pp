@@ -206,7 +206,7 @@ EntityCollision.enemieInside = function(x, y) {
         var distY = Math.abs(y - enemyCenterY) - blockSize / 2;
 
         if (distX <= 0 && distY <= 0 && Math.sqrt((x - enemy.x - blockSize / 2) * (x - enemy.x - blockSize / 2) + (y - enemy.y - blockSize / 2) * (y - enemy.y - blockSize / 2)) > 4) {
-            return true;
+            return !enemy.peaceful();
         }
     }
     return false;

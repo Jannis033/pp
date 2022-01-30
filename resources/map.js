@@ -149,7 +149,6 @@ entityList.set("d", { name: "Desi", texture: "desi", collect: efnc.ed });
 entityList.set("b", { name: "Base", texture: "base", collect: efnc.eb });
 entityList.set("g", { name: "Gießkanne", texture: "water", collect: efnc.eg });
 entityList.set("s", { name: "Schlüssel", texture: "key", collect: efnc.es });
-entityList.set("c", { name: "Kaffee", texture: "coffee", collect: efnc.ec });
 entityList.set("1", { name: "Hilchenbach", texture: "hilchenbach", overlap: true, interact: efnc.e1, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" }, mode: { give: false }, task: { item: "cookie", count: 5 } });
 entityList.set("2", { name: "Goldi", texture: "goldi", overlap: true, interact: efnc.e2, text: { t1: "Ich bin Herr Goldhorn" } });
 entityList.set("3", { name: "Glauben", texture: "glauben", overlap: true, interact: efnc.e3, text: { t1: "Ich bin Herr Glauben" } });

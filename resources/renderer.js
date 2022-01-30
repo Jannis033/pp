@@ -261,6 +261,9 @@ var EntityDrawer = {
                     case 'P':
                         context.fillStyle = patterns.carpets.pissoir;
                         break;
+                    case 'c':
+                        context.fillStyle = patterns.carpets.coffee;
+                        break;
                 }
                 break;
         }
@@ -294,27 +297,30 @@ var EntityDrawer = {
     enemy: function(x, y, type, details, entity) {
         switch (type) {
             case 'E':
-                var polygon = EntityCollision.getViewareaPolygon(entity);
-                // the polygon
-                context.beginPath();
-                context.moveTo(polygon[0].x, polygon[0].y);
-                for (i = 1; i < polygon.length; i++) {
-                    context.lineTo(polygon[i].x, polygon[i].y);
-                }
-                context.closePath();
+                if (!entity.peaceful()) {
+                    var polygon = EntityCollision.getViewareaPolygon(entity);
+                    // the polygon
+                    context.beginPath();
+                    context.moveTo(polygon[0].x, polygon[0].y);
+                    for (i = 1; i < polygon.length; i++) {
+                        context.lineTo(polygon[i].x, polygon[i].y);
+                    }
+                    context.closePath();
 
-                // the outline
-                //context.lineWidth = 10;
-                //context.strokeStyle = '#666666';
-                //context.stroke();
 
-                // the fill color
-                if (entity.following) {
-                    context.fillStyle = "#FF220044";
-                } else {
-                    context.fillStyle = "#FFCC0044";
+                    // the outline
+                    //context.lineWidth = 10;
+                    //context.strokeStyle = '#666666';
+                    //context.stroke();
+
+                    // the fill color
+                    if (entity.following) {
+                        context.fillStyle = "#FF220044";
+                    } else {
+                        context.fillStyle = "#FFCC0044";
+                    }
+                    context.fill();
                 }
-                context.fill();
 
                 switch (details) {
                     case '1':
@@ -323,14 +329,16 @@ var EntityDrawer = {
                 }
                 context.translate(x, y - playerOverlap);
                 context.fillRect(0, 0, blockSize, blockSize + playerOverlap);
-                context.beginPath();
-                context.arc(blockSize / 2, blockSize / 2 + playerOverlap, enemyFollowRadiusRotate + blockSize / 2, 0, 2 * Math.PI);
-                if (entity.rotating) {
-                    context.strokeStyle = "#FF220066";
-                } else {
-                    context.strokeStyle = "#FFCC0044";
+                if (!entity.peaceful()) {
+                    context.beginPath();
+                    context.arc(blockSize / 2, blockSize / 2 + playerOverlap, enemyFollowRadiusRotate + blockSize / 2, 0, 2 * Math.PI);
+                    if (entity.rotating) {
+                        context.strokeStyle = "#FF220066";
+                    } else {
+                        context.strokeStyle = "#FFCC0044";
+                    }
+                    context.stroke();
                 }
-                context.stroke();
                 context.translate(-x, -y + playerOverlap);
 
                 break;
@@ -644,7 +652,9 @@ var Player = function(x, y) {
                 var enemy = tmpenall[i];
 
                 if (enemy != null) {
-                    enemy.rotate();
+                    if (!enemy.peaceful()) {
+                        enemy.rotate();
+                    }
                 }
             }
         }
@@ -656,8 +666,10 @@ var Player = function(x, y) {
                 var enemy = tmpen[i];
 
                 if (enemy != null) {
-                    this.setHealth(this.health - this.damagevalueenemy);
-                    enemy.follow();
+                    if (!enemy.peaceful()) {
+                        this.setHealth(this.health - this.damagevalueenemy);
+                        enemy.follow();
+                    }
                 }
             }
         }
@@ -855,6 +867,11 @@ var Enemy = function(x, y, type, details) {
         this.following = false;
         this.rotating = false;
     };
+
+    this.peaceful = function() {
+        if (this.details == "1" && player.inventory.countInventory("desi") >= 5) return true;
+        return false;
+    }
 
     this.follow = function() {
         var playerVector = EntityCollision.playerVector(this.x + blockSize / 2, this.y + blockSize / 2);
@@ -1159,8 +1176,45 @@ var MapProcessor = function() {
 
     this.saveMap = function() {
         if (this.mapName == null || this.map == null) return;
-        removeItemAll(elements, player);
-        this.mapsSave.set(this.mapName, { elements: elements, entities: entities, enemies: enemies, walls: walls, carpets: carpets })
+        var tmpElements = elements;
+        removeItemAll(tmpElements, player);
+        this.mapsSave.set(this.mapName, { elements: tmpElements, entities: entities, enemies: enemies, walls: walls, carpets: carpets });
+    }
+
+    this.loadSavedMap = function(rotation = 4, load = false) {
+        if (this.mapsSave.has(this.mapName)) {
+            var m = this.mapsSave.get(this.mapName);
+            elements = m.elements;
+            entities = m.entities;
+            enemies = m.enemies;
+            walls = m.walls;
+            carpets = m.carpets;
+
+            this.generateSpawn();
+
+            playerPosition = this.getPlayerPosition();
+
+            if (player == null) {
+                player = new Player(playerPosition.x, playerPosition.y);
+            } else {
+                player.teleport(playerPosition.x, playerPosition.y);
+            }
+
+            player.rotation = rotation;
+
+            elements.push(player);
+
+            loaded = true;
+
+            if (load) {
+                player.startRotate();
+                setTimeout(function() {
+                    player.endRotate();
+                }, loadingtime * 1000);
+            }
+
+            camera = new Camera();
+        }
     }
 
     this.loadMap = function(map, mapName, spawn = null, rotation = 4, reset = false, load = false) {

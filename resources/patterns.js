@@ -36,6 +36,7 @@ var patternHelper = {
 
     },
     createAll: function() {
+        this.loadPattern("coffee", "carpets");
         this.loadPattern("heizungA", "carpets");
         this.loadPattern("heizungM", "carpets");
         this.loadPattern("heizungE", "carpets");
@@ -50,7 +51,9 @@ var patternHelper = {
         this.loadPattern("mueller", "entities");
         this.loadPattern("peter", "entities");
 
+        this.loadPattern("base", "items");
         this.loadPattern("cookie", "items");
+        this.loadPattern("desi", "items");
 
         this.loadPattern("barrier", "obstacles");
         this.loadPattern("table", "obstacles");

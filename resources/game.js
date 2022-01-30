@@ -36,6 +36,27 @@ var camera;
 
 mapProcessor.loadMap(map1, "map1");
 
+function saveProgress() {
+    mapProcessor.saveMap();
+
+    var mapsSave = Object.fromEntries(mapProcessor.mapsSave);
+
+    localStorage.setItem('progress', JSON.stringify({ player: { position: { x: player.x, y: player.y }, rotation: player.rotation }, ms: mapsSave }));
+}
+
+function loadProgress() {
+    var progress = JSON.parse(localStorage.getItem('progress'));
+
+    if (!progress) return
+    if (progress.ms == null || progress.player.position == null || progress.player.rotation == null) return;
+
+    mapProcessor.mapsSave = new Map(Object.entries(progress.ms));
+    mapProcessor.playerPosition = progress.player.position;
+    mapProcessor.loadSavedMap(progress.player.rotation);
+}
+
+loadProgress();
+
 var onUpdate = function() {
     camera.update();
     for (var i = 0; i < elements.length; i++) {
