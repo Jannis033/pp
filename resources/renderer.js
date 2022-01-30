@@ -254,6 +254,10 @@ var EntityDrawer = {
                         break;
                     case 'p':
                         context.fillStyle = patterns.pissoir;
+                        rotation = 90;
+                        break;
+                    case 'P':
+                        context.fillStyle = patterns.pissoir;
                         break;
                 }
                 break;
