@@ -13,7 +13,7 @@ var map1 = `
       WiWiW                               W           W         W ttttttW D D D D D D D D D W                     W                                   W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W           W           W         W ttttttW D D D D D D W W W W                     W                       W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W           W           W         W ttttttW D D D D D D tTtTtTW                     W                       W           W D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W W   W W W W W W W W W W W W W W W B2B2B2W W W W W W W W W   W W W W W W W   W W W W W W W W W W   W W W W W           W D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W W   W W W W W W W W W W W W W W W       W W W W W W W W W B3W W W W W W W   W W W W W W W W W W   W W W W W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW W W W W W W W W W W     e3                                      B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             B3                                                            L           W D D D D D D D D D D D D D D D D W Wi
@@ -28,9 +28,9 @@ var map1 = `
       WiWiW   cg              W                                             W                                   W W W W W W W W W W W W W W W W W W W W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W           W ttttttW W W W W W W                                   W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W ttttttttttW ttttttW         CcW                                   W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W             W ttttttttttW ttttttW   e5      W                                   W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
+      WiWiW                                 W ttttttttttW ttttttW   e5      W                                   W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W ttttttttttW ttttttW                                               W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W             W B2B2B2B2B2W W W W W W W W W W W W W W W W W W W W W W W W W W W W W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W             W ttttttttttW W W W W W W W W W W W W W W W W W W W W W W W W W W W W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W ttttttttttW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W ttttttttttW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW W W W W W W W W W W             W ttttttttttW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
@@ -44,7 +44,7 @@ var map1 = `
       WiWiW W W W W W W W W W W B1B1B1B1B1B1W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W             W D D D D D D D D D D D D D CbD D D D D D D D CbD D D D D D CbD D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W             W D D D D D D D D D D D D D e7D D D D D D D D e7D D D D D D e7D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                                 W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             W D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi

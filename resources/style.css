@@ -88,7 +88,8 @@ body {
     pointer-events: none;
 }
 
-#info div {
+#info p {
+    display: block;
     position: absolute;
     opacity: 0;
     background-color: #aaa;
@@ -96,10 +97,13 @@ body {
     border-radius: 5px;
     padding: 5px 10px;
     margin-bottom: 20px;
+    bottom: 20px;
+    margin-right: 50px;
     transition: opacity 0.2s;
+    text-align: center;
 }
 
-#info div.show {
+#info p.show {
     opacity: 1;
 }
 

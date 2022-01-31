@@ -64,8 +64,16 @@ function hideEntityText() {
 }
 
 function showEntityText(text) {
+    var msg = text;
+    if (Array.isArray(text)) {
+        msg = text[getRandomInt(text.length)];
+    }
     document.getElementById("entityText").classList.add("show");
-    document.getElementById("entityText").innerHTML = text;
+    document.getElementById("entityText").innerHTML = msg;
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
 }
 
 var entityFunctions = function() {
@@ -83,6 +91,7 @@ var entityFunctions = function() {
     }
     this.eg = function(entity) {
         player.inventory.setInventorySingle("water");
+        entityList.get("7").mode.enabled = true;
     }
     this.es = function(entity) {
         player.inventory.setInventorySingle("key");
@@ -128,7 +137,7 @@ var entityFunctions = function() {
             if (!entityData.mode.enabled) {
                 showEntityText(entityData.text.t0);
             } else {
-                if (player.inventory.countInventory(entityData.task.item) < entityData.task.count) {
+                if (player.inventory.countInventory(entityData.task.item) < entityData.task.count && !entityData.mode.thank) {
                     showEntityText(entityData.text.t1);
                     //player.inventory.setInventoryTask(entityData.task.item);
                 } else {
@@ -172,7 +181,14 @@ var entityFunctions = function() {
         var entityNum = 5;
         var entityData = entityList.get(entityNum.toString());
         if (registerMeeting('e' + entityNum) && !entityData.mode.end) {
-            showEntityText(entityData.text.t1);
+            if (entityList.get("7").mode.end) {
+                showEntityText(entityData.text.t2);
+                setTimeout(function() { showEntityText(entityData.text.t3); }, 2000);
+                entityList.get("2").mode.enabled = true;
+                entityData.end = true;
+            } else {
+                showEntityText(entityData.text.t1);
+            }
         }
     }
     this.e6 = function(entity, infoOnly = false) {
@@ -187,12 +203,47 @@ var entityFunctions = function() {
             }
         }
     }
+    this.e7 = function(entity, infoOnly = false) {
+        var entityNum = 7;
+        var entityData = entityList.get(entityNum.toString());
+        if (player.inventory.countInventory("water") == 0) {
+            showEntityText(entityData.text.t0);
+        } else {
+            if (registerMeeting('e' + entityNum) && !entityData.mode.end) {
+                var wp = null;
+                if (entity.x == 2880) {
+                    wp = tasksTmp.waterProgress.wp1;
+                } else if (entity.x == 3600) {
+                    wp = tasksTmp.waterProgress.wp2;
+                } else if (entity.x == 4160) {
+                    wp = tasksTmp.waterProgress.wp3;
+                }
+                if (tasksTmp.waterProgress.wp1 >= 5 && tasksTmp.waterProgress.wp2 >= 5 && tasksTmp.waterProgress.wp3 >= 5) {
+                    showEntityText("Super, alle Pflanzen wurden gegossen!");
+                    entityData.mode.end = true;
+                } else if (wp >= 5) {
+                    showEntityText("Perfekt!");
+                } else {
+                    wp++;
+                    showEntityText("Noch " + (6 - wp) + " x drücken!");
+                    if (entity.x == 2880) {
+                        tasksTmp.waterProgress.wp1 = wp;
+                    } else if (entity.x == 3600) {
+                        tasksTmp.waterProgress.wp2 = wp;
+                    } else if (entity.x == 4160) {
+                        tasksTmp.waterProgress.wp3 = wp;
+                    }
+                }
+            }
+        }
+    }
     this.E1 = function(enemy, infoOnly = false) {
         var enemyNum = 1;
         var enemyData = entityList.get("E" + enemyNum.toString());
         showEntityText(enemyData.text.t1);
     }
 }
+var tasksTmp = { waterProgress: { wp1: 0, wp2: 0, wp3: 0 } };
 
 var efnc = new entityFunctions();
 
@@ -204,11 +255,12 @@ entityList.set("b", { name: "Base", texture: "base", collect: efnc.eb });
 entityList.set("g", { name: "Gießkanne", texture: "water", collect: efnc.eg });
 entityList.set("s", { name: "Schlüssel", texture: "key", collect: efnc.es });
 entityList.set("1", { name: "Hilchenbach", texture: "hilchenbach", overlap: true, interact: efnc.e1, mode: { enabled: true, give: false, thank: false, end: false }, task: { item: "cookie", count: 5 }, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" } });
-entityList.set("2", { name: "Goldi", texture: "goldi", overlap: true, interact: efnc.e2, mode: { enabled: false, give: false, thank: false, end: false }, task: { item: "key", count: 1 }, text: { t0: "Hallo", t1: "Hilfe wo ist mein Schlüssel?!", t2: "Ich danke dir treuer Freund. Gehab dich wohl!", t3: "Zum Dank öffne ich dir damit alle Türen, statte doch mal unserem Schulleiter einen Besuch ab." } });
-entityList.set("3", { name: "Glauben", texture: "glauben", overlap: true, interact: efnc.e3, mode: { enabled: true, end: false }, text: { t1: "Ich bin Herr Glauben" } });
+entityList.set("2", { name: "Goldi", texture: "goldi", overlap: true, interact: efnc.e2, mode: { enabled: false, give: false, thank: false, end: false }, task: { item: "key", count: 1 }, text: { t0: "Hmmmm", t1: "Hilfe wo ist mein Schlüssel?!", t2: "Ich danke dir treuer Freund. Gehab dich wohl!", t3: "Zum Dank öffne ich dir damit alle Türen, statte doch mal unserem Schulleiter einen Besuch ab." } });
+entityList.set("3", { name: "Glauben", texture: "glauben", overlap: true, interact: efnc.e3, mode: { enabled: true, end: false }, text: { t1: ["Eure Epochalnoten? Ne tut mir leid ich hatte leider keine Zeit am Wochenende, aber hier ist eine Powerpoint-Präsentation, die ich für die Kursfahrt erstellt habe.", "Ja, ich hätte schon am liebsten eine Lehrerin dabei.", "Manche Kunstwerke werden auf Pornoseiten hochgeladen, weil sie auf Youtube gesperrt werden würden, da nackte Menschen zu sehen sind", "Hütet euch vor Spekulatius, davon fängt man an zu spekulieren", "Ich stehe vor dem Spiegel und sehe dort Gott!", "Lit", "#HansIstEinEhrenmann"] } });
 entityList.set("4", { name: "Reiner", texture: "reiner", overlap: true, interact: efnc.e4, mode: { enabled: true, end: false }, text: { t1: "Ich bin der Reiner" } });
-entityList.set("5", { name: "Fischer", texture: "fischer", overlap: true, interact: efnc.e5, mode: { enabled: true, end: false }, text: { t1: "Ich brauche Kaffee!" } });
+entityList.set("5", { name: "Fischer", texture: "fischer", overlap: true, interact: efnc.e5, mode: { enabled: true, end: false }, text: { t1: "Ohh nee, ich muss ja noch die Pflanzen gießen... kannst du das schnell machen?", t2: "Ahh perfekt, danke! Als Belohnung bekommst du einen Ka...", t3: 'Goldi *aus der Ferne*: "Ach verdammt!!"' } });
 entityList.set("6", { name: "Schalter", texture: "schalter", texture1: "schalter1", overlap: false, interact: efnc.e6, mode: { enabled: true, active: false, end: false }, text: { t1: "Die Barrieren wurden entfernt!" } });
+entityList.set("7", { name: "Pflanze", texture: "pflanzen", overlap: false, interact: efnc.e7, mode: { enabled: true, end: false }, text: { t0: "Du brauchst eine Gießkanne!" } });
 entityList.set("E1", { name: "Müller", texture: "mueller", overlap: true, follow: efnc.E1, rotation: 270, text: { t1: "Sammel 5 Desinfektionsmittel und du bist immun!", t2: "Besser ist das!" }, task: { item: "desi", count: 5 } });
 
 

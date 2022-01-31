@@ -41,16 +41,17 @@ var patternHelper = {
         this.loadPattern("heizungM", "carpets");
         this.loadPattern("heizungE", "carpets");
         this.loadPattern("logo", "carpets");
-        this.loadPattern("pflanzen", "carpets");
         this.loadPattern("pissoir", "carpets");
         this.loadPattern("portal", "carpets");
         this.loadPattern("stairsX", "carpets");
         this.loadPattern("stairsY", "carpets");
 
         this.loadPattern("glauben", "entities");
+        this.loadPattern("goldi", "entities");
         this.loadPattern("hilchenbach", "entities");
         this.loadPattern("mueller", "entities");
         this.loadPattern("peter", "entities");
+        this.loadPattern("pflanzen", "entities");
         this.loadPattern("reiner", "entities");
         this.loadPattern("schalter", "entities");
         this.loadPattern("schalter1", "entities");

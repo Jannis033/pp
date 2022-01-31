@@ -264,9 +264,6 @@ var EntityDrawer = {
                     case 'c':
                         context.fillStyle = patterns.carpets.coffee;
                         break;
-                    case 'b':
-                        context.fillStyle = patterns.carpets.pflanzen;
-                        break;
                 }
                 break;
         }
@@ -276,14 +273,7 @@ var EntityDrawer = {
         context.rotate(rotation / 180 * Math.PI);
         context.translate(-blockSize / 2, -blockSize / 2);
         context.beginPath();
-        if (type == "C" && details == "b") {
-            context.translate(-blockSize / 2, -blockSize / 2);
-            context.scale(2, 2);
-            context.rect(0, 0, blockSize * 2, blockSize * 2);
-
-        } else {
-            context.rect(0, 0, blockSize, blockSize);
-        }
+        context.rect(0, 0, blockSize, blockSize);
         context.fill();
         context.restore();
     },
@@ -294,7 +284,13 @@ var EntityDrawer = {
             context.translate(x, y - playerOverlap);
             context.rect(0, 0, blockSize, blockSize + playerOverlap);
         } else {
-            context.rect(x, y, blockSize, blockSize);
+            if (type == "e" && details == "7") {
+                context.translate(x - blockSize / 2, y - blockSize / 2);
+                context.scale(2, 2);
+                context.rect(0, 0, blockSize * 2, blockSize * 2);
+            } else {
+                context.rect(x, y, blockSize, blockSize);
+            }
         }
         if (type == "e") { // e
             if (entityList.get(details).mode.active) {

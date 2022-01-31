@@ -1,4 +1,4 @@
-patternCreator.carpets.pflanzen = function() {
+patternCreator.entities.pflanzen = function() {
     const patternCanvas = document.createElement('canvas');
     const ctx = patternCanvas.getContext('2d');
 
