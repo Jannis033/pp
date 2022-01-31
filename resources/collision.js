@@ -217,7 +217,7 @@ EntityCollision.getViewarea = function(rotation, angle) { // get start end end a
 }
 
 EntityCollision.getRotationVector = function(rotation) { // vector with length 1 in rotation direction
-    var vectorX = Math.tan(rotation / 180 * Math.PI) * ((rotation > 90 && rotation < 180) || (rotation < 270 && rotation > 180) ? -1 : 1);
+    var vectorX = Math.tan(rotation / 180 * Math.PI) * ((rotation > 90 && rotation < 180) || (rotation <= 270 && rotation > 180) ? -1 : 1);
     var vectorY = 1 / Math.sqrt(vectorX * vectorX + 1) * (rotation > 270 || rotation < 90 ? 1 : -1);
     vectorX = vectorX / Math.sqrt(vectorX * vectorX + 1);
 

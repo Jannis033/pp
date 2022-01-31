@@ -340,7 +340,6 @@ var EntityDrawer = {
                     context.stroke();
                 }
                 context.translate(-x, -y + playerOverlap);
-
                 break;
         }
 
@@ -835,7 +834,7 @@ var Enemy = function(x, y, type, details) {
     this.speed = config.entities.enemy.speed;
     this.sleep = true;
     this.viewAngle = config.entities.enemy.viewangle;
-    this.rotation = 0;
+    this.rotation = 270;
     this.following = false;
     this.rotating = false;
     this.movePos = [];
