@@ -264,6 +264,9 @@ var EntityDrawer = {
                     case 'c':
                         context.fillStyle = patterns.carpets.coffee;
                         break;
+                    case 'b':
+                        context.fillStyle = patterns.carpets.pflanzen;
+                        break;
                 }
                 break;
         }
@@ -273,7 +276,14 @@ var EntityDrawer = {
         context.rotate(rotation / 180 * Math.PI);
         context.translate(-blockSize / 2, -blockSize / 2);
         context.beginPath();
-        context.rect(0, 0, blockSize, blockSize);
+        if (type == "C" && details == "b") {
+            context.translate(-blockSize / 2, -blockSize / 2);
+            context.scale(2, 2);
+            context.rect(0, 0, blockSize * 2, blockSize * 2);
+
+        } else {
+            context.rect(0, 0, blockSize, blockSize);
+        }
         context.fill();
         context.restore();
     },
@@ -287,7 +297,11 @@ var EntityDrawer = {
             context.rect(x, y, blockSize, blockSize);
         }
         if (type == "e") { // e
-            context.fillStyle = patterns["entities"][entityList.get(details).texture];
+            if (entityList.get(details).mode.active) {
+                context.fillStyle = patterns["entities"][entityList.get(details).texture1];
+            } else {
+                context.fillStyle = patterns["entities"][entityList.get(details).texture];
+            }
         } else { // c
             context.fillStyle = patterns["items"][entityList.get(details).texture];
         }
@@ -322,11 +336,8 @@ var EntityDrawer = {
                     context.fill();
                 }
 
-                switch (details) {
-                    case '1':
-                        context.fillStyle = patterns["entities"]["mueller"];
-                        break;
-                }
+                context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+
                 context.translate(x, y - playerOverlap);
                 context.fillRect(0, 0, blockSize, blockSize + playerOverlap);
                 if (!entity.peaceful()) {
@@ -624,6 +635,8 @@ var Player = function(x, y) {
             }
         }
 
+        var tmpHideEntityText = false;
+
         //entities interact
         if (!keyboard.shift) {
             var entity = EntityCollision.entitiesInteract(this.x, this.y);
@@ -632,14 +645,17 @@ var Player = function(x, y) {
                 if (keyboard.space || keyboard.touch) {
                     entityList.get(entity.details).interact(entity);
                     document.getElementById("interactInfo").classList.remove("show");
-                } else {
+                } else if (entityList.get(entity.details).mode.give && !entityList.get(entity.details).mode.end) {
+                    entityList.get(entity.details).interact(entity, true);
+                    document.getElementById("interactInfo").classList.remove("show");
+                } else if (!entityList.get(entity.details).mode.end) {
                     if (!document.getElementById("entityText").classList.contains("show")) {
                         document.getElementById("interactInfo").classList.add("show");
                     }
                 }
             } else {
                 document.getElementById("interactInfo").classList.remove("show");
-                hideEntityText();
+                tmpHideEntityText = true;
             }
         }
 
@@ -668,9 +684,14 @@ var Player = function(x, y) {
                     if (!enemy.peaceful()) {
                         this.setHealth(this.health - this.damagevalueenemy);
                         enemy.follow();
+                        tmpHideEntityText = false;
                     }
                 }
             }
+        }
+
+        if (tmpHideEntityText) {
+            hideEntityText();
         }
 
         if (!keyboard.shift) {
@@ -834,7 +855,7 @@ var Enemy = function(x, y, type, details) {
     this.speed = config.entities.enemy.speed;
     this.sleep = true;
     this.viewAngle = config.entities.enemy.viewangle;
-    this.rotation = 270;
+    this.rotation = entityList.get("E" + details).rotation;
     this.following = false;
     this.rotating = false;
     this.movePos = [];
@@ -878,6 +899,7 @@ var Enemy = function(x, y, type, details) {
         this.y += playerVector.y * this.speed * zoomfactor;
         this.wallCollision();
         this.rotate();
+        entityList.get("E" + this.details).follow(this);
         this.following = true;
     }
 

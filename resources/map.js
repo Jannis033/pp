@@ -90,52 +90,107 @@ var entityFunctions = function() {
     this.ec = function(entity) {
         player.inventory.setInventorySingle("coffee");
     }
-    this.e1 = function(entity) {
+    this.e1 = function(entity, infoOnly = false) {
         var entityNum = 1;
         var entityData = entityList.get(entityNum.toString());
-        if (registerMeeting('e' + entityNum)) {
-            if (player.inventory.countInventory(entityData.task.item) < entityData.task.count) {
-                showEntityText(entityData.text.t1);
-                player.inventory.setInventoryTask(entityData.task.item);
+        if ((infoOnly || registerMeeting('e' + entityNum)) && !entityData.mode.end) {
+            if (!entityData.mode.enabled) {
+                showEntityText(entityData.text.t0);
             } else {
-                if (entityData.mode.give) {
-                    showEntityText(entityData.text.t2);
-                    player.inventory.removeInventory(entityData.task.item, entityData.task.count);
-                    entity.moveRel(-3, 2);
+                if (player.inventory.countInventory(entityData.task.item) < entityData.task.count) {
+                    showEntityText(entityData.text.t1);
+                    if (!infoOnly) {
+                        player.inventory.setInventoryTask(entityData.task.item);
+                    }
                 } else {
-                    showEntityText(entityData.text.t1 + " [Space]");
-                    entityData.mode.give = true;
+                    if (entityData.mode.give && !infoOnly) {
+                        showEntityText(entityData.text.t2);
+                        if (!infoOnly) {
+                            player.inventory.removeInventory(entityData.task.item, entityData.task.count);
+                            entity.moveRel(-3, 2);
+                            entityData.mode.thank = true;
+                            entityData.mode.end = true;
+                        }
+                    } else {
+                        showEntityText(entityData.text.t1 + " [Space]");
+                        if (!infoOnly) {
+                            entityData.mode.give = true;
+                        }
+                    }
                 }
             }
         }
     }
-    this.e2 = function(entity) {
+    this.e2 = function(entity, infoOnly = false) {
         var entityNum = 2;
         var entityData = entityList.get(entityNum.toString());
-        if (registerMeeting('e' + entityNum)) {
-            showEntityText(entityData.text.t1);
+        if ((infoOnly || registerMeeting('e' + entityNum)) && !entityData.mode.end) {
+            if (!entityData.mode.enabled) {
+                showEntityText(entityData.text.t0);
+            } else {
+                if (player.inventory.countInventory(entityData.task.item) < entityData.task.count) {
+                    showEntityText(entityData.text.t1);
+                    //player.inventory.setInventoryTask(entityData.task.item);
+                } else {
+                    if (entityData.mode.thank && !infoOnly) {
+                        showEntityText(entityData.text.t3);
+                        if (!infoOnly) {
+                            hideBarrier(3);
+                            entityData.mode.end = true;
+                        }
+                    } else if (entityData.mode.give && !infoOnly || entityData.mode.thank && infoOnly) {
+                        showEntityText(entityData.text.t2 + " [Space]");
+                        if (!infoOnly) {
+                            player.inventory.removeInventory(entityData.task.item, entityData.task.count);
+                            entityData.mode.thank = true;
+                        }
+                    } else {
+                        showEntityText(entityData.text.t1 + " [Space]");
+                        if (!infoOnly) {
+                            entityData.mode.give = true;
+                        }
+                    }
+                }
+            }
         }
     }
-    this.e3 = function(entity) {
+    this.e3 = function(entity, infoOnly = false) {
         var entityNum = 3;
         var entityData = entityList.get(entityNum.toString());
-        if (registerMeeting('e' + entityNum)) {
+        if (registerMeeting('e' + entityNum) && !entityData.mode.end) {
             showEntityText(entityData.text.t1);
         }
     }
-    this.e4 = function(entity) {
+    this.e4 = function(entity, infoOnly = false) {
         var entityNum = 4;
         var entityData = entityList.get(entityNum.toString());
-        if (registerMeeting('e' + entityNum)) {
+        if (registerMeeting('e' + entityNum) && !entityData.mode.end) {
             showEntityText(entityData.text.t1);
         }
     }
-    this.e5 = function(entity) {
+    this.e5 = function(entity, infoOnly = false) {
         var entityNum = 5;
         var entityData = entityList.get(entityNum.toString());
-        if (registerMeeting('e' + entityNum)) {
+        if (registerMeeting('e' + entityNum) && !entityData.mode.end) {
             showEntityText(entityData.text.t1);
         }
+    }
+    this.e6 = function(entity, infoOnly = false) {
+        var entityNum = 6;
+        var entityData = entityList.get(entityNum.toString());
+        if (registerMeeting('e' + entityNum) && !entityData.mode.end) {
+            if (!entityData.mode.active) {
+                showEntityText(entityData.text.t1);
+                hideBarrier(1);
+                entityData.mode.active = true;
+                entityData.mode.end = true;
+            }
+        }
+    }
+    this.E1 = function(enemy, infoOnly = false) {
+        var enemyNum = 1;
+        var enemyData = entityList.get("E" + enemyNum.toString());
+        showEntityText(enemyData.text.t1);
     }
 }
 
@@ -144,16 +199,17 @@ var efnc = new entityFunctions();
 var entityList = new Map();
 
 entityList.set("k", { name: "Keks", texture: "cookie", collect: efnc.ek });
-entityList.set("w", { name: "Wolle", texture: "wool", collect: efnc.ew });
 entityList.set("d", { name: "Desi", texture: "desi", collect: efnc.ed });
 entityList.set("b", { name: "Base", texture: "base", collect: efnc.eb });
 entityList.set("g", { name: "Gießkanne", texture: "water", collect: efnc.eg });
 entityList.set("s", { name: "Schlüssel", texture: "key", collect: efnc.es });
-entityList.set("1", { name: "Hilchenbach", texture: "hilchenbach", overlap: true, interact: efnc.e1, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" }, mode: { give: false }, task: { item: "cookie", count: 5 } });
-entityList.set("2", { name: "Goldi", texture: "goldi", overlap: true, interact: efnc.e2, text: { t1: "Ich bin Herr Goldhorn" } });
-entityList.set("3", { name: "Glauben", texture: "glauben", overlap: true, interact: efnc.e3, text: { t1: "Ich bin Herr Glauben" } });
-entityList.set("4", { name: "Reiner", texture: "reiner", overlap: true, interact: efnc.e4, text: { t1: "Ich bin der Reiner" } });
-entityList.set("5", { name: "Fischer", texture: "fischer", overlap: true, interact: efnc.e5, text: { t1: "Ich brauche Kaffee!" } });
+entityList.set("1", { name: "Hilchenbach", texture: "hilchenbach", overlap: true, interact: efnc.e1, mode: { enabled: true, give: false, thank: false, end: false }, task: { item: "cookie", count: 5 }, text: { t1: "Gib mir 5 Kekse!", t2: "Danke!" } });
+entityList.set("2", { name: "Goldi", texture: "goldi", overlap: true, interact: efnc.e2, mode: { enabled: false, give: false, thank: false, end: false }, task: { item: "key", count: 1 }, text: { t0: "Hallo", t1: "Hilfe wo ist mein Schlüssel?!", t2: "Ich danke dir treuer Freund. Gehab dich wohl!", t3: "Zum Dank öffne ich dir damit alle Türen, statte doch mal unserem Schulleiter einen Besuch ab." } });
+entityList.set("3", { name: "Glauben", texture: "glauben", overlap: true, interact: efnc.e3, mode: { enabled: true, end: false }, text: { t1: "Ich bin Herr Glauben" } });
+entityList.set("4", { name: "Reiner", texture: "reiner", overlap: true, interact: efnc.e4, mode: { enabled: true, end: false }, text: { t1: "Ich bin der Reiner" } });
+entityList.set("5", { name: "Fischer", texture: "fischer", overlap: true, interact: efnc.e5, mode: { enabled: true, end: false }, text: { t1: "Ich brauche Kaffee!" } });
+entityList.set("6", { name: "Schalter", texture: "schalter", texture1: "schalter1", overlap: false, interact: efnc.e6, mode: { enabled: true, active: false, end: false }, text: { t1: "Die Barrieren wurden entfernt!" } });
+entityList.set("E1", { name: "Müller", texture: "mueller", overlap: true, follow: efnc.E1, rotation: 270, text: { t1: "Sammel 5 Desinfektionsmittel und du bist immun!", t2: "Besser ist das!" }, task: { item: "desi", count: 5 } });
 
 
 

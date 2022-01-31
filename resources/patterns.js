@@ -41,6 +41,7 @@ var patternHelper = {
         this.loadPattern("heizungM", "carpets");
         this.loadPattern("heizungE", "carpets");
         this.loadPattern("logo", "carpets");
+        this.loadPattern("pflanzen", "carpets");
         this.loadPattern("pissoir", "carpets");
         this.loadPattern("portal", "carpets");
         this.loadPattern("stairsX", "carpets");
@@ -50,11 +51,15 @@ var patternHelper = {
         this.loadPattern("hilchenbach", "entities");
         this.loadPattern("mueller", "entities");
         this.loadPattern("peter", "entities");
+        this.loadPattern("reiner", "entities");
+        this.loadPattern("schalter", "entities");
+        this.loadPattern("schalter1", "entities");
 
         this.loadPattern("base", "items");
         this.loadPattern("cookie", "items");
         this.loadPattern("desi", "items");
         this.loadPattern("key", "items");
+        this.loadPattern("water", "items");
 
         this.loadPattern("barrier", "obstacles");
         this.loadPattern("table", "obstacles");

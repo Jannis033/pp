@@ -5,7 +5,6 @@ patternCreator.items.key = function() {
     patternCanvas.width = blockSize;
     patternCanvas.height = blockSize;
 
-
     patternContext.save();
     patternContext.strokeStyle = "rgba(0,0,0,0)";
     patternContext.miterLimit = 4;
