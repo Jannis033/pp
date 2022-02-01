@@ -5,7 +5,7 @@ var map1 = `
       WiWiW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
-      WiWiW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D es D D D D W Wi
+      WiWiW D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW W W W W W W W W W W W W W W W W W W W W W W W W W W W D D D D D D D D D D D D D W W W W W W W W W W W W W W W W W W W W W W W W D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW     cb            W           W           W         W D D D D D D D D D D D D D W                     W                       W D D D D D D D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W           W           W         W D D D D D D D D D D D D D W                                             W W W W W W W D D D D D D D D D D D D D D D D W Wi
