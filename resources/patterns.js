@@ -70,7 +70,13 @@ var patternHelper = {
         this.loadPattern("table", "obstacles");
 
         this.loadPattern("peter0", "peters");
+        this.loadPattern("peter1", "peters");
+        this.loadPattern("peter2", "peters");
+        this.loadPattern("peter3", "peters");
         this.loadPattern("peter4", "peters");
+        this.loadPattern("peter5", "peters");
+        this.loadPattern("peter6", "peters");
+        this.loadPattern("peter7", "peters");
 
         this.loadPattern("player0", "players");
         this.loadPattern("player1", "players");

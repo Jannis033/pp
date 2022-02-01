@@ -201,32 +201,6 @@
          stdDeviation="0.0035907967"
          id="feGaussianBlur43481" />
     </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter43573-9"
-       x="-0.2964658"
-       y="-0.31764193"
-       width="1.5929316"
-       height="1.6352839">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.75947415"
-         id="feGaussianBlur43575-8" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter43573"
-       x="-0.2964658"
-       y="-0.31764193"
-       width="1.5929316"
-       height="1.6352839">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.75947415"
-         id="feGaussianBlur43575" />
-    </filter>
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient29566"
@@ -386,7 +360,7 @@
        d="m 63.442417,32.090314 c 0,0 -35.793998,-12.265706 -24.536218,-22.3013008 C 50.163996,-0.24657001 54.493907,6.443812 54.493907,6.443812 c 0,0 7.793864,5.575337 8.659841,9.47806 0.865994,3.902736 4.041258,11.150666 0.288669,16.168442 z"
        id="path32792" />
     <ellipse
-       style="display:inline;mix-blend-mode:normal;fill:#040404;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.29575;stroke-opacity:0;filter:url(#filter43573-9)"
+       style="display:inline;mix-blend-mode:normal;fill:#040404;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.29575;stroke-opacity:0"
        id="path43483-5"
        cx="-62.742134"
        cy="181.74757"
@@ -394,7 +368,7 @@
        ry="2.8691709"
        transform="matrix(-0.31251459,0,0,0.29595004,20.415327,-20.804752)" />
     <ellipse
-       style="display:inline;mix-blend-mode:normal;fill:#040404;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.29575;stroke-opacity:0;filter:url(#filter43573)"
+       style="display:inline;mix-blend-mode:normal;fill:#040404;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.29575;stroke-opacity:0"
        id="path43483"
        cx="-62.742134"
        cy="181.74757"
