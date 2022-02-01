@@ -23,13 +23,13 @@ var EntityDrawer = {
         context.translate(-blockSize / 2, -blockSize / 2 - playerOverlap);
         switch (rotation) {
             case 1:
-                context.fillStyle = patterns.players.player1;
+                context.fillStyle = patterns.peters.peter1;
                 break;
             case 2:
-                context.fillStyle = patterns.players.player2;
+                context.fillStyle = patterns.peters.peter2;
                 break;
             case 3:
-                context.fillStyle = patterns.players.player3;
+                context.fillStyle = patterns.peters.peter3;
                 break;
             case 4:
                 /*if (tmpplayerrotation == 20) {
@@ -73,16 +73,16 @@ var EntityDrawer = {
                 }
                 break;
             case 5:
-                context.fillStyle = patterns.players.player5;
+                context.fillStyle = patterns.peters.peter5;
                 break;
             case 6:
-                context.fillStyle = patterns.players.player6;
+                context.fillStyle = patterns.peters.peter6;
                 break;
             case 7:
-                context.fillStyle = patterns.players.player7;
+                context.fillStyle = patterns.peters.peter7;
                 break;
             default:
-                context.fillStyle = patterns.players.player0;
+                context.fillStyle = patterns.peters.peter0;
                 break;
 
         }
@@ -317,7 +317,6 @@ var EntityDrawer = {
                     }
                     context.closePath();
 
-
                     // the outline
                     //context.lineWidth = 10;
                     //context.strokeStyle = '#666666';
@@ -332,7 +331,24 @@ var EntityDrawer = {
                     context.fill();
                 }
 
-                context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+                if (!entityList.get("E" + details).rotation) {
+                    context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+                } else {
+                    /*if (entity.rotation > 45 && entity.rotation < 135) {
+                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "1"];
+                    } else if (entity.rotation >= 135 && entity.rotation <= 225) {
+                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "2"];
+                    } else if (entity.rotation > 225 && entity.rotation < 315) {
+                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "3"];
+                    } else {
+                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+                    }*/
+                    if (entity.rotation > 0 && entity.rotation < 180) {
+                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "1"];
+                    } else {
+                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+                    }
+                }
 
                 context.translate(x, y - playerOverlap);
                 context.fillRect(0, 0, blockSize, blockSize + playerOverlap);

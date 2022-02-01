@@ -51,6 +51,7 @@ var patternHelper = {
         this.loadPattern("goldi", "entities");
         this.loadPattern("hilchenbach", "entities");
         this.loadPattern("mueller", "entities");
+        this.loadPattern("mueller1", "entities");
         this.loadPattern("pflanzen", "entities");
         this.loadPattern("reiner", "entities");
         this.loadPattern("reiner1", "entities");
@@ -68,6 +69,7 @@ var patternHelper = {
         this.loadPattern("barrier", "obstacles");
         this.loadPattern("table", "obstacles");
 
+        this.loadPattern("peter0", "peters");
         this.loadPattern("peter4", "peters");
 
         this.loadPattern("player0", "players");
