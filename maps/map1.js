@@ -16,8 +16,8 @@ var map1 = `
       WiWiW                   W W   W W W W W W W W W W W W W W W       W W W W W W W W W B3W W W W W W W   W W W W W W W W W W   W W W W W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW W W W W W W W W W W     e3                                      B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W                                             B3                                                            L           W D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W                                             B3                                                            L           W D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W                                             B3                                                                        W D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W                                             B3                                                                        W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W             Wf        Wf         Wf         W W W W W W W W W W W W W W W W B3W W W W W W W W W W W W W W W           W D D D D D D D D D D D D D D D D W Wi
