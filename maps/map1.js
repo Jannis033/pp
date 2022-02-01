@@ -20,7 +20,7 @@ var map1 = `
       WiWiW                   W                                             B3                                                            L           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             B3                                                            W           W D D D D D D D D D D D D D D D D W Wi
-      WiWiW                   W             Wf        Wf         Wf         W W W W W W W W W W W W W W W W B3W W W W W W W W W W W W W W W           W D D D D D D D D D D D D D D D D W Wi
+      WiWiW                   W             Wf        Wf         Wf         W W W W W W W W W W W W W W W W B3W W W W W W W W W W W W W W W     P     W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             W                                   W                         W           W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                                                                 W                         W     e4    W D D D D D D D D D D D D D D D D W Wi
       WiWiW                   W                                             W                                   W                         W           W D D D D D D D D D D D D D D D D W Wi
@@ -67,7 +67,7 @@ WiWg  Ot    Ot  OTOT      OTOTOt          W W W W W W W W W W W W W W         W 
 WiWg  OtOT            OT      Ot          W             W           W         Wg                  e6W Ha        W           W       cd  W               W   W           W               W Wi
 WiW     OTOT  OT  OTOTOT  OT                                                  Wg    OTOTOT  Ot      W Hm                                W               W   W           W               W Wi
 WiWg  OTOt      OtOt        OTOT                                              Wg            Ot      W Hm                                W                         P2  CPW               W Wi
-WiWg    Ot  OTOTOT    OTOT                                          P         e1    OTOTOTOT        W Hm                                W               W   W Cp  Cp  V3W               W Wi
+WiWg    Ot  OTOTOT    OTOT                                                    e1    OTOTOTOT        W Hm                                W               W   W Cp  Cp  V3W               W Wi
 WiWgOt  Ot    Ot    Ot  OTOTOTOT                   OT    OT      OT           Wg                    W He                            ck  W               W W W W W W W W W               W Wi
 WiWgOt      OTOTOT                                                            Wg                    Wg    cd                            W               W               W               W Wi
 WiW WgWgW WgWgWgWgW WgWgWgWgW WgWgWgWgW WgWgWgWgW WgWgWgWgW WgWgWgWgW WgWgWgWgW WgWgWgWgWgW WgWgWgWgW WgWgWgW WgWgWgWgW WgWgWgW WgWgWgWgW WgWgWgW WgWgWgW W W W W W W W W W W W W W W W W Wi

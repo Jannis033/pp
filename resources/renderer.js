@@ -69,7 +69,7 @@ var EntityDrawer = {
                     }
                     tmpplayerrotation += 1;
                 } else {
-                    context.fillStyle = patterns.players.player4;
+                    context.fillStyle = patterns.peters.peter4;
                 }
                 break;
             case 5:
@@ -373,6 +373,7 @@ var Player = function(x, y) {
     this.regeneratevalue = config.entities.player.regeneratevalue;
     this.health = config.entities.player.health;
     this.maxhealth = config.entities.player.health;
+    this.locked = false;
 
     this.teleport = function(x, y) {
         this.x = x * blockSize;
@@ -528,6 +529,8 @@ var Player = function(x, y) {
     }
 
     this.update = function() {
+        if (this.locked) return;
+
         var keysCount = 0;
         keysCount += keyboard.up ? 1 : 0;
         keysCount += keyboard.down ? 1 : 0;

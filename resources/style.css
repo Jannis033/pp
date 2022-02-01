@@ -7,11 +7,27 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
     user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
 }
 
 * {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
     user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
 }
 
 #healthbar {
@@ -159,4 +175,42 @@ body {
 #deathscreen .container button:hover {
     background-color: #111;
     cursor: pointer;
+}
+
+#perseltask {
+    position: absolute;
+    width: 300px;
+    max-width: calc(100% - 10px);
+    margin: 5px;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color: #333;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+#perseltask.show {
+    display: flex;
+}
+
+#perseltask .buttoncontainer {
+    display: flex;
+}
+
+#perseltask .buttoncontainer button {
+    width: 90px;
+    height: 90px;
+    border-radius: 5px;
+    background-color: #909090;
+    border-style: none;
+    margin: 5px;
+}
+
+#perseltask .buttoncontainer button img {
+    width: 80px;
+    height: 80px;
 }

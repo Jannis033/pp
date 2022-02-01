@@ -174,6 +174,8 @@ var entityFunctions = function() {
         var entityNum = 4;
         var entityData = entityList.get(entityNum.toString());
         if (registerMeeting('e' + entityNum) && !entityData.mode.end) {
+            document.getElementById("perseltask").classList.add("show");
+            player.locked = true;
             showEntityText(entityData.text.t1);
         }
     }
@@ -242,6 +244,43 @@ var entityFunctions = function() {
         var enemyData = entityList.get("E" + enemyNum.toString());
         showEntityText(enemyData.text.t1);
     }
+    this.getPerselState = function(select, win = false) {
+        if (win) {
+            if (select == 1) return 3;
+            if (select == 2) return 1;
+            if (select == 3) return 2;
+        } else {
+            if (select == 1) return 2;
+            if (select == 2) return 3;
+            if (select == 3) return 1;
+        }
+        return "";
+    }
+    this.perselTask = function(select) {
+        var max = 19; // 1 : 18
+        if (player.inventory.countInventory("base") > 0) {
+            max = 4; // 1 : 3
+        }
+        var rand = getRandomInt(max);
+        if (rand == 0) {
+            entityList.get("4").texture = ("reiner" + this.getPerselState(select, true));
+            if (tasksTmp.perselTimeout) clearTimeout(tasksTmp.perselTimeout);
+            tasksTmp.perselTimeout = setTimeout(function() { entityList.get("4").texture = "reiner"; }, 3000);
+            player.setHealth(20);
+            entityList.get("4").mode.end = true;
+            document.getElementById("perseltask").classList.remove("show");
+            player.locked = false;
+            showEntityText(entityList.get("4").text.t3);
+            return;
+        }
+        entityList.get("4").texture = ("reiner" + this.getPerselState(select));
+        if (tasksTmp.hasOwnProperty("perselTimeout")) clearTimeout(tasksTmp.perselTimeout);
+        tasksTmp.perselTimeout = setTimeout(function() { entityList.get("4").texture = "reiner"; }, 3000);
+        showEntityText(entityList.get("4").text.t2);
+        player.setHealth(player.health - 3);
+        player.locked = false;
+        document.getElementById("perseltask").classList.remove("show");
+    }
 }
 var tasksTmp = { waterProgress: { wp1: 0, wp2: 0, wp3: 0 } };
 
@@ -257,7 +296,7 @@ entityList.set("s", { name: "Schlüssel", texture: "key", collect: efnc.es });
 entityList.set("1", { name: "Hilchenbach", texture: "hilchenbach", overlap: true, interact: efnc.e1, mode: { enabled: true, give: false, thank: false, end: false }, task: { item: "cookie", count: 5 }, text: { t1: "Gib mir 5 Kekse!", t2: "Danke, es gibt bestimmt noch anderer Lehrer, die Hilfe benötigen! Schau doch mal im Lehrerzimmer nach." } });
 entityList.set("2", { name: "Goldi", texture: "goldi", overlap: true, interact: efnc.e2, mode: { enabled: false, give: false, thank: false, end: false }, task: { item: "key", count: 1 }, text: { t0: "Hmmmm", t1: "Hilfe wo ist mein Schlüssel?!", t2: "Ich danke dir treuer Freund. Gehab dich wohl!", t3: "Zum Dank öffne ich dir damit alle Türen, statte doch mal unserem Schulleiter einen Besuch ab." } });
 entityList.set("3", { name: "Glauben", texture: "glauben", overlap: true, interact: efnc.e3, mode: { enabled: true, end: false }, text: { t1: ["Eure Epochalnoten? Ne tut mir leid ich hatte leider keine Zeit am Wochenende, aber hier ist eine Powerpoint-Präsentation, die ich für die Kursfahrt erstellt habe.", "Ja, ich hätte schon am liebsten eine Lehrerin dabei.", "Manche Kunstwerke werden auf Pornoseiten hochgeladen, weil sie auf Youtube gesperrt werden würden, da nackte Menschen zu sehen sind", "Hütet euch vor Spekulatius, davon fängt man an zu spekulieren", "Ich stehe vor dem Spiegel und sehe dort Gott!", "Lit", "#HansIstEinEhrenmann"] } });
-entityList.set("4", { name: "Reiner", texture: "reiner", overlap: true, interact: efnc.e4, mode: { enabled: true, end: false }, text: { t1: "Ich bin der Reiner" } });
+entityList.set("4", { name: "Reiner", texture: "reiner", overlap: true, interact: efnc.e4, mode: { enabled: true, end: false }, text: { t1: "Halllo", t2: "Schade, vielleicht beim nächsten Mal", t3: "Oh du hast mich besiegt!" } });
 entityList.set("5", { name: "Fischer", texture: "fischer", overlap: true, interact: efnc.e5, mode: { enabled: true, end: false }, text: { t1: "Ohh nee, ich muss ja noch die Pflanzen gießen... kannst du das schnell machen? Aber pass auf, draußen ist es kalt! Es gibt aber zum Glück Orte, an denen man sich aufwärmen kann...", t2: "Ahh perfekt, danke! Als Belohnung bekommst du einen Ka...", t3: 'Goldi *aus der Ferne*: "Ach verdammt!!"' } });
 entityList.set("6", { name: "Schalter", texture: "schalter", texture1: "schalter1", overlap: false, interact: efnc.e6, mode: { enabled: true, active: false, end: false }, text: { t1: "Die Barrieren wurden entfernt!" } });
 entityList.set("7", { name: "Pflanze", texture: "pflanzen", overlap: false, interact: efnc.e7, mode: { enabled: true, end: false }, text: { t0: "Du brauchst eine Gießkanne!" } });

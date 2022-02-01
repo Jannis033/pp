@@ -1,6 +1,6 @@
-var patterns = { carpets: {}, entities: {}, items: {}, obstacles: {}, players: {} };
+var patterns = { carpets: {}, entities: {}, items: {}, obstacles: {}, players: {}, peters: {} };
 
-var patternCreator = { carpets: {}, entities: {}, items: {}, obstacles: {}, players: {} };
+var patternCreator = { carpets: {}, entities: {}, items: {}, obstacles: {}, players: {}, peters: {} };
 
 // replace pattern to make svg's zoomable
 // ([0-9]+\.[0-9]+)
@@ -46,13 +46,16 @@ var patternHelper = {
         this.loadPattern("stairsX", "carpets");
         this.loadPattern("stairsY", "carpets");
 
+        this.loadPattern("fischer", "entities");
         this.loadPattern("glauben", "entities");
         this.loadPattern("goldi", "entities");
         this.loadPattern("hilchenbach", "entities");
         this.loadPattern("mueller", "entities");
-        this.loadPattern("peter", "entities");
         this.loadPattern("pflanzen", "entities");
         this.loadPattern("reiner", "entities");
+        this.loadPattern("reiner1", "entities");
+        this.loadPattern("reiner2", "entities");
+        this.loadPattern("reiner3", "entities");
         this.loadPattern("schalter", "entities");
         this.loadPattern("schalter1", "entities");
 
@@ -64,6 +67,8 @@ var patternHelper = {
 
         this.loadPattern("barrier", "obstacles");
         this.loadPattern("table", "obstacles");
+
+        this.loadPattern("peter4", "peters");
 
         this.loadPattern("player0", "players");
         this.loadPattern("player1", "players");
