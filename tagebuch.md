@@ -119,3 +119,13 @@ Die Texturen werden jetzt dymanisch geladen und ausgelagert, da die patterns Dat
 Es wurden viele neue Texturen eingefügt, darunter die Kaffeemaschine und Desinfektionsmittel.
 Frau Müller verfolgt einen nun nichtmehr, wenn man 5 oder mehr Desinfektionsmittel dabei hat.
 Viele weitere Mapänderungen.
+
+### 31.1.2022
+
+Es kamen sehr viele neue Texturen und Aufgaben hinzu.
+Die Texte wurden überarbeitet und verbessert.
+
+### 1.2.2022
+
+Die letzte Aufgabe wurde eingefügt.
+Ein richtiges Ende hat das Spiel immer noch nicht, vielleicht gibt es ja bald einen zweiten Teil!?
