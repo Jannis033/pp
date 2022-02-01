@@ -3,7 +3,7 @@ patternCreator.entities.fischer = function() {
     const ctx = patternCanvas.getContext('2d');
 
     patternCanvas.width = blockSize;
-    patternCanvas.height = blockSize;
+    patternCanvas.height = blockSize + 20;
     ctx.save();
     ctx.strokeStyle="rgba(0,0,0,0)";
     ctx.miterLimit=4;
