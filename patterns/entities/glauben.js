@@ -4,8 +4,8 @@ patternCreator.entities.glauben  = function() {
 
     patternCanvas.width = blockSize;
     patternCanvas.height = blockSize + playerOverlap;
+   
     
-    ctx.save();
     ctx.strokeStyle="rgba(0,0,0,0)";
     ctx.miterLimit=4;
     ctx.font="15px / 21.4286px ''";
