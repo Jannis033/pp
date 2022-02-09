@@ -1,6 +1,3 @@
-var canvas = document.querySelector('canvas#main');
-var context = canvas.getContext('2d');
-
 var zoomfactor = config.zoomfactor;
 
 var blockSize = config.dimensions.blockSize * zoomfactor;
