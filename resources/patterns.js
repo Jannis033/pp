@@ -1,7 +1,3 @@
-var patterns = { carpets: {}, entities: {}, items: {}, obstacles: {}, players: {}, peters: {} };
-
-var patternCreator = { carpets: {}, entities: {}, items: {}, obstacles: {}, players: {}, peters: {} };
-
 // replace pattern to make svg's zoomable
 // ([0-9]+\.[0-9]+)
 // $1 * zoomfactor
