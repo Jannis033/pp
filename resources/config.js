@@ -4,7 +4,7 @@ config.fps = 50;
 config.zoomfactor = 1;
 config.loadingtime = 1; // seconds
 config.sounds = false;
-config.debug = true; // allow shift and alt
+config.debug = false; // allow shift and alt
 
 config.colors = { wall: '#666', window: '#777', player: '#111' };
 
