@@ -675,7 +675,7 @@ patternCreator.entities.glauben = function() {
     ctx8.restore();
     ctx8.restore();
     ctx8.restore();
-    var p = ctx8.createPattern(ctx8.canvas, "no-repeat");
+    var p = context.createPattern(ctx8.canvas, "no-repeat");
     ctx.fillStyle = p;
     ctx.strokeStyle = "rgba(0,0,0,0)";
     ctx.lineWidth = 2.38603 * zoomfactor;
