@@ -34,7 +34,7 @@ var patternHelper = {
     // this\.loadPattern\("(.*)", "(.*)"\);
     // patterns.$2.$1 = patternCreator.$2.$1();
     createAll: function() {
-        patterns.carpets.coffee = patternCreator.carpets.coffee();
+        /*patterns.carpets.coffee = patternCreator.carpets.coffee();
         patterns.carpets.heizungA = patternCreator.carpets.heizungA();
         patterns.carpets.heizungM = patternCreator.carpets.heizungM();
         patterns.carpets.heizungE = patternCreator.carpets.heizungE();
@@ -67,7 +67,6 @@ var patternHelper = {
         patterns.items.water = patternCreator.items.water();
 
         patterns.obstacles.barrier = patternCreator.obstacles.barrier();
-
         patterns.obstacles.table = patternCreator.obstacles.table();
 
         patterns.peters.peter0 = patternCreator.peters.peter0();
@@ -86,7 +85,60 @@ var patternHelper = {
         patterns.players.player4 = patternCreator.players.player4();
         patterns.players.player5 = patternCreator.players.player5();
         patterns.players.player6 = patternCreator.players.player6();
-        patterns.players.player7 = patternCreator.players.player7();
+        patterns.players.player7 = patternCreator.players.player7();*/
+
+        this.loadPattern("coffee", "carpets");
+        this.loadPattern("heizungA", "carpets");
+        this.loadPattern("heizungM", "carpets");
+        this.loadPattern("heizungE", "carpets");
+        this.loadPattern("logo", "carpets");
+        this.loadPattern("pissoir", "carpets");
+        this.loadPattern("portal", "carpets");
+        this.loadPattern("stairsX", "carpets");
+        this.loadPattern("stairsY", "carpets");
+
+        this.loadPattern("emily", "entities");
+        this.loadPattern("fischer", "entities");
+        this.loadPattern("glauben", "entities");
+        this.loadPattern("goldi", "entities");
+        this.loadPattern("hilchenbach", "entities");
+        this.loadPattern("hilchenbach_old", "entities");
+        this.loadPattern("mueller", "entities");
+        this.loadPattern("mueller1", "entities");
+        this.loadPattern("pflanzen", "entities");
+        this.loadPattern("reiner", "entities");
+        this.loadPattern("reiner1", "entities");
+        this.loadPattern("reiner2", "entities");
+        this.loadPattern("reiner3", "entities");
+        this.loadPattern("schalter", "entities");
+        this.loadPattern("schalter1", "entities");
+
+        this.loadPattern("base", "items");
+        this.loadPattern("cookie", "items");
+        this.loadPattern("desi", "items");
+        this.loadPattern("key", "items");
+        this.loadPattern("water", "items");
+
+        this.loadPattern("barrier", "obstacles");
+        this.loadPattern("table", "obstacles");
+
+        this.loadPattern("peter0", "peters");
+        this.loadPattern("peter1", "peters");
+        this.loadPattern("peter2", "peters");
+        this.loadPattern("peter3", "peters");
+        this.loadPattern("peter4", "peters");
+        this.loadPattern("peter5", "peters");
+        this.loadPattern("peter6", "peters");
+        this.loadPattern("peter7", "peters");
+
+        this.loadPattern("player0", "players");
+        this.loadPattern("player1", "players");
+        this.loadPattern("player2", "players");
+        this.loadPattern("player3", "players");
+        this.loadPattern("player4", "players");
+        this.loadPattern("player5", "players");
+        this.loadPattern("player6", "players");
+        this.loadPattern("player7", "players");
 
     }
 }
