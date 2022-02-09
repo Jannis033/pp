@@ -46,10 +46,12 @@ var patternHelper = {
         this.loadPattern("stairsX", "carpets");
         this.loadPattern("stairsY", "carpets");
 
+        this.loadPattern("emily", "entities");
         this.loadPattern("fischer", "entities");
         this.loadPattern("glauben", "entities");
         this.loadPattern("goldi", "entities");
         this.loadPattern("hilchenbach", "entities");
+        this.loadPattern("hilchenbach_old", "entities");
         this.loadPattern("mueller", "entities");
         this.loadPattern("mueller1", "entities");
         this.loadPattern("pflanzen", "entities");
