@@ -532,5 +532,5 @@ patternCreator.obstacles.table = function() {
     patternContext.bezierCurveTo(24.489042 * zoomfactor, 0.987688 * zoomfactor, 23.189346 * zoomfactor, 1.021789 * zoomfactor, 22.649656 * zoomfactor, 1.021789 * zoomfactor);
     patternContext.fill();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

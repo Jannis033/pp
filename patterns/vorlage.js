@@ -9,5 +9,5 @@ patternCreator.entities.fischer = function() {
 
 
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

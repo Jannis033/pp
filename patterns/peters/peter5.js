@@ -2566,5 +2566,5 @@ patternCreator.peters.peter5 = function() {
     ctx.restore();
     ctx.restore();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

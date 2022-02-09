@@ -144,5 +144,5 @@ patternCreator.players.player2 = function() {
     patternContext.fill();
     patternContext.restore();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

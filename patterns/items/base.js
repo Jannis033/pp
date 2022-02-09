@@ -3992,5 +3992,5 @@ patternCreator.items.base = function() {
 	patternContext.fill();
 	patternContext.restore();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

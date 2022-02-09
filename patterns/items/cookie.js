@@ -84,5 +84,5 @@ patternCreator.items.cookie = function() {
     patternContext.arc(35.506565 * zoomfactor, 41.408230 * zoomfactor, 3.468613 * zoomfactor, 0.000000, 6.28318531, 1);
     patternContext.fill();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

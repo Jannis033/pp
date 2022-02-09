@@ -105,5 +105,5 @@ patternCreator.carpets.heizungA = function() {
     patternContext.bezierCurveTo(33.579893 * zoomfactor, 19.925711 * zoomfactor, 35.984499 * zoomfactor, 7.214009 * zoomfactor, 36.232546 * zoomfactor, 7.131327 * zoomfactor);
     patternContext.fill();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

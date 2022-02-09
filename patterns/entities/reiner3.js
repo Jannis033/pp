@@ -2935,5 +2935,5 @@ patternCreator.entities.reiner3 = function() {
     ctx.restore();
     ctx.restore();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

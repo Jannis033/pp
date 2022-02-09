@@ -9,5 +9,5 @@ patternCreator.carpets.portal = function() {
     patternContext.fillStyle = "#888";
     patternContext.fill();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

@@ -63,7 +63,7 @@ var onUpdate = function() {
 };
 
 var onRender = function() {
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    mainContext.clearRect(0, 0, mainContext.canvas.width, mainContext.canvas.height);
 
     camera.preRender();
 
@@ -85,8 +85,8 @@ var onTick = function() {
 }
 
 var onResize = function(width, height) {
-    context.canvas.width = width;
-    context.canvas.height = height;
+    mainContext.canvas.width = width;
+    mainContext.canvas.height = height;
     camera.resize();
 };
 

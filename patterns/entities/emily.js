@@ -7,5 +7,5 @@ patternCreator.entities.emily = function() {
 
 
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

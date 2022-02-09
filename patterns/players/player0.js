@@ -81,5 +81,5 @@ patternCreator.players.player0 = function() {
     patternContext.stroke();
     patternContext.restore();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

@@ -1,48 +1,48 @@
 // [copied] moves the camera -> results in a central position of the player
 var EntityHelper = {
     beginRotationOffset: function(x, y, angle) {
-        context.translate(-(-x + context.canvas.width / 2), -(-y + context.canvas.height / 2));
-        context.translate(context.canvas.width / 2, context.canvas.height / 2);
+        mainContext.translate(-(-x + mainContext.canvas.width / 2), -(-y + mainContext.canvas.height / 2));
+        mainContext.translate(mainContext.canvas.width / 2, mainContext.canvas.height / 2);
 
-        context.rotate(angle);
+        mainContext.rotate(angle);
     },
 
     endRotationOffset: function(x, y, angle) {
-        context.rotate(-angle);
+        mainContext.rotate(-angle);
 
-        context.translate(-context.canvas.width / 2, -context.canvas.height / 2);
-        context.translate(+(-x + context.canvas.width / 2), +(-y + context.canvas.height / 2));
+        mainContext.translate(-mainContext.canvas.width / 2, -mainContext.canvas.height / 2);
+        mainContext.translate(+(-x + mainContext.canvas.width / 2), +(-y + mainContext.canvas.height / 2));
     }
 };
 
 // draw elements every tick
 var EntityDrawer = {
     player: function(rotation) {
-        context.beginPath();
-        context.rect(-blockSize / 2, -blockSize / 2 - playerOverlap, blockSize, blockSize + playerOverlap);
-        context.translate(-blockSize / 2, -blockSize / 2 - playerOverlap);
+        mainContext.beginPath();
+        mainContext.rect(-blockSize / 2, -blockSize / 2 - playerOverlap, blockSize, blockSize + playerOverlap);
+        mainContext.translate(-blockSize / 2, -blockSize / 2 - playerOverlap);
         switch (rotation) {
             case 1:
-                context.fillStyle = patterns.peters.peter1;
+                mainContext.fillStyle = patterns.peters.peter1;
                 break;
             case 2:
-                context.fillStyle = patterns.peters.peter2;
+                mainContext.fillStyle = patterns.peters.peter2;
                 break;
             case 3:
-                context.fillStyle = patterns.peters.peter3;
+                mainContext.fillStyle = patterns.peters.peter3;
                 break;
             case 4:
                 /*if (tmpplayerrotation == 20) {
                     tmpplayerrotation = 0;
                 }
                 if (tmpplayerrotation < 5) {
-                    context.fillStyle = patterns.players.player5;
+                    mainContext.fillStyle = patterns.players.player5;
                 } else if (tmpplayerrotation < 10) {
-                    context.fillStyle = patterns.players.player4;
+                    mainContext.fillStyle = patterns.players.player4;
                 } else if (tmpplayerrotation < 15) {
-                    context.fillStyle = patterns.players.player3;
+                    mainContext.fillStyle = patterns.players.player3;
                 } else {
-                    context.fillStyle = patterns.players.player4;
+                    mainContext.fillStyle = patterns.players.player4;
                 }
                 tmpplayerrotation += 1;*/
                 if (rotateplayer) {
@@ -51,74 +51,74 @@ var EntityDrawer = {
                     }
 
                     if (tmpplayerrotation < 5) {
-                        context.fillStyle = patterns.players.player0;
+                        mainContext.fillStyle = patterns.players.player0;
                     } else if (tmpplayerrotation < 10) {
-                        context.fillStyle = patterns.players.player1;
+                        mainContext.fillStyle = patterns.players.player1;
                     } else if (tmpplayerrotation < 15) {
-                        context.fillStyle = patterns.players.player2;
+                        mainContext.fillStyle = patterns.players.player2;
                     } else if (tmpplayerrotation < 20) {
-                        context.fillStyle = patterns.players.player3;
+                        mainContext.fillStyle = patterns.players.player3;
                     } else if (tmpplayerrotation < 25) {
-                        context.fillStyle = patterns.players.player4;
+                        mainContext.fillStyle = patterns.players.player4;
                     } else if (tmpplayerrotation < 30) {
-                        context.fillStyle = patterns.players.player5;
+                        mainContext.fillStyle = patterns.players.player5;
                     } else if (tmpplayerrotation < 35) {
-                        context.fillStyle = patterns.players.player6;
+                        mainContext.fillStyle = patterns.players.player6;
                     } else {
-                        context.fillStyle = patterns.players.player7;
+                        mainContext.fillStyle = patterns.players.player7;
                     }
                     tmpplayerrotation += 1;
                 } else {
-                    context.fillStyle = patterns.peters.peter4;
+                    mainContext.fillStyle = patterns.peters.peter4;
                 }
                 break;
             case 5:
-                context.fillStyle = patterns.peters.peter5;
+                mainContext.fillStyle = patterns.peters.peter5;
                 break;
             case 6:
-                context.fillStyle = patterns.peters.peter6;
+                mainContext.fillStyle = patterns.peters.peter6;
                 break;
             case 7:
-                context.fillStyle = patterns.peters.peter7;
+                mainContext.fillStyle = patterns.peters.peter7;
                 break;
             default:
-                context.fillStyle = patterns.peters.peter0;
+                mainContext.fillStyle = patterns.peters.peter0;
                 break;
 
         }
-        context.fill();
+        mainContext.fill();
         if (rotateplayer) {
-            context.font = '42px sans-serif';
-            context.fillStyle = "#000";
-            context.fillText('loading...', -35, 140);
+            mainContext.font = '42px sans-serif';
+            mainContext.fillStyle = "#000";
+            mainContext.fillText('loading...', -35, 140);
         }
-        context.translate(blockSize / 2, blockSize / 2 + playerOverlap);
+        mainContext.translate(blockSize / 2, blockSize / 2 + playerOverlap);
     },
     wall: function(x, y, type, details, corners) {
         var rotation = 0;
 
         switch (type) {
             case 'B':
-                context.beginPath();
-                context.fillStyle = patterns.obstacles.barrier;
-                context.rect(x, y, blockSize, blockSize);
-                context.fill();
+                mainContext.beginPath();
+                mainContext.fillStyle = patterns.obstacles.barrier;
+                mainContext.rect(x, y, blockSize, blockSize);
+                mainContext.fill();
                 break;
             case 'W':
-                context.beginPath();
-                context.fillStyle = config.colors.wall;
+                mainContext.beginPath();
+                mainContext.fillStyle = config.colors.wall;
                 switch (details) {
                     case 'f':
-                        context.rect(x, y, blockSize, blockSize);
+                        mainContext.rect(x, y, blockSize, blockSize);
                     case 'i':
-                        context.fillStyle = "#00000000";
-                        context.rect(x, y, blockSize, blockSize);
+                        mainContext.fillStyle = "#00000000";
+                        mainContext.rect(x, y, blockSize, blockSize);
                         break;
                     case 'l':
-                        context.fillStyle = "#00000000";
+                        mainContext.fillStyle = "#00000000";
                         break;
                     case 'g':
-                        context.fillStyle = config.colors.window;
+                        mainContext.fillStyle = config.colors.window;
                         if (corners.left && corners.right && corners.top && corners.bottom) {
 
                         } else if (corners.left && corners.right && corners.top) {
@@ -138,65 +138,65 @@ var EntityDrawer = {
                         } else if (corners.right && corners.bottom) {
 
                         } else if (corners.left && corners.right) {
-                            context.rect(x, y + blockSize / 4 + 5, blockSize, blockSize / 8);
-                            context.rect(x, y + blockSize / 8 * 5 - 5, blockSize, blockSize / 8);
+                            mainContext.rect(x, y + blockSize / 4 + 5, blockSize, blockSize / 8);
+                            mainContext.rect(x, y + blockSize / 8 * 5 - 5, blockSize, blockSize / 8);
                         } else if (corners.top && corners.bottom) {
-                            context.rect(x + blockSize / 4 + 5, y, blockSize / 8, blockSize);
-                            context.rect(x + blockSize / 8 * 5 - 5, y, blockSize / 8, blockSize);
+                            mainContext.rect(x + blockSize / 4 + 5, y, blockSize / 8, blockSize);
+                            mainContext.rect(x + blockSize / 8 * 5 - 5, y, blockSize / 8, blockSize);
                         } else if (corners.top) {
-                            context.rect(x + blockSize / 4 + 5, y, blockSize / 8, blockSize / 4 * 3);
-                            context.rect(x + blockSize / 8 * 5 - 5, y, blockSize / 8, blockSize / 4 * 3);
-                            context.rect(x + blockSize / 4, y + blockSize / 8 * 5, blockSize / 2, blockSize / 8);
+                            mainContext.rect(x + blockSize / 4 + 5, y, blockSize / 8, blockSize / 4 * 3);
+                            mainContext.rect(x + blockSize / 8 * 5 - 5, y, blockSize / 8, blockSize / 4 * 3);
+                            mainContext.rect(x + blockSize / 4, y + blockSize / 8 * 5, blockSize / 2, blockSize / 8);
                         } else if (corners.bottom) {
-                            context.rect(x + blockSize / 4 + 5, y + blockSize / 4, blockSize / 8, blockSize / 4 * 3);
-                            context.rect(x + blockSize / 8 * 5 - 5, y + blockSize / 4, blockSize / 8, blockSize / 4 * 3);
-                            context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 8);
+                            mainContext.rect(x + blockSize / 4 + 5, y + blockSize / 4, blockSize / 8, blockSize / 4 * 3);
+                            mainContext.rect(x + blockSize / 8 * 5 - 5, y + blockSize / 4, blockSize / 8, blockSize / 4 * 3);
+                            mainContext.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 8);
                         } else if (corners.left) {
-                            context.rect(x, y + blockSize / 4 + 5, blockSize / 4 * 3, blockSize / 8);
-                            context.rect(x, y + blockSize / 8 * 5 - 5, blockSize / 4 * 3, blockSize / 8);
-                            context.rect(x + blockSize / 8 * 5, y + blockSize / 4, blockSize / 8, blockSize / 2);
+                            mainContext.rect(x, y + blockSize / 4 + 5, blockSize / 4 * 3, blockSize / 8);
+                            mainContext.rect(x, y + blockSize / 8 * 5 - 5, blockSize / 4 * 3, blockSize / 8);
+                            mainContext.rect(x + blockSize / 8 * 5, y + blockSize / 4, blockSize / 8, blockSize / 2);
                         } else if (corners.right) {
-                            context.rect(x + blockSize / 4, y + blockSize / 4 + 5, blockSize / 4 * 3, blockSize / 8);
-                            context.rect(x + blockSize / 4, y + blockSize / 8 * 5 - 5, blockSize / 4 * 3, blockSize / 8);
-                            context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 8, blockSize / 2);
+                            mainContext.rect(x + blockSize / 4, y + blockSize / 4 + 5, blockSize / 4 * 3, blockSize / 8);
+                            mainContext.rect(x + blockSize / 4, y + blockSize / 8 * 5 - 5, blockSize / 4 * 3, blockSize / 8);
+                            mainContext.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 8, blockSize / 2);
                         }
                         break;
                     default:
-                        context.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
+                        mainContext.rect(x + blockSize / 4, y + blockSize / 4, blockSize / 2, blockSize / 2);
                         if (corners.right) {
-                            context.rect(x + blockSize / 4 * 3, y + blockSize / 4, blockSize / 4, blockSize / 2);
+                            mainContext.rect(x + blockSize / 4 * 3, y + blockSize / 4, blockSize / 4, blockSize / 2);
                         }
                         if (corners.left) {
-                            context.rect(x, y + blockSize / 4, blockSize / 4, blockSize / 2);
+                            mainContext.rect(x, y + blockSize / 4, blockSize / 4, blockSize / 2);
                         }
                         if (corners.bottom) {
-                            context.rect(x + blockSize / 4, y + blockSize / 4 * 3, blockSize / 2, blockSize / 4);
+                            mainContext.rect(x + blockSize / 4, y + blockSize / 4 * 3, blockSize / 2, blockSize / 4);
                         }
                         if (corners.top) {
-                            context.rect(x + blockSize / 4, y, blockSize / 2, blockSize / 4);
+                            mainContext.rect(x + blockSize / 4, y, blockSize / 2, blockSize / 4);
                         }
                         break;
                 }
-                context.fill();
+                mainContext.fill();
                 break;
             case 'O':
                 switch (details) {
                     case 't':
-                        context.fillStyle = patterns.obstacles.table;
+                        mainContext.fillStyle = patterns.obstacles.table;
                         break;
                     case 'T':
-                        context.fillStyle = patterns.obstacles.table;
+                        mainContext.fillStyle = patterns.obstacles.table;
                         rotation = 90;
                         break;
                 }
-                context.save();
-                context.translate(x + blockSize / 2, y + blockSize / 2);
-                context.rotate(rotation / 180 * Math.PI);
-                context.translate(-blockSize / 2, -blockSize / 2);
-                context.beginPath();
-                context.rect(0, 0, blockSize, blockSize);
-                context.fill();
-                context.restore();
+                mainContext.save();
+                mainContext.translate(x + blockSize / 2, y + blockSize / 2);
+                mainContext.rotate(rotation / 180 * Math.PI);
+                mainContext.translate(-blockSize / 2, -blockSize / 2);
+                mainContext.beginPath();
+                mainContext.rect(0, 0, blockSize, blockSize);
+                mainContext.fill();
+                mainContext.restore();
                 break;
         }
     },
@@ -207,26 +207,26 @@ var EntityDrawer = {
             case 't':
                 switch (details) {
                     case 't':
-                        context.fillStyle = patterns.carpets.stairsX;
+                        mainContext.fillStyle = patterns.carpets.stairsX;
                         break;
                     case 'T':
-                        context.fillStyle = patterns.carpets.stairsY;
+                        mainContext.fillStyle = patterns.carpets.stairsY;
                         break;
                     case 'L':
-                        context.fillStyle = patterns.carpets.logo;
+                        mainContext.fillStyle = patterns.carpets.logo;
                         break;
                 }
                 break;
             case 'H':
                 switch (details) {
                     case 'a':
-                        context.fillStyle = patterns.carpets.heizungA;
+                        mainContext.fillStyle = patterns.carpets.heizungA;
                         break;
                     case 'm':
-                        context.fillStyle = patterns.carpets.heizungM;
+                        mainContext.fillStyle = patterns.carpets.heizungM;
                         break;
                     case 'e':
-                        context.fillStyle = patterns.carpets.heizungE;
+                        mainContext.fillStyle = patterns.carpets.heizungE;
                         break;
                 }
                 break;
@@ -234,75 +234,75 @@ var EntityDrawer = {
             case 'V':
                 switch (details) {
                     case '3':
-                        context.fillStyle = patterns.carpets.pissoir;
+                        mainContext.fillStyle = patterns.carpets.pissoir;
                         rotation = 90;
                         break;
                     default:
-                        context.fillStyle = patterns.carpets.portal;
+                        mainContext.fillStyle = patterns.carpets.portal;
                         break;
                 }
                 break;
             case 'D':
-                context.fillStyle = '#0088ff11';
+                mainContext.fillStyle = '#0088ff11';
                 break;
             case 'C':
                 switch (details) {
                     case 't':
-                        context.fillStyle = patterns.carpets.table;
+                        mainContext.fillStyle = patterns.carpets.table;
                         break;
                     case 'T':
-                        context.fillStyle = patterns.carpets.table;
+                        mainContext.fillStyle = patterns.carpets.table;
                         rotation = 90;
                         break;
                     case 'p':
-                        context.fillStyle = patterns.carpets.pissoir;
+                        mainContext.fillStyle = patterns.carpets.pissoir;
                         rotation = 90;
                         break;
                     case 'P':
-                        context.fillStyle = patterns.carpets.pissoir;
+                        mainContext.fillStyle = patterns.carpets.pissoir;
                         break;
                     case 'c':
-                        context.fillStyle = patterns.carpets.coffee;
+                        mainContext.fillStyle = patterns.carpets.coffee;
                         break;
                 }
                 break;
         }
 
-        context.save();
-        context.translate(x + blockSize / 2, y + blockSize / 2);
-        context.rotate(rotation / 180 * Math.PI);
-        context.translate(-blockSize / 2, -blockSize / 2);
-        context.beginPath();
-        context.rect(0, 0, blockSize, blockSize);
-        context.fill();
-        context.restore();
+        mainContext.save();
+        mainContext.translate(x + blockSize / 2, y + blockSize / 2);
+        mainContext.rotate(rotation / 180 * Math.PI);
+        mainContext.translate(-blockSize / 2, -blockSize / 2);
+        mainContext.beginPath();
+        mainContext.rect(0, 0, blockSize, blockSize);
+        mainContext.fill();
+        mainContext.restore();
     },
     entity: function(x, y, type, details) {
-        context.beginPath();
-        context.save();
+        mainContext.beginPath();
+        mainContext.save();
         if (entityList.get(details).overlap) {
-            context.translate(x, y - playerOverlap);
-            context.rect(0, 0, blockSize, blockSize + playerOverlap);
+            mainContext.translate(x, y - playerOverlap);
+            mainContext.rect(0, 0, blockSize, blockSize + playerOverlap);
         } else {
             if (type == "e" && details == "7") {
-                context.translate(x - blockSize / 2, y - blockSize / 2);
-                context.scale(2, 2);
-                context.rect(0, 0, blockSize * 2, blockSize * 2);
+                mainContext.translate(x - blockSize / 2, y - blockSize / 2);
+                mainContext.scale(2, 2);
+                mainContext.rect(0, 0, blockSize * 2, blockSize * 2);
             } else {
-                context.rect(x, y, blockSize, blockSize);
+                mainContext.rect(x, y, blockSize, blockSize);
             }
         }
         if (type == "e") { // e
             if (entityList.get(details).mode.active) {
-                context.fillStyle = patterns["entities"][entityList.get(details).texture1];
+                mainContext.fillStyle = patterns["entities"][entityList.get(details).texture1];
             } else {
-                context.fillStyle = patterns["entities"][entityList.get(details).texture];
+                mainContext.fillStyle = patterns["entities"][entityList.get(details).texture];
             }
         } else { // c
-            context.fillStyle = patterns["items"][entityList.get(details).texture];
+            mainContext.fillStyle = patterns["items"][entityList.get(details).texture];
         }
-        context.fill();
-        context.restore();
+        mainContext.fill();
+        mainContext.restore();
     },
     enemy: function(x, y, type, details, entity) {
         switch (type) {
@@ -310,63 +310,63 @@ var EntityDrawer = {
                 if (!entity.peaceful()) {
                     var polygon = EntityCollision.getViewareaPolygon(entity);
                     // the polygon
-                    context.beginPath();
-                    context.moveTo(polygon[0].x, polygon[0].y);
+                    mainContext.beginPath();
+                    mainContext.moveTo(polygon[0].x, polygon[0].y);
                     for (i = 1; i < polygon.length; i++) {
-                        context.lineTo(polygon[i].x, polygon[i].y);
+                        mainContext.lineTo(polygon[i].x, polygon[i].y);
                     }
-                    context.closePath();
+                    mainContext.closePath();
 
                     // the outline
-                    //context.lineWidth = 10;
-                    //context.strokeStyle = '#666666';
-                    //context.stroke();
+                    //mainContext.lineWidth = 10;
+                    //mainContext.strokeStyle = '#666666';
+                    //mainContext.stroke();
 
                     // the fill color
                     if (entity.following) {
-                        context.fillStyle = "#FF220044";
+                        mainContext.fillStyle = "#FF220044";
                     } else {
-                        context.fillStyle = "#FFCC0044";
+                        mainContext.fillStyle = "#FFCC0044";
                     }
-                    context.fill();
+                    mainContext.fill();
                 }
 
                 if (!entityList.get("E" + details).rotation) {
-                    context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+                    mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
                 } else {
                     /*if (entity.rotation > 45 && entity.rotation < 135) {
-                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "1"];
+                        mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "1"];
                     } else if (entity.rotation >= 135 && entity.rotation <= 225) {
-                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "2"];
+                        mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "2"];
                     } else if (entity.rotation > 225 && entity.rotation < 315) {
-                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "3"];
+                        mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "3"];
                     } else {
-                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+                        mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
                     }*/
                     if (entity.rotation > 0 && entity.rotation < 180) {
-                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "1"];
+                        mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture + "1"];
                     } else {
-                        context.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
+                        mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
                     }
                 }
 
-                context.translate(x, y - playerOverlap);
-                context.fillRect(0, 0, blockSize, blockSize + playerOverlap);
+                mainContext.translate(x, y - playerOverlap);
+                mainContext.fillRect(0, 0, blockSize, blockSize + playerOverlap);
                 if (!entity.peaceful()) {
-                    context.beginPath();
-                    context.arc(blockSize / 2, blockSize / 2 + playerOverlap, enemyFollowRadiusRotate + blockSize / 2, 0, 2 * Math.PI);
+                    mainContext.beginPath();
+                    mainContext.arc(blockSize / 2, blockSize / 2 + playerOverlap, enemyFollowRadiusRotate + blockSize / 2, 0, 2 * Math.PI);
                     if (entity.rotating) {
-                        context.strokeStyle = "#FF220066";
+                        mainContext.strokeStyle = "#FF220066";
                     } else {
-                        context.strokeStyle = "#FFCC0044";
+                        mainContext.strokeStyle = "#FFCC0044";
                     }
-                    context.stroke();
+                    mainContext.stroke();
                 }
-                context.translate(-x, -y + playerOverlap);
+                mainContext.translate(-x, -y + playerOverlap);
                 break;
         }
 
-        //context.restore();
+        //mainContext.restore();
     }
 };
 
@@ -1020,7 +1020,7 @@ var Camera = function() {
         if (frames >= 10) {
             frames = 0;
 
-            var screen = { x: player.x - this.offsetX - context.canvas.width / 2 - blockSize * 5, y: player.y - this.offsetY - context.canvas.height / 2 - blockSize * 5, width: context.canvas.width + blockSize * 8, height: context.canvas.height + blockSize * 8 };
+            var screen = { x: player.x - this.offsetX - mainContext.canvas.width / 2 - blockSize * 5, y: player.y - this.offsetY - mainContext.canvas.height / 2 - blockSize * 5, width: mainContext.canvas.width + blockSize * 8, height: mainContext.canvas.height + blockSize * 8 };
 
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
@@ -1048,8 +1048,8 @@ var Camera = function() {
     };
 
     this.preRender = function() {
-        var targetX = -player.x + context.canvas.width / 2;
-        var targetY = -player.y + context.canvas.height / 2;
+        var targetX = -player.x + mainContext.canvas.width / 2;
+        var targetY = -player.y + mainContext.canvas.height / 2;
 
         var vectorX = targetX - this.x;
         var vectorY = targetY - this.y;
@@ -1060,12 +1060,12 @@ var Camera = function() {
         this.x += vectorX / 10;
         this.y += vectorY / 10;
 
-        context.save();
-        context.translate(this.x, this.y);
+        mainContext.save();
+        mainContext.translate(this.x, this.y);
     };
 
     this.postRender = function() {
-        context.restore();
+        mainContext.restore();
     };
 
 };

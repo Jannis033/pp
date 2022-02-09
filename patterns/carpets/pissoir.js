@@ -53,5 +53,5 @@ patternCreator.carpets.pissoir = function() {
     patternContext.rect(74.084312, 16.909777, 5.915691, 44.679905);
     patternContext.fill();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

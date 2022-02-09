@@ -1042,5 +1042,5 @@ patternCreator.items.key = function() {
     patternContext.restore();
     patternContext.restore();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

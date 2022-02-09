@@ -49,5 +49,5 @@ patternCreator.items.water = function() {
     patternContext.bezierCurveTo(15.492127, 21.520309, 20.157102, 21.149311, 25.481911, 21.138707);
     patternContext.fill();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

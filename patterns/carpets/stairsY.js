@@ -11,5 +11,5 @@ patternCreator.carpets.stairsY = function() {
     patternContext.fillRect(0, 0, patternCanvas.width / 4, patternCanvas.height);
     patternContext.fillRect(2 * patternCanvas.width / 4, 0, patternCanvas.width / 4, patternCanvas.height);
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

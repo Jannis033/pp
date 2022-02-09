@@ -42,5 +42,5 @@ patternCreator.entities.schalter1 = function() {
     patternContext.fill();
     patternContext.stroke();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

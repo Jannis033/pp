@@ -1877,6 +1877,5 @@ patternCreator.carpets.coffee = function() {
     patternContext.fill();
     patternContext.restore();
 
-    patternContext.save();
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }

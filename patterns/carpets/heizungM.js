@@ -87,5 +87,5 @@ patternCreator.carpets.heizungM = function() {
     patternContext.rect(32.633549 * zoomfactor, 0.010118 * zoomfactor, 12.523574 * zoomfactor, 79.948090 * zoomfactor);
     patternContext.fill();
 
-    return context.createPattern(patternCanvas, 'repeat');
+    return mainContext.createPattern(patternCanvas, 'repeat');
 }
