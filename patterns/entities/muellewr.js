@@ -1,4 +1,4 @@
-patternCreator.entities.mueller = function() {
+patternCreator.entities.hexe = function() {
     const patternCanvas = document.createElement('canvas');
     const ctx = patternCanvas.getContext('2d');
 
