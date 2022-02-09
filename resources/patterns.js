@@ -75,7 +75,7 @@ var patternHelper = {
         this.loadPattern("peter1", "peters");
         this.loadPattern("peter2", "peters");
         this.loadPattern("peter3", "peters");
-        this.loadPattern("peter4", "peters");
+        //this.loadPattern("peter4", "peters");
         this.loadPattern("peter5", "peters");
         this.loadPattern("peter6", "peters");
         this.loadPattern("peter7", "peters");
@@ -88,6 +88,8 @@ var patternHelper = {
         this.loadPattern("player5", "players");
         this.loadPattern("player6", "players");
         this.loadPattern("player7", "players");
+
+        patterns.peters.peter4 = patternCreator.peters.peter4();
         /*patterns.stairsY = this.stairsX();
         patterns.stairsY = this.stairsY();
         patterns.cookie = this.cookie();
