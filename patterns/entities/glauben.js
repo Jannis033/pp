@@ -1,4 +1,4 @@
-patternCreator.entities.glauben = function() {
+patternCreator.entities.glauben  = function() {
     const patternCanvas = document.createElement('canvas');
     const patternContext = patternCanvas.getContext('2d');
 
