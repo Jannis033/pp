@@ -331,7 +331,7 @@ var EntityDrawer = {
                     mainContext.fill();
                 }
 
-                if (!entityList.get("E" + details).rotation) {
+                if (!entityList.get("E" + details).rotate) {
                     mainContext.fillStyle = patterns["entities"][entityList.get("E" + details).texture];
                 } else {
                     /*if (entity.rotation > 45 && entity.rotation < 135) {
