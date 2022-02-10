@@ -8,7 +8,7 @@ config.debug = true; // allow shift and alt
 
 config.colors = { wall: '#666', window: '#777', player: '#111' };
 
-config.collision = { arcSizeRadius: 35, arcSizeRadiusEntity: 35, entityCollectRadius: 20, entityInteractRadius: 120, enemyFollowRadius: 700, enemyFollowRadiusRotate: 150 };
+config.collision = { arcSizeRadius: 35, arcSizeRadiusEntity: 35, entityCollectRadius: 20, entityInteractRadius: 150, enemyFollowRadius: 700, enemyFollowRadiusRotate: 150 };
 
 config.dimensions = { blockSize: 80, playerOverlap: 20 };
 

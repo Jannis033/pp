@@ -458,12 +458,12 @@ var Player = function(x, y) {
 
         addInventory: function(item, count = 1) {
             if (this.items.hasOwnProperty(item)) {
-                if (this.items[item] == -2) this.items[item] = 1;
+                if (this.items[item] == -2) this.items[item] = count;
                 if (this.items[item] < 0) this.items[item] = 0;
                 this.items[item] = this.items[item] + count;
                 if (this.items[item] < 0) this.items[item] = 0;
             } else {
-                this.items[item] = 1;
+                this.items[item] = count;
             }
             this.updateInventory(item);
         },
