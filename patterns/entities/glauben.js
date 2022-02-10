@@ -1,9 +1,9 @@
-patternCreator.entities.emily  = function() {
+patternCreator.entities.glauben  = function() {
     const patternCanvas = document.createElement('canvas');
     const patternContext = patternCanvas.getContext('2d');
 
-    patternCanvas.width = blockSize;
-    patternCanvas.height = blockSize + playerOverlap;
+    ctx.width = blockSize;
+    ctx.height = blockSize + playerOverlap;
    
     
     ctx.strokeStyle="rgba(0,0,0,0)";
