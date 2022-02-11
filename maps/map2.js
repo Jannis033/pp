@@ -1,4 +1,4 @@
-var map2 = `
+var mapx = `
       W W W W
       W P   W
       W     W
