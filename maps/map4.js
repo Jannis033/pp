@@ -1,4 +1,4 @@
-var map4 = `
+var map2 = `
       WiW W W W W W W W W W W W W W W W W W W W W W W W W                                                                       
     WiWiW                                               W                                         W W W W W W W W  W W W W W W W W W W W W W W W W                       
     WiWiW                                               W                                         W                W                 W           W                   
